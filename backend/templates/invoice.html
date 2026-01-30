@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <style>
+      /* RESET & BASE */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+        background: #fff;
+        line-height: 1.4;
+      }
+      .invoice {
+        width: 210mm;
+        margin: 0 auto;
+        padding: 20mm 15mm;
+        min-height: 297mm; /* A4 Height */
+      }
+
+      /* HEADER */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-bottom: 20px;
+        border-bottom: 3px solid #0056b3;
+        margin-bottom: 30px;
+      }
+
+      /* LOGO & COMPANY INFO WRAPPER */
+      .brand-section {
+        display: flex;
+        align-items: flex-start; /* Aligns logo with top of text */
+        gap: 15px; /* Space between logo and text */
+        flex: 1;
+      }
+      .company-logo {
+        width: 80px; /* Adjust logo size here */
+        height: auto;
+        object-fit: contain;
+      }
+      .company-details {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .company-name {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0056b3;
+        margin-bottom: 5px;
+        line-height: 1;
+      }
+      .company-tagline {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 10px;
+      }
+      .company-contact {
+        font-size: 13px;
+        color: #555;
+        line-height: 1.5;
+      }
+
+      .invoice-title {
+        text-align: right;
+        min-width: 200px;
+      }
+      .invoice-title h1 {
+        font-size: 32px;
+        color: #333;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .invoice-meta {
+        font-size: 14px;
+        color: #555;
+        text-align: right;
+      }
+      .invoice-meta div {
+        margin-bottom: 4px;
+      }
+
+      /* INFO SECTION (BILL TO) */
+      .info-section {
+        margin-bottom: 30px;
+      }
+      .info-card {
+        width: 60%; /* Slightly wider to accommodate long addresses */
+        border-left: 4px solid #ddd;
+        padding-left: 15px;
+      }
+      .info-card h3 {
+        font-size: 16px;
+        color: #0056b3;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+      .info-row {
+        display: flex;
+        margin-bottom: 5px;
+        font-size: 14px;
+      }
+      .info-label {
+        width: 80px;
+        color: #666;
+        font-weight: 500;
+      }
+      .info-value {
+        flex: 1;
+        color: #222;
+        font-weight: 500;
+      }
+
+      /* PRODUCTS TABLE */
+      .products-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+      .products-table thead {
+        background: #f4f4f4;
+        color: #333;
+        border-bottom: 2px solid #ddd;
+      }
+      .products-table th {
+        padding: 12px 10px;
+        text-align: left;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      .products-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #eee;
+        vertical-align: top;
+      }
+      .products-table tbody tr:hover {
+        background: #fafafa;
+      }
+      .text-right {
+        text-align: right;
+      }
+      .text-center {
+        text-align: center;
+      }
+
+      /* TABLE INTERMEDIATE TOTALS */
+      .table-totals {
+        width: 100%;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+      }
+      .table-total-row {
+        display: flex;
+        justify-content: flex-end;
+        padding: 4px 10px;
+        font-size: 13px;
+      }
+      .table-total-label {
+        width: 120px;
+        text-align: right;
+        padding-right: 20px;
+        color: #666;
+      }
+      .table-total-value {
+        width: 120px;
+        text-align: right;
+        font-weight: 500;
+      }
+
+      /* SUMMARY & NOTES SECTION */
+      .summary-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 30px;
+        gap: 30px;
+      }
+
+      /* Notes Styling */
+      .notes-card {
+        flex: 1;
+        border: 1px solid #eee;
+        background: #fcfcfc;
+        padding: 15px;
+        border-radius: 4px;
+      }
+      .notes-card h3 {
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 8px;
+        font-weight: 700;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+      }
+      .notes-content {
+        font-size: 13px;
+        color: #555;
+        line-height: 1.5;
+      }
+
+      /* Summary Box Styling */
+      .final-summary {
+        width: 350px;
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 4px;
+        margin-left: auto;
+      }
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        font-size: 14px;
+        border-bottom: 1px dashed #ddd;
+      }
+      .summary-row:last-child {
+        border-bottom: none;
+      }
+      .summary-label {
+        color: #666;
+      }
+      .summary-value {
+        font-weight: 600;
+        color: #333;
+      }
+      .grand-total-row {
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 2px solid #333;
+      }
+      .grand-total-row .summary-label {
+        font-size: 16px;
+        font-weight: 700;
+        color: #000;
+      }
+      .grand-total-row .summary-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0056b3;
+      }
+
+      /* FOOTER */
+      .footer {
+        margin-top: 50px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+        text-align: center;
+        color: #888;
+      }
+      .thank-you {
+        font-size: 14px;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .footer-contact {
+        font-size: 12px;
+      }
+
+      /* PRINT OPTIMIZATION */
+      @media print {
+        body {
+          padding: 0;
+          margin: 0;
+        }
+        .invoice {
+          width: 100%;
+          padding: 10mm;
+          border: none;
+        }
+        .notes-card,
+        .final-summary {
+          background: none !important;
+          border: 1px solid #ddd;
+        }
+        .products-table thead {
+          background: #eee !important;
+          -webkit-print-color-adjust: exact;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice">
+      <div class="header">
+        <div class="brand-section">
+          <img
+            src="../public/logo.png"
+            alt="Company Logo"
+            class="company-logo"
+          />
+          <div class="company-details">
+            <div class="company-name">Loke Store</div>
+            <div class="company-tagline">Professional Computer Solutions</div>
+            <div class="company-contact">
+              Address: RBT Mall, Meyyanur Bypass Rd, opp. to iplanet, Meyyanur,
+              Salem, Tamil Nadu<br />
+              Email: lokestore24@gmail.com | Phone: 8825403712
+            </div>
+          </div>
+        </div>
+
+        <div class="invoice-title">
+          <h1>INVOICE</h1>
+          <div class="invoice-meta">
+            <div><strong>Invoice #:</strong> {{invoiceNumber}}</div>
+            <div><strong>Date:</strong> {{invoiceDate}}</div>
+            <div><strong>Due Date:</strong> {{dueDate}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-card">
+          <h3>Bill To</h3>
+          <div class="info-row">
+            <div class="info-label">Name:</div>
+            <div class="info-value">{{customerName}}</div>
+          </div>
+          {{#if customerCompany}}
+          <div class="info-row">
+            <div class="info-label">Company:</div>
+            <div class="info-value">{{customerCompany}}</div>
+          </div>
+          {{/if}}
+          <div class="info-row">
+            <div class="info-label">Mobile:</div>
+            <div class="info-value">{{customerMobile}}</div>
+          </div>
+          {{#if customerEmail}}
+          <div class="info-row">
+            <div class="info-label">Email:</div>
+            <div class="info-value">{{customerEmail}}</div>
+          </div>
+          {{/if}} {{#if customerAddress}}
+          <div class="info-row">
+            <div class="info-label">Address:</div>
+            <div class="info-value">{{customerAddress}}</div>
+          </div>
+          {{/if}} {{#if customerGSTIN}}
+          <div class="info-row">
+            <div class="info-label">GSTIN:</div>
+            <div class="info-value">{{customerGSTIN}}</div>
+          </div>
+          {{/if}}
+        </div>
+      </div>
+
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th style="width: 5%">#</th>
+            <th style="width: 45%">Description</th>
+            <th class="text-center" style="width: 10%">Qty</th>
+            <th class="text-right" style="width: 15%">Unit Price</th>
+            <th class="text-center" style="width: 10%">GST</th>
+            <th class="text-right" style="width: 15%">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{productRows}}
+        </tbody>
+      </table>
+
+      <div class="table-totals">
+        <div class="table-total-row">
+          <div class="table-total-label">Subtotal:</div>
+          <div class="table-total-value">₹{{productsSubtotal}}</div>
+        </div>
+        <div class="table-total-row">
+          <div class="table-total-label">Total GST:</div>
+          <div class="table-total-value">₹{{productsTotalGst}}</div>
+        </div>
+      </div>
+
+      <div class="summary-section">
+        {{#if notes}}
+        <div class="notes-card">
+          <h3>Notes</h3>
+          <div class="notes-content">{{notes}}</div>
+        </div>
+        {{/if}}
+
+        <div class="final-summary">
+          <div class="summary-row">
+            <span class="summary-label">Subtotal</span>
+            <span class="summary-value">₹{{subtotal}}</span>
+          </div>
+          {{#if discount}}
+          <div class="summary-row">
+            <span class="summary-label">Discount</span>
+            <span class="summary-value" style="color: #d9534f"
+              >-₹{{discount}}</span
+            >
+          </div>
+          {{/if}} {{#if shipping}}
+          <div class="summary-row">
+            <span class="summary-label">Shipping</span>
+            <span class="summary-value">₹{{shipping}}</span>
+          </div>
+          {{/if}}
+          <div class="summary-row">
+            <span class="summary-label">Total GST</span>
+            <span class="summary-value">₹{{totalGst}}</span>
+          </div>
+          {{#if roundOff}}
+          <div class="summary-row">
+            <span class="summary-label">Round Off</span>
+            <span class="summary-value">₹{{roundOff}}</span>
+          </div>
+          {{/if}}
+          <div class="summary-row grand-total-row">
+            <span class="summary-label">Total Due</span>
+            <span class="summary-value">₹{{grandTotal}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="thank-you">Thank you for your business!</div>
+        <div class="footer-contact">
+          This is a computer-generated invoice. No signature required.<br />
+          © Loke Store. All rights reserved.
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

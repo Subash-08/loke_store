@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Build outputs
+build/
+dist/
+frontend/build/
+frontend/dist/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+backend/config/config.env
+backend/config/*.env
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+config.env
+# IDE
+.vscode/
+.idea/
+
+# =========================
+# User uploads (NEVER COMMIT)
+# =========================
+backend/public/uploads/
+backend/public/
+backend/uploads/
+
+# If frontend ever has uploads
+frontend/public/uploads/
+
+# Keep folder structure if needed
+!backend/public/uploads/.gitkeep
