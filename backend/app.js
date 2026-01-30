@@ -48,25 +48,25 @@ const allowedOrigins = [
     'https://www.lokestore.in',
     'https://api.lokestore.in',
     'https://www.api.lokestore.in',
-    'https://coruscating-basbousa-f1949f.netlify.app/'
+    'https://coruscating-basbousa-f1949f.netlify.appS'
 ];
 
 app.use(cors({
-    origin: function (origin, callback) {
+    origin: (origin, callback) => {
+        // Allow curl/postman
         if (!origin) return callback(null, true);
-        if (allowedOrigins.includes(origin)) {
-            return callback(null, true);
-        } else {
-            // In development, allow all origins for debugging
-            if (process.env.NODE_ENV === 'development') {
-                return callback(null, true);
-            }
-            return callback(null, false);
-        }
-    },
-    credentials: true
-}));
 
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, origin); // IMPORTANT: return origin
+        }
+
+        console.log('❌ Blocked by CORS:', origin);
+        return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 // Middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
