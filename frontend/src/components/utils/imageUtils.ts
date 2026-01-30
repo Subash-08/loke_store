@@ -8,7 +8,7 @@ export const getBaseURL = (): string => {
       window.location.hostname === "127.0.0.1");
 
   return isLocal
-    ? "http://localhost:5000"
+    ? "http://localhost:5001"
     : "https://api.itechcomputers.shop";
 };
 
