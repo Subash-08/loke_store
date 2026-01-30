@@ -7,9 +7,9 @@ export const getConfig = () => {
 
   // Fallback to build-time environment variables
   return {
-    API_URL: process.env.REACT_APP_API_URL || 'http://localhost:5001/api/v1',
-    UPLOADS_URL: process.env.REACT_APP_UPLOADS_URL || 'http://localhost:5001/uploads'
+    API_URL: process.env.REACT_APP_API_URL || 'https://lokestore.in/api/v1',
+    UPLOADS_URL: process.env.REACT_APP_UPLOADS_URL || 'https://lokestore.in/uploads'
   };
 };
 
-export const baseURL = 'http://localhost:5001';
+export const baseURL = 'https://lokestore.in';
