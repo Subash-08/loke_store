@@ -211,7 +211,7 @@ const HomePage: React.FC = () => {
       {/* FEATURED BRANDS SECTION   */}
       {/* ============================== */}
 
-      {brands.length > 0 && (
+      {/* {brands.length > 0 && (
         <section className={`py-24 ${ToyTheme.colors.background.page} border-t border-purple-100`}>
           <div className={ToyTheme.layout.container}>
 
@@ -241,7 +241,11 @@ const HomePage: React.FC = () => {
 
           </div>
         </section>
-      )}
+      )} */}
+
+
+
+
     </div>
   );
 };

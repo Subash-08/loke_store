@@ -14,7 +14,7 @@ const ManufacturerImages: React.FC<ManufacturerImagesProps> = ({ productData }) 
   // 🛠 HELPER: Robust URL Resolver
   const getImageUrl = (url: string | undefined): string => {
     if (!url || url.startsWith('blob:')) return ''; // Return empty to trigger error handler naturally
-    
+
     // If it's already a full URL, return it
     if (url.startsWith('http')) return url;
 
@@ -50,10 +50,10 @@ const ManufacturerImages: React.FC<ManufacturerImagesProps> = ({ productData }) 
       return acc;
     }, {} as Record<string, typeof validImages>);
 
-    return { 
-      groupedImages: grouped, 
-      sections: Object.keys(grouped), 
-      hasImages: true 
+    return {
+      groupedImages: grouped,
+      sections: Object.keys(grouped),
+      hasImages: true
     };
   }, [productData.manufacturerImages]);
 
@@ -70,7 +70,7 @@ const ManufacturerImages: React.FC<ManufacturerImagesProps> = ({ productData }) 
 
   return (
     <div className="w-full mt-12 overflow-hidden">
-      
+
       {/* 1️⃣ Header Block */}
       <div className="p-8 border-b border-gray-100">
         <h2 className="text-2xl font-bold text-gray-900 tracking-tight flex items-center">
@@ -121,8 +121,8 @@ const ManufacturerImages: React.FC<ManufacturerImagesProps> = ({ productData }) 
             className="w-full"
           >
             {currentImages?.map((image, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className="group w-full transition-shadow duration-300 mb-2 last:mb-0"
               >
                 {/* Full Width Image Container */}
@@ -131,7 +131,7 @@ const ManufacturerImages: React.FC<ManufacturerImagesProps> = ({ productData }) 
                   <img
                     src={image.resolvedUrl}
                     alt={image.altText || 'Manufacturer Image'}
-                    className="w-full h-auto max-h-[500px] object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    className="w-full h-auto max-h-[500px] object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                     onError={(e) => {
                       // Fallback Placeholder
                       e.currentTarget.src = `data:image/svg+xml;base64,${btoa(`
@@ -144,7 +144,7 @@ const ManufacturerImages: React.FC<ManufacturerImagesProps> = ({ productData }) 
                     }}
                   />
                 </div>
-                
+
 
               </div>
             ))}

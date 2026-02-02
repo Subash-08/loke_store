@@ -20,6 +20,7 @@ import PreBuildSection from './PreBuildSection';
 import YTVideoSection from './YTVideoSlider';
 import AgeRangeSection from './AgeRangeSection';
 import CategoryBannerSection from './CategoryBannerSection';
+import FetchAgeRangeHome from './FetchAgeRangeHome';
 const App: React.FC = () => {
   // Business Details Constants
   const companyName = "Loke Store";
@@ -133,6 +134,7 @@ const App: React.FC = () => {
             className="container mx-auto px-4"
           />
         </div>
+        <FetchAgeRangeHome />
         <AgeRangeSection />
         <HomePage />
         <DealsSection />

@@ -28,6 +28,20 @@ const ageRangeSchema = new mongoose.Schema(
             max: [100, 'End age cannot exceed 100'],
             validate: {
                 validator: function (value) {
+                    // Handle update operations where 'this' is the Query object
+                    if (this.getUpdate) {
+                        const update = this.getUpdate();
+                        // Check both direct property and $set
+                        const startAge = update.startAge !== undefined ? update.startAge : (update.$set && update.$set.startAge);
+
+                        // If startAge is being updated, validate against it
+                        if (startAge !== undefined) {
+                            return value > Number(startAge);
+                        }
+                        return true; // If startAge is not in update, we assume it's valid (or cannot validate against previous value easily synchronously)
+                    }
+
+                    // Handle document creation where 'this' is the document
                     return value > this.startAge;
                 },
                 message: 'End age must be greater than start age'
