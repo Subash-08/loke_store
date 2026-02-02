@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { ageRangeService } from '../admin/services/ageRangeService';
 import { AgeRange } from '../admin/types/ageRange';
 import { ToyTheme } from '../../theme/designTokens';
@@ -71,14 +72,14 @@ const FetchAgeRangeHome: React.FC = () => {
     if (ageRanges.length === 0) return null;
 
     return (
-        <section className="py-12 bg-orange-50/30">
+        <section className="bg-orange-50/30">
             <div className={ToyTheme.layout.container}>
                 <div className="text-center mb-10">
                     <h2 className="text-3xl md:text-4xl font-black text-[#1F2937] tracking-tight">Shop by age</h2>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    {ageRanges.slice(0, 5).map((range, index) => {
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    {ageRanges.slice(0, 6).map((range, index) => {
                         const colorTheme = colors[index % colors.length];
                         const displayAge = range.displayLabel || `${range.startAge} - ${range.endAge}`;
 
@@ -89,7 +90,7 @@ const FetchAgeRangeHome: React.FC = () => {
                                 className={`group relative flex flex-col rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1`}
                             >
                                 {/* Top colored section */}
-                                <div className={`${colorTheme.bg} flex-1 p-4 flex flex-col items-center justify-between min-h-[220px]`}>
+                                <div className={`${colorTheme.bg} flex-1 p-4 flex flex-col items-center justify-between min-h-[200px]`}>
                                     <h3 className="text-3xl font-black text-white mt-2 drop-shadow-md">
                                         {displayAge}
                                     </h3>
@@ -103,13 +104,13 @@ const FetchAgeRangeHome: React.FC = () => {
                                     </div>
                                 </div>
 
-                                {/* Bottom footer section */}
-                                <div className={`${colorTheme.footerBg} p-3 border-t border-black/5`}>
-                                    <div className="font-bold text-gray-800 text-lg leading-tight">
-                                        {displayAge}
+                                {/* Bottom footer section with Description and Arrow */}
+                                <div className={`${colorTheme.footerBg} p-3 border-t border-black/5 flex items-center justify-between min-h-[50px] gap-2`}>
+                                    <div className="text-xs font-medium text-gray-700 line-clamp-2 leading-tight flex-1 text-left">
+                                        {range.description || 'Explore products for this age'}
                                     </div>
-                                    <div className="text-sm text-gray-500 font-medium">
-                                        {range.productCount || 0} items
+                                    <div className="transform transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0">
+                                        <ArrowRight size={18} className="text-gray-700" />
                                     </div>
                                 </div>
                             </Link>

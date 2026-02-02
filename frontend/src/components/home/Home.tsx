@@ -21,6 +21,7 @@ import YTVideoSection from './YTVideoSlider';
 import AgeRangeSection from './AgeRangeSection';
 import CategoryBannerSection from './CategoryBannerSection';
 import FetchAgeRangeHome from './FetchAgeRangeHome';
+import ExploreByBoxSection from './ExploreByBoxSection';
 const App: React.FC = () => {
   // Business Details Constants
   const companyName = "Loke Store";
@@ -134,9 +135,10 @@ const App: React.FC = () => {
             className="container mx-auto px-4"
           />
         </div>
+        <ExploreByBoxSection />
         <FetchAgeRangeHome />
-        <AgeRangeSection />
-        <HomePage />
+        {/* <AgeRangeSection /> */}
+        {/* <HomePage /> */}
         <DealsSection />
         <PcBuilderPromo />
         <PreBuildSection />
@@ -151,7 +153,7 @@ const App: React.FC = () => {
             /> */}
 
 
-        <TrustedBrandsSection />
+        {/* <TrustedBrandsSection /> */}
         <HomeLatestNews />
         <YTVideoSection />
       </main>

@@ -152,6 +152,10 @@ exports.updateAgeRange = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler('Age range not found', 404));
     }
 
+    // Parse numeric fields
+    if (req.body.startAge !== undefined) req.body.startAge = parseInt(req.body.startAge);
+    if (req.body.endAge !== undefined) req.body.endAge = parseInt(req.body.endAge);
+
     // Handle image update
     if (req.file) {
         const imageData = {

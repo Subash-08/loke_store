@@ -8,8 +8,8 @@ import UserIcon from './icons/UserIcon';
 import MenuIcon from './icons/MenuIcon';
 import XIcon from './icons/XIcon';
 import logo from '../assets/logo.png'
-import nav1 from '../assets/10014.webp';
-import nav2 from '../assets/10016.webp';
+import nav1 from '../assets/10002.jpg';
+import nav2 from '../assets/10036.jpg';
 import { navbarSettingService } from './admin/services/navbarSettingService';
 import { ageRangeService } from './admin/services/ageRangeService'; // Import ageRangeService
 import LogoSection from './home/LogoSection'; // Adjust path as needed

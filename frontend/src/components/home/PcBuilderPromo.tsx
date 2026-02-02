@@ -1,13 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronRight, Cpu, Settings, ShieldCheck } from 'lucide-react';
-import customPC from '../../assets/buildyourbox_2_300x.png'
+import { ChevronRight, Shapes, TreeDeciduous, Heart } from 'lucide-react';
+import woodenToysImg from '../../assets/bg-image2.png'; // Using the known wood toys image
 import { useNavigate } from 'react-router-dom';
 import { ToyTheme, gradients } from '../../theme/designTokens';
 
 // --- Configuration ---
 const ASSETS = {
-  pcChassis: customPC,
+  centerImage: woodenToysImg,
 };
 
 // --- Animation Variants ---
@@ -59,7 +59,7 @@ const BackgroundGrid = () => (
       className="absolute inset-0 bg-[linear-gradient(to_right,#e0e7ff_1px,transparent_1px),linear-gradient(to_bottom,#e0e7ff_1px,transparent_1px)] bg-[size:40px_40px] opacity-40"
     />
     {/* Subtle top gradient fade */}
-    <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-rose-50 to-transparent"></div>
+    <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-amber-50 to-transparent"></div>
   </div>
 );
 
@@ -68,7 +68,7 @@ const FloatingParticle = ({ delay, x, y }: { delay: number; x: string; y: string
     initial={{ opacity: 0, y: 0 }}
     animate={{ opacity: [0, 0.5, 0], y: -100, x: parseInt(x) > 50 ? 50 : -50 }}
     transition={{ duration: 15, repeat: Infinity, delay, ease: "linear" }}
-    className={`absolute w-3 h-3 bg-purple-200 rounded-full blur-[2px] opacity-60`}
+    className={`absolute w-3 h-3 bg-amber-200 rounded-full blur-[2px] opacity-60`}
     style={{ left: x, top: y }}
   />
 );
@@ -110,38 +110,37 @@ const CustomPCSection = () => {
         >
 
           {/* Header Section */}
-          <div className="text-center max-w-3xl mx-auto mb-4 md:mb-6 space-y-2 md:space-y-4">
+          <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12 space-y-2 md:space-y-4">
             <motion.h2
               variants={itemVariants}
               className={`text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter ${ToyTheme.colors.text.heading} leading-[1.1]`}
             >
-              Build Your <span className={`bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500`}>Dream Gift Box</span>
+              Handcrafted <span className={`bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-orange-500`}>Wooden Collections</span>
             </motion.h2>
             <motion.p variants={itemVariants} className={`text-base md:text-lg lg:text-xl ${ToyTheme.colors.text.body} font-medium leading-relaxed max-w-2xl mx-auto px-2`}>
-              Customize the ultimate gift set! Pick their favorite toys, wrap it up, and make it special.
+              Sustainable, durable, and designed for open-ended play. The perfect start to their imagination.
             </motion.p>
           </div>
 
           {/* Main Visual Centerpiece (Simulated 3D) */}
           <motion.div
             variants={itemVariants}
-            className="relative w-full max-w-4xl mx-auto h-[250px] md:h-[350px] lg:h-[450px] mb-4 md:mb-6 perspective-1000"
+            className="relative w-full max-w-4xl mx-auto h-[250px] md:h-[350px] lg:h-[450px] mb-8 md:mb-12 perspective-1000"
           >
-            {/* The "Brathing" Glow behind the PC - Soft Purple */}
+            {/* The "Breathing" Glow behind the Items - Warm Amber */}
             <motion.div
               animate={breathingGlow}
-              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-full blur-[80px] md:blur-[100px] bg-purple-300/40 -z-10`}
+              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-full blur-[80px] md:blur-[100px] bg-amber-200/40 -z-10`}
             />
 
-            {/* The PC Chassis Floating Animation */}
+            {/* The Image Floating Animation */}
             <motion.div
               animate={floatingAnimation}
               className="w-full h-full flex items-center justify-center"
             >
-              {/* PC Image */}
               <img
-                src={ASSETS.pcChassis}
-                alt="Custom Toy Box"
+                src={ASSETS.centerImage}
+                alt="Wooden Toys Collection"
                 className="w-auto h-full object-contain drop-shadow-2xl max-w-[90%]"
                 style={{
                   filter: "drop-shadow(0 25px 30px rgb(0 0 0 / 0.1))",
@@ -150,7 +149,7 @@ const CustomPCSection = () => {
               />
             </motion.div>
 
-            {/* Start Building Button - Absolute positioned below PC */}
+            {/* Start Building Button - Absolute positioned below Image */}
             <motion.div
               variants={itemVariants}
               className="absolute -bottom-4 md:-bottom-8 left-1/2 z-20"
@@ -159,10 +158,10 @@ const CustomPCSection = () => {
               whileTap={{ scale: 0.95 }}
             >
               <button
-                onClick={() => navigate('/custom-pcs')}
-                className={`group relative inline-flex items-center gap-2 px-8 py-4 text-xl font-extrabold text-white ${gradients.primary} ${ToyTheme.shapes.button} overflow-hidden shadow-xl shadow-purple-500/20 transition-all hover:shadow-purple-500/40 ring-4 ring-white`}
+                onClick={() => navigate('/products?category=wood-toys')}
+                className={`group relative inline-flex items-center gap-2 px-8 py-4 text-xl font-extrabold text-white ${gradients.primary} ${ToyTheme.shapes.button} overflow-hidden shadow-xl shadow-amber-500/20 transition-all hover:shadow-amber-500/40 ring-4 ring-white`}
               >
-                <span className="relative z-10">Start Creating</span>
+                <span className="relative z-10">Explore Collection</span>
                 <ChevronRight className="relative z-10 group-hover:translate-x-1 transition-transform" strokeWidth={3} />
 
                 {/* Button Glow Overlay */}
@@ -177,19 +176,19 @@ const CustomPCSection = () => {
             <div className={`absolute inset-0 -z-10 bg-white/40 backdrop-blur-md rounded-3xl border border-white/60 shadow-sm`}></div>
 
             <FeaturePillar
-              icon={Cpu}
-              title="Super Fun"
-              desc="We pick the most exciting toys so the fun never ends!"
+              icon={Shapes}
+              title="Endless Creativity"
+              desc="Simple shapes that inspire complex worlds and stories."
             />
             <FeaturePillar
-              icon={Settings}
-              title="You Choose"
-              desc="Pick the colors and items they love. Make it a personal masterpiece."
+              icon={TreeDeciduous}
+              title="100% Sustainable"
+              desc="Crafted from ethically sourced, natural wood materials."
             />
             <FeaturePillar
-              icon={ShieldCheck}
-              title="Safe & Durable"
-              desc="Our experts ensure every toy is safe and built to last."
+              icon={Heart}
+              title="Safe & Non-Toxic"
+              desc="Smooth finishes and child-safe paints for worry-free play."
             />
           </div>
 

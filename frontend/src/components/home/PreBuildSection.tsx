@@ -106,7 +106,7 @@ const PreBuildSection: React.FC = () => {
   if (items.length === 0) return null;
 
   return (
-    <section className={`relative w-full ${ToyTheme.layout.container} py-16`}>
+    <section className={`relative w-full ${ToyTheme.layout.container}`}>
       {/* Header */}
       <div className="mb-12 text-center">
         <h2 className={`text-4xl md:text-5xl font-black uppercase tracking-tighter ${ToyTheme.colors.text.heading}`}>
