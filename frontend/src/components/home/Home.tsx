@@ -25,7 +25,7 @@ import ExploreByBoxSection from './ExploreByBoxSection';
 const App: React.FC = () => {
   // Business Details Constants
   const companyName = "Loke Store";
-  const siteUrl = "https://itechcomputers.shop/";
+  const siteUrl = "https://lokestore.in/";
   const phoneNumber = "8825403712";
   const emailAddress = "lokestore24@gmail.com";
 
@@ -84,7 +84,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="bg-rose-50 min-h-screen text-slate-800 selection:bg-purple-200 selection:text-purple-900">
+    <div className="min-h-screen text-slate-800 selection:bg-purple-200 selection:text-purple-900">
       <Helmet>
         {/* Basic SEO */}
         <title>{pageTitle}</title>

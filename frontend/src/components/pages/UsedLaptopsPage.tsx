@@ -82,7 +82,7 @@ const UsedLaptopsPage: React.FC = () => {
   const BASE_CONDITION = 'Used';
 
   // --- 2. SEO CONFIGURATION ---
-  const siteUrl = "https://itechcomputers.shop";
+  const siteUrl = "https://lokestore.in";
   const canonicalUrl = `${siteUrl}/used-laptops${currentPage > 1 ? `?page=${currentPage}` : ''}`;
 
   const seoTitle = "Clearance Zone | Open Box Toys | Loke Store";
@@ -221,7 +221,7 @@ const UsedLaptopsPage: React.FC = () => {
 
   // --- 8. RENDER ---
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans">
+    <div className="min-h-screen bg-rose-50 text-gray-900 font-sans">
       <Helmet>
         <title>{seoTitle}</title>
         <meta name="description" content={seoDescription} />

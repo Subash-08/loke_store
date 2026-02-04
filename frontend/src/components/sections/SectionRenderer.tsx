@@ -75,7 +75,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({ section, className = 
           poster={video.thumbnailUrl}
           onPlay={() => play(0)}
           className="absolute inset-0 w-full h-full"
-          objectFit="cover"
+          objectFit="contain"
         />
       </div>
     );
@@ -92,7 +92,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({ section, className = 
     };
 
     return (
-      <div className="relative group">
+      <div className="relative group bg-rose-50">
         <div className={`overflow-hidden ${ToyTheme.shapes.card}`}>
           <div
             className="flex transition-transform duration-500 ease-out"
@@ -106,7 +106,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({ section, className = 
                   poster={video.thumbnailUrl}
                   onPlay={() => play(idx)}
                   className="absolute inset-0 w-full h-full"
-                  objectFit="cover"
+                  objectFit="contain"
                 />
               </div>
             ))}
@@ -156,7 +156,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({ section, className = 
               onPlay={() => play(idx)}
               onClick={() => toggle(idx)}
               className="absolute inset-0 w-full h-full"
-              objectFit="cover"
+              objectFit="contain"
             />
           </div>
           <div className="p-4">
@@ -170,7 +170,13 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({ section, className = 
 
   const renderReels = () => {
     return (
-      <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-8 px-4 scrollbar-hide py-4">
+      <div
+        className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-8 px-4 scrollbar-hide py-4"
+        style={{
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
+        }}
+      >
         {section.videos.map((video, idx) => (
           <div
             key={video._id || idx}
@@ -182,7 +188,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({ section, className = 
                 src={video.url}
                 poster={video.thumbnailUrl}
                 className="absolute inset-0 w-full h-full"
-                objectFit="cover"
+                objectFit="contain"
                 onPlay={() => play(idx)}
                 onClick={() => toggle(idx)}
                 loop

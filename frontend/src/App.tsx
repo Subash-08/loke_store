@@ -1,6 +1,6 @@
 import React, { useEffect, lazy, Suspense, useState, memo } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css'; 
+import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import LoadingSpinner from "./components/admin/common/LoadingSpinner";
@@ -12,7 +12,7 @@ import { HelmetProvider } from "react-helmet-async";
 // Keep Home eager so LCP (Hero Image/Text) renders immediately without a spinner.
 import Home from "./components/home/Home";
 // Keep Login eager if it's a high-traffic entry point, otherwise lazy it too.
-import Login from "./components/auth/Login"; 
+import Login from "./components/auth/Login";
 import ChatBot from "./components/home/ChatBot";
 import CallButton from "./components/home/CallButton";
 import CallActionButton from "./components/home/CallButton";
@@ -130,7 +130,7 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <NavbarMemo />
       {/* pt-16 reserves space for fixed navbar to prevent Layout Shift (CLS) */}
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-rose-50">
         {children}
       </main>
       <FooterMemo />
@@ -140,7 +140,7 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => {
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-rose-50">
       {children}
     </main>
   );
@@ -155,18 +155,18 @@ const PageLoading: React.FC = () => (
 // Lighter Suspense Fallback
 const LazyRoute = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Suspense fallback={<div className="min-h-[60vh] animate-pulse bg-gray-50/50" />}>
+    <Suspense fallback={<div className="min-h-[60vh] animate-pulse bg-rose-50" />}>
       {children}
     </Suspense>
   );
 };
 
-const ProtectedRoute = ({ 
-  children, 
+const ProtectedRoute = ({
+  children,
   requireAuth = true,
   adminOnly = false
-}: { 
-  children: React.ReactNode; 
+}: {
+  children: React.ReactNode;
   requireAuth?: boolean;
   adminOnly?: boolean;
 }) => {
@@ -178,7 +178,7 @@ const ProtectedRoute = ({
   if (requireAuth && !isAuthenticated) return <Navigate to="/login" replace />;
   if (requireAuth && adminOnly && user?.role !== 'admin') return <Navigate to="/" replace />;
   if (!requireAuth && isAuthenticated && !authLoading) return <Navigate to="/" replace />;
-  
+
   return <>{children}</>;
 };
 
@@ -196,41 +196,41 @@ const App: React.FC = () => {
         <RootLayout>
           {mounted && (
             <Suspense fallback={null}>
-<ToastContainerLazy
-        position="bottom-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        // 🛑 PREVENT FULL SCREEN STACKING:
-        limit={3} 
-      />
+              <ToastContainerLazy
+                position="bottom-center"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                // 🛑 PREVENT FULL SCREEN STACKING:
+                limit={3}
+              />
             </Suspense>
           )}
-          
+
           <Routes>
-            <Route 
-              path="/admin/*" 
+            <Route
+              path="/admin/*"
               element={
                 <ProtectedRoute requireAuth={true} adminOnly={true}>
                   <LazyRoute><AdminLayout /></LazyRoute>
                 </ProtectedRoute>
-              } 
+              }
             />
-            
+
             {/* Auth Routes */}
             <Route path="/login" element={<ProtectedRoute requireAuth={false}><PublicLayout><AuthLayout><Login /></AuthLayout></PublicLayout></ProtectedRoute>} />
-            
+
             {/* 🔥 NOW LAZY LOADED */}
             <Route path="/register" element={<ProtectedRoute requireAuth={false}><PublicLayout><AuthLayout><LazyRoute><Register /></LazyRoute></AuthLayout></PublicLayout></ProtectedRoute>} />
             <Route path="/forgot-password" element={<ProtectedRoute requireAuth={false}><PublicLayout><AuthLayout><LazyRoute><ForgotPassword /></LazyRoute></AuthLayout></PublicLayout></ProtectedRoute>} />
             <Route path="/reset-password" element={<ProtectedRoute requireAuth={false}><PublicLayout><AuthLayout><LazyRoute><ResetPassword /></LazyRoute></AuthLayout></PublicLayout></ProtectedRoute>} />
-            
+
             {/* User Routes */}
             <Route path="/profile" element={<ProtectedRoute><PublicLayout><LazyRoute><Profile /></LazyRoute></PublicLayout></ProtectedRoute>} />
             <Route path="/checkout" element={<ProtectedRoute><PublicLayout><LazyRoute><Checkout /></LazyRoute></PublicLayout></ProtectedRoute>} />
@@ -241,17 +241,17 @@ const App: React.FC = () => {
 
             {/* Public Routes */}
             <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
-            
+
             {/* 🔥 NOW LAZY LOADED */}
             <Route path="/cart" element={<PublicLayout><LazyRoute><Cart /></LazyRoute></PublicLayout>} />
-            
+
             <Route path="/contact" element={<PublicLayout><LazyRoute><ContactPage /></LazyRoute></PublicLayout>} />
             <Route path="/privacy-policy" element={<PublicLayout><LazyRoute><PrivacyPolicy /></LazyRoute></PublicLayout>} />
             <Route path="/refund-policy" element={<PublicLayout><LazyRoute><RefundReturnsPolicy /></LazyRoute></PublicLayout>} />
             <Route path="/shipping-policy" element={<PublicLayout><LazyRoute><ShippingDeliveryPolicy /></LazyRoute></PublicLayout>} />
             <Route path="/warranty-policy" element={<PublicLayout><LazyRoute><WarrantyPolicy /></LazyRoute></PublicLayout>} />
             <Route path="/terms-conditions" element={<PublicLayout><LazyRoute><TermsConditions /></LazyRoute></PublicLayout>} />
-            
+
             {/* 🔥 NOW LAZY LOADED */}
             <Route path="/products" element={<PublicLayout><LazyRoute><ProductList /></LazyRoute></PublicLayout>} />
             <Route path="/used-laptops" element={<PublicLayout><LazyRoute><UsedLaptopsPage /></LazyRoute></PublicLayout>} />
@@ -270,13 +270,13 @@ const App: React.FC = () => {
             <Route path="/blog/tag/:tag" element={<PublicLayout><LazyRoute><BlogTag /></LazyRoute></PublicLayout>} />
             <Route path="/blog/category/:category" element={<PublicLayout><LazyRoute><BlogCategory /></LazyRoute></PublicLayout>} />
             <Route path="/blog/:slug" element={<PublicLayout><LazyRoute><SingleBlog /></LazyRoute></PublicLayout>} />
-            
+
             <Route path="/home" element={<Navigate to="/" replace />} />
             <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
-            
+
             <Route path="*" element={
               <PublicLayout>
-                <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="min-h-screen flex items-center justify-center bg-rose-50">
                   <div className="text-center">
                     <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
                     <p className="text-xl text-gray-600 mb-8">Page Not Found</p>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ProductData, Variant } from './productTypes';
-import { 
-  getImageUrl, 
-  getPlaceholderImage, 
-  getImageAltText 
+import {
+  getImageUrl,
+  getPlaceholderImage,
+  getImageAltText
 } from '../utils/imageUtils';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -22,7 +22,6 @@ const ProductImages: React.FC<ProductImagesProps> = ({ productData, selectedVari
     type: string;
     isVariantImage: boolean;
   }>>([]);
-  
   const [isPlaying, setIsPlaying] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -125,7 +124,7 @@ const ProductImages: React.FC<ProductImagesProps> = ({ productData, selectedVari
       setImageError(false);
       setLoading(false);
     };
-    
+
     loadImages();
   }, [productData, selectedVariant]);
 
@@ -178,7 +177,7 @@ const ProductImages: React.FC<ProductImagesProps> = ({ productData, selectedVari
             <div key={i} className="w-20 h-20 bg-gray-200 rounded-lg animate-pulse"></div>
           ))}
         </div>
-        
+
         {/* Main Image Skeleton */}
         <div className="flex-1">
           <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl h-[500px] animate-pulse flex items-center justify-center">
@@ -202,11 +201,10 @@ const ProductImages: React.FC<ProductImagesProps> = ({ productData, selectedVari
               key={index}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className={`relative w-20 h-20 rounded-lg overflow-hidden border transition-all duration-200 ${
-                selectedImage === index
-                  ? 'border-blue-500 shadow-sm'
-                  : 'border-gray-300 hover:border-gray-400'
-              }`}
+              className={`relative w-20 h-20 rounded-lg overflow-hidden border transition-all duration-200 ${selectedImage === index
+                ? 'border-blue-500 shadow-sm'
+                : 'border-gray-300 hover:border-gray-400'
+                }`}
               onClick={() => {
                 setSelectedImage(index);
                 resetAutoplay();
@@ -221,7 +219,7 @@ const ProductImages: React.FC<ProductImagesProps> = ({ productData, selectedVari
                   e.currentTarget.src = getPlaceholderImage('Thumbnail Error', 80, 80);
                 }}
               />
-              
+
               {/* Selected indicator */}
               {selectedImage === index && (
                 <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
@@ -368,11 +366,10 @@ const ProductImages: React.FC<ProductImagesProps> = ({ productData, selectedVari
                   className="focus:outline-none"
                   aria-label={`Go to image ${index + 1}`}
                 >
-                  <div className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    selectedImage === index 
-                      ? 'bg-blue-500 w-8' 
-                      : 'bg-gray-300 hover:bg-gray-400'
-                  }`} />
+                  <div className={`w-2 h-2 rounded-full transition-all duration-300 ${selectedImage === index
+                    ? 'bg-blue-500 w-8'
+                    : 'bg-gray-300 hover:bg-gray-400'
+                    }`} />
                 </button>
               ))}
             </div>
@@ -387,11 +384,10 @@ const ProductImages: React.FC<ProductImagesProps> = ({ productData, selectedVari
                 <motion.button
                   key={index}
                   whileTap={{ scale: 0.95 }}
-                  className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border transition-all relative ${
-                    selectedImage === index
-                      ? 'border-blue-500 shadow-sm'
-                      : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border transition-all relative ${selectedImage === index
+                    ? 'border-blue-500 shadow-sm'
+                    : 'border-gray-300 hover:border-gray-400'
+                    }`}
                   onClick={() => {
                     setSelectedImage(index);
                     resetAutoplay();
@@ -405,7 +401,7 @@ const ProductImages: React.FC<ProductImagesProps> = ({ productData, selectedVari
                       e.currentTarget.src = getPlaceholderImage('Thumbnail Error', 80, 80);
                     }}
                   />
-                  
+
                   {/* Selected indicator for mobile */}
                   {selectedImage === index && (
                     <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>

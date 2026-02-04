@@ -10,7 +10,7 @@ const extractReelId = (url) => {
 
 // Helper to create embed URL
 const createEmbedUrl = (reelId, width = 600) => {
-    return `https://www.instagram.com/reel/${reelId}/embed/captioned/?cr=1&v=14&wp=${width}&rd=${encodeURIComponent('https://itechcomputers.shop')}&rp=%2F`;
+    return `https://www.instagram.com/reel/${reelId}/embed/captioned/?cr=1&v=14&wp=${width}&rd=${encodeURIComponent('https://lokestore.in')}&rp=%2F`;
 };
 
 // GET all active reels

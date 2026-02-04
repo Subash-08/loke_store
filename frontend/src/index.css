@@ -183,3 +183,14 @@ a {
     border-radius: 8px; /* Softer look on mobile */
   }
 }
+
+/* ------------------------------
+   UTILITY: HIDE SCROLLBAR
+-------------------------------- */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none !important;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+}

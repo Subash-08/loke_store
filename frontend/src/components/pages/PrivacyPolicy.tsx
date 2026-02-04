@@ -13,8 +13,8 @@ const PrivacyPolicy = () => {
         {/* Introduction */}
         <div className="mb-10">
           <p className="text-gray-700 leading-relaxed">
-            At ITech Computers, we are committed to safeguarding the privacy and personal data of our customers, 
-            partners, and visitors. This Privacy Policy outlines the types of information we collect, how it is used, 
+            At Loke Store, we are committed to safeguarding the privacy and personal data of our customers,
+            partners, and visitors. This Privacy Policy outlines the types of information we collect, how it is used,
             and the measures we take to protect it in compliance with applicable data protection laws.
           </p>
         </div>
@@ -25,8 +25,8 @@ const PrivacyPolicy = () => {
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">1. Scope of the Policy</h2>
             <p className="text-gray-700 leading-relaxed">
-              This Privacy Policy applies to all personal information collected through our website, 
-              in-store transactions, mobile communication (e.g., WhatsApp), email correspondence, 
+              This Privacy Policy applies to all personal information collected through our website,
+              in-store transactions, mobile communication (e.g., WhatsApp), email correspondence,
               and any other interaction with Loke Store.
             </p>
           </section>
@@ -35,7 +35,7 @@ const PrivacyPolicy = () => {
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">2. Information We Collect</h2>
             <p className="text-gray-700 mb-4">We may collect the following types of information:</p>
-            
+
             <div className="space-y-4">
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-2">a. Personal Identifiable Information (PII):</h3>
@@ -101,7 +101,7 @@ const PrivacyPolicy = () => {
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">5. Data Sharing and Disclosure</h2>
             <p className="text-gray-700 mb-3">
-              We do not sell, rent, or trade your personal information. However, we may share data with the 
+              We do not sell, rent, or trade your personal information. However, we may share data with the
               following third parties under strict confidentiality and data protection obligations:
             </p>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
@@ -116,7 +116,7 @@ const PrivacyPolicy = () => {
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">6. Data Protection & Security</h2>
             <p className="text-gray-700 mb-3">
-              We implement a combination of physical, administrative, and technical security measures to 
+              We implement a combination of physical, administrative, and technical security measures to
               safeguard your information, including:
             </p>
             <ul className="list-disc pl-6 text-gray-700 space-y-2">
@@ -126,7 +126,7 @@ const PrivacyPolicy = () => {
               <li>Monitoring for unauthorized access and cyber threats</li>
             </ul>
             <p className="text-gray-700 mt-3">
-              Despite our best efforts, no data transmission or storage system can be guaranteed 100% secure. 
+              Despite our best efforts, no data transmission or storage system can be guaranteed 100% secure.
               However, we are committed to acting swiftly in the event of any data breach.
             </p>
           </section>
@@ -135,7 +135,7 @@ const PrivacyPolicy = () => {
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">7. Data Retention</h2>
             <p className="text-gray-700">
-              We retain your personal data only for as long as necessary to fulfil the purposes outlined 
+              We retain your personal data only for as long as necessary to fulfil the purposes outlined
               in this Policy or as required by applicable laws (e.g., tax or warranty obligations).
             </p>
           </section>
@@ -174,8 +174,8 @@ const PrivacyPolicy = () => {
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">10. Third-Party Websites</h2>
             <p className="text-gray-700">
-              Our website may contain links to third-party sites. Loke Store is not responsible for 
-              the privacy practices or content of such external websites. We encourage you to review their 
+              Our website may contain links to third-party sites. Loke Store is not responsible for
+              the privacy practices or content of such external websites. We encourage you to review their
               privacy policies separately.
             </p>
           </section>
@@ -184,8 +184,8 @@ const PrivacyPolicy = () => {
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">11. Changes to This Policy</h2>
             <p className="text-gray-700">
-              Loke Store reserves the right to update or modify this Privacy Policy at any time. 
-              Any material changes will be posted on this page with a revised effective date. 
+              Loke Store reserves the right to update or modify this Privacy Policy at any time.
+              Any material changes will be posted on this page with a revised effective date.
               We recommend reviewing this page periodically.
             </p>
           </section>
@@ -197,7 +197,7 @@ const PrivacyPolicy = () => {
               <div>
                 <h2 className="text-2xl font-semibold text-gray-900 mb-2">12. Contact Us</h2>
                 <p className="text-gray-700">
-                  For any questions, requests, or concerns related to this Privacy Policy or the handling 
+                  For any questions, requests, or concerns related to this Privacy Policy or the handling
                   of your personal data, please contact:
                 </p>
               </div>
@@ -225,7 +225,7 @@ const PrivacyPolicy = () => {
                 <div>
                   <p className="text-sm text-gray-600">Address</p>
                   <p className="font-medium">
-                    Loke Store, RBT Mall, Meyyanur Bypass Rd, opp. to iplanet, 
+                    Loke Store, RBT Mall, Meyyanur Bypass Rd, opp. to iplanet,
                     Meyyanur, Salem, Tamil Nadu 636004
                   </p>
                 </div>

@@ -25,13 +25,13 @@ const ProductDisplay: React.FC = () => {
 
   // --- SEO Configuration ---
   const companyName = "Loke Store";
-  const siteUrl = "https://itechcomputers.shop"; // Replace with actual domain
-  
+  const siteUrl = "https://lokestore.in"; // Replace with actual domain
+
   // Construct Canonical URL
   const currentUrl = `${siteUrl}/product/${slug}`;
-  
+
   // Dynamic Meta Data
-  const metaTitle = productData 
+  const metaTitle = productData
     ? `${productData.name} ${selectedVariant ? `- ${selectedVariant.name}` : ''} | Best Price in Salem | ${companyName}`
     : `Buy Computer Parts & Laptops | ${companyName}`;
 
@@ -46,8 +46,8 @@ const ProductDisplay: React.FC = () => {
     if (!productData) return null;
 
     const price = selectedVariant?.price || productData.price || 0;
-    const stockStatus = (selectedVariant?.stockQuantity || productData.stockQuantity || 0) > 0 
-      ? "https://schema.org/InStock" 
+    const stockStatus = (selectedVariant?.stockQuantity || productData.stockQuantity || 0) > 0
+      ? "https://schema.org/InStock"
       : "https://schema.org/OutOfStock";
 
     return [
@@ -113,7 +113,7 @@ const ProductDisplay: React.FC = () => {
 
         let productData: ProductData | null = null;
         let lastError = null;
-        
+
         for (const endpoint of endpoints) {
           try {
             const response = await api.get(endpoint);
@@ -129,22 +129,22 @@ const ProductDisplay: React.FC = () => {
         if (!productData) {
           throw new Error(`Product not found. ${lastError ? `Last error: ${lastError}` : ''}`);
         }
-      
+
         if (!productData.variants || !Array.isArray(productData.variants)) {
           productData.variants = [];
         }
-        
+
         setProductData(productData);
-        
+
         const urlVariantParam = searchParams.get('variant');
-        
+
         if (productData.variants.length > 0) {
-          const validVariants = productData.variants.filter(variant => 
+          const validVariants = productData.variants.filter(variant =>
             variant && typeof variant === 'object'
-          );          
+          );
           if (validVariants.length > 0) {
             let defaultVariant = null;
-            
+
             if (urlVariantParam) {
               defaultVariant = validVariants.find(v => {
                 if (v.slug === urlVariantParam) return true;
@@ -153,23 +153,23 @@ const ProductDisplay: React.FC = () => {
                 return false;
               });
             }
-            
+
             if (!defaultVariant) {
-              defaultVariant = validVariants.find(v => 
+              defaultVariant = validVariants.find(v =>
                 v.isActive !== false && (v.stockQuantity || 0) > 0
               );
             }
-            
+
             if (!defaultVariant) {
               defaultVariant = validVariants.find(v => v.isActive !== false);
             }
-            
+
             if (!defaultVariant) {
               defaultVariant = validVariants[0];
             }
-            
+
             setSelectedVariant(defaultVariant);
-            
+
             const defaultAttributes: Record<string, string> = {};
             if (defaultVariant?.identifyingAttributes) {
               defaultVariant.identifyingAttributes.forEach(attr => {
@@ -185,7 +185,7 @@ const ProductDisplay: React.FC = () => {
         } else {
           setSelectedVariant(null);
         }
-        
+
       } catch (err) {
         console.error('❌ Error fetching product:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch product');
@@ -201,7 +201,7 @@ const ProductDisplay: React.FC = () => {
     if (selectedVariant && productData) {
       const currentVariantParam = searchParams.get('variant');
       const variantSlug = selectedVariant.slug || selectedVariant.name?.toLowerCase().replace(/\s+/g, '-');
-      
+
       if (variantSlug && currentVariantParam !== variantSlug) {
         const newSearchParams = new URLSearchParams(searchParams);
         newSearchParams.set('variant', variantSlug);
@@ -220,8 +220,8 @@ const ProductDisplay: React.FC = () => {
 
   const findVariantByAttributes = (attributes: Record<string, string>): Variant | null => {
     if (!productData || !productData.variants) return null;
-    return productData.variants.find(variant => 
-      variant.identifyingAttributes?.every(attr => 
+    return productData.variants.find(variant =>
+      variant.identifyingAttributes?.every(attr =>
         attributes[attr.key] === attr.value
       )
     ) || null;
@@ -261,7 +261,7 @@ const ProductDisplay: React.FC = () => {
           </div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Something went wrong</h3>
           <p className="text-gray-500 mb-6">{error}</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gray-900 hover:bg-black transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
@@ -278,7 +278,7 @@ const ProductDisplay: React.FC = () => {
       <div className="flex justify-center items-center min-h-[60vh] bg-gray-50">
         <div className="text-center">
           <h2 className="text-xl font-medium text-gray-900">Product not found</h2>
-          <button 
+          <button
             onClick={() => navigate('/')}
             className="mt-4 text-blue-600 hover:text-blue-800 font-medium hover:underline transition-all"
           >
@@ -298,7 +298,7 @@ const ProductDisplay: React.FC = () => {
         <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} />
         <link rel="canonical" href={currentUrl} />
-        
+
         {/* Open Graph */}
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDescription} />
@@ -306,7 +306,7 @@ const ProductDisplay: React.FC = () => {
         <meta property="og:url" content={currentUrl} />
         <meta property="og:image" content={metaImage} />
         <meta property="og:site_name" content={companyName} />
-        
+
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={metaTitle} />
@@ -321,8 +321,8 @@ const ProductDisplay: React.FC = () => {
         ))}
       </Helmet>
 
-      <div className="bg-gray-50 min-h-screen pb-20 animate-fade-in font-sans">
-        
+      <div className="bg-rose-50 min-h-screen pb-20 animate-fade-in font-sans">
+
         {/* Breadcrumb */}
         <div className="bg-white border-b border-gray-100 sticky top-0 z-30 backdrop-blur-md bg-white/90">
           <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -354,14 +354,14 @@ const ProductDisplay: React.FC = () => {
         </div>
 
         <main className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-          
+
           {/* Main Product Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-12">
-            
+
             {/* Left Column: Images */}
             <div className="lg:col-span-6 xl:col-span-6">
               <div className="sticky top-24 transition-all duration-500 ease-out">
-                <ProductImages 
+                <ProductImages
                   productData={productData}
                   selectedVariant={selectedVariant}
                 />
@@ -370,12 +370,12 @@ const ProductDisplay: React.FC = () => {
 
             {/* Right Column: Details & Buy Box */}
             <div className="lg:col-span-6 xl:col-span-6 flex flex-col">
-               <ProductInfo 
-                  productData={productData}
-                  selectedVariant={selectedVariant}
-                  selectedAttributes={selectedAttributes}
-                  onAttributeChange={handleAttributeChange}
-                />
+              <ProductInfo
+                productData={productData}
+                selectedVariant={selectedVariant}
+                selectedAttributes={selectedAttributes}
+                onAttributeChange={handleAttributeChange}
+              />
             </div>
           </div>
 
@@ -383,57 +383,57 @@ const ProductDisplay: React.FC = () => {
 
           {/* Content Sections: Stacked Full Width */}
           <div className="space-y-16 max-w-none w-full">
-              
-              {/* 1. Features */}
-              <section className="scroll-mt-24 w-full" id="features" aria-labelledby="features-heading">
-                <h2 id="features-heading" className="text-2xl font-bold text-gray-900 mb-8 tracking-tight border-l-4 border-blue-600 pl-4">Product Highlights</h2>
-                <ProductFeatures features={productData.features} />
-              </section>
 
-              {/* 2. Specs & Dimensions Grid */}
-              <section className="scroll-mt-24 w-full" id="specs" aria-labelledby="specs-heading">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                     <div className="w-full">
-                       <h2 id="specs-heading" className="text-2xl font-bold text-gray-900 mb-6 tracking-tight border-l-4 border-blue-600 pl-4">Technical Specifications</h2>
-                       <ProductSpecifications 
-                         specifications={displaySpecifications}
-                         warranty={productData.warranty}
-                       />
-                     </div>
-                     
-                     <div className="w-full">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-6 border-l-4 border-gray-300 pl-4">Dimensions & Weight</h3>
-                        <ProductDimensions 
-                           dimensions={productData.dimensions}
-                           weight={productData.weight}
-                        />
-                     </div>
-                  </div>
-              </section>
-              
-               {/* 3. Manufacturer Content */}
-              <div className="w-full">
-                 <ManufacturerImages productData={productData} />
-              </div>
+            {/* 1. Features */}
+            <section className="scroll-mt-24 w-full" id="features" aria-labelledby="features-heading">
+              <h2 id="features-heading" className="text-2xl font-bold text-gray-900 mb-8 tracking-tight border-l-4 border-blue-600 pl-4">Product Highlights</h2>
+              <ProductFeatures features={productData.features} />
+            </section>
 
-              {/* 4. Reviews */}
-              <section className="scroll-mt-8 w-full" id="reviews" aria-labelledby="reviews-heading">
-                <h2 id="reviews-heading" className="text-2xl font-bold text-gray-900 tracking-tight border-l-4 border-blue-600 pl-4">Customer Reviews</h2>
-                <ProductReviewsSection 
-                  productId={productData._id}
-                  product={productData}
-                />
-              </section>
-              
-              {/* 5. Linked Products */}
-              <section className="w-full border-t border-gray-200">
-                  <LinkedProductsDisplay 
-                    productId={productData._id}
-                    currentProductSlug={productData.slug}
-                    title="You Might Also Like"
-                    maxProducts={5}
+            {/* 2. Specs & Dimensions Grid */}
+            <section className="scroll-mt-24 w-full" id="specs" aria-labelledby="specs-heading">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div className="w-full">
+                  <h2 id="specs-heading" className="text-2xl font-bold text-gray-900 mb-6 tracking-tight border-l-4 border-blue-600 pl-4">Technical Specifications</h2>
+                  <ProductSpecifications
+                    specifications={displaySpecifications}
+                    warranty={productData.warranty}
                   />
-              </section>
+                </div>
+
+                <div className="w-full">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-6 border-l-4 border-gray-300 pl-4">Dimensions & Weight</h3>
+                  <ProductDimensions
+                    dimensions={productData.dimensions}
+                    weight={productData.weight}
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* 3. Manufacturer Content */}
+            <div className="w-full">
+              <ManufacturerImages productData={productData} />
+            </div>
+
+            {/* 4. Reviews */}
+            <section className="scroll-mt-8 w-full" id="reviews" aria-labelledby="reviews-heading">
+              <h2 id="reviews-heading" className="text-2xl font-bold text-gray-900 tracking-tight border-l-4 border-blue-600 pl-4">Customer Reviews</h2>
+              <ProductReviewsSection
+                productId={productData._id}
+                product={productData}
+              />
+            </section>
+
+            {/* 5. Linked Products */}
+            <section className="w-full border-t border-gray-200">
+              <LinkedProductsDisplay
+                productId={productData._id}
+                currentProductSlug={productData.slug}
+                title="You Might Also Like"
+                maxProducts={5}
+              />
+            </section>
           </div>
 
         </main>

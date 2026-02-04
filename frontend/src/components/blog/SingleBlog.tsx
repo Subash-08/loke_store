@@ -16,9 +16,9 @@ const SingleBlog: React.FC = () => {
   const [error, setError] = useState<string>('');
 
   // --- 1. SEO Configuration ---
-  const SITE_URL = "https://itechcomputers.shop"; // ✅ Ensure this is your actual domain
+  const SITE_URL = "https://lokestore.in"; // ✅ Ensure this is your actual domain
   const SITE_NAME = "Loke Store";
-  const TWITTER_HANDLE = "@itechcomputers"; 
+  const TWITTER_HANDLE = "@lokestore";
 
   useEffect(() => {
     if (slug) {
@@ -31,11 +31,11 @@ const SingleBlog: React.FC = () => {
       setLoading(true);
       setError('');
       const response = await blogService.getBlogBySlug(slug!);
-      
+
       if (response.success) {
         setBlog(response.data);
         setRelatedBlogs(response.data.related_blogs || []);
-        
+
         // Canonical Redirection if slug mismatch
         const currentSlug = response.data.slug || response.data.Slug;
         if (currentSlug && currentSlug !== slug) {
@@ -89,7 +89,7 @@ const SingleBlog: React.FC = () => {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = html;
     const headingElements = tempDiv.querySelectorAll('h2, h3'); // Reduced to h2/h3 for cleaner TOC
-    
+
     headingElements.forEach((heading, index) => {
       if (heading.textContent && heading.textContent.trim()) {
         const id = `heading-${index}`;
@@ -131,7 +131,7 @@ const SingleBlog: React.FC = () => {
   const displayAuthor = blog.author || 'Loke Store Team';
   const displayDate = blog.published_at || blog.created_at;
   const tableOfContents = generateTableOfContents(displayContent);
-  
+
   // SEO Logic
   const seoExcerpt = displayMetaTags ? displayMetaTags.substring(0, 160) : displayContent.replace(/<[^>]*>/g, '').substring(0, 160) + '...';
   const seoKeywords = displayTags.length > 0 ? displayTags.join(', ') : displayCategory;
@@ -178,7 +178,7 @@ const SingleBlog: React.FC = () => {
         <meta name="keywords" content={seoKeywords} />
         <meta name="author" content={displayAuthor} />
         <link rel="canonical" href={canonicalUrl} />
-        
+
         {/* Open Graph */}
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content={SITE_NAME} />
@@ -188,7 +188,7 @@ const SingleBlog: React.FC = () => {
         <meta property="og:image" content={absoluteImageUrl} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        
+
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content={TWITTER_HANDLE} />
@@ -210,11 +210,11 @@ const SingleBlog: React.FC = () => {
           <div className="max-w-6xl mx-auto px-2 py-6 relative z-10">
             {/* 3. Visual Breadcrumbs (Great for UX & SEO) */}
             <nav className="flex items-center text-sm text-blue-100 mb-2 space-x-2">
-                <Link to="/" className="hover:text-white">Home</Link>
-                <span>/</span>
-                <Link to="/blogs" className="hover:text-white">Blogs</Link>
-                <span>/</span>
-                <span className="text-white font-medium truncate max-w-[200px]">{displayTitle}</span>
+              <Link to="/" className="hover:text-white">Home</Link>
+              <span>/</span>
+              <Link to="/blogs" className="hover:text-white">Blogs</Link>
+              <span>/</span>
+              <span className="text-white font-medium truncate max-w-[200px]">{displayTitle}</span>
             </nav>
 
             <div className="max-w-5xl">
@@ -222,11 +222,11 @@ const SingleBlog: React.FC = () => {
                 {displayTitle}
               </h1>
               <div className="flex flex-wrap items-center gap-4 text-white/90 text-sm mb-8">
-                 {/* Author & Date metadata (Kept same as original) */}
-                 <div className="flex items-center">
-                    <span className="mx-2">•</span>
-                    <span>{formatDate(displayDate)}</span>
-                 </div>
+                {/* Author & Date metadata (Kept same as original) */}
+                <div className="flex items-center">
+                  <span className="mx-2">•</span>
+                  <span>{formatDate(displayDate)}</span>
+                </div>
               </div>
 
               {blog.image_url && (
@@ -247,7 +247,7 @@ const SingleBlog: React.FC = () => {
         {/* Main Content Layout */}
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            
+
             {/* Article Column */}
             <main className="lg:col-span-8">
               <div className="mb-8">
@@ -256,7 +256,7 @@ const SingleBlog: React.FC = () => {
 
               <article className="prose prose-lg max-w-none bg-white rounded-xl shadow-sm p-8 border border-gray-100">
                 {/* Render Content */}
-                <div 
+                <div
                   className="blog-content font-sans text-gray-800 leading-relaxed"
                   dangerouslySetInnerHTML={createMarkup(displayContent)}
                 />
@@ -279,70 +279,70 @@ const SingleBlog: React.FC = () => {
                   </div>
                 </div>
               )}
-              
+
               {/* Navigation Footer */}
               <div className="mt-8 flex justify-between items-center">
-                 <button onClick={() => navigate('/blogs')} className="text-blue-600 font-medium hover:underline">← Back to Blog</button>
+                <button onClick={() => navigate('/blogs')} className="text-blue-600 font-medium hover:underline">← Back to Blog</button>
               </div>
             </main>
 
             {/* Sidebar Column - Semantic ASIDE tag */}
             <aside className="lg:col-span-4 space-y-8">
               <div className="sticky top-4">
-              {/* Table of Contents */}
-              {tableOfContents.length > 0 && (
-                <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Table of Contents</h3>
-                  <nav className="space-y-3">
-                    {tableOfContents.map((heading) => (
-                      <a
-                        key={heading.id}
-                        href={`#${heading.id}`}
-                        className="block text-gray-600 hover:text-blue-600 text-sm transition-colors pl-2 border-l-2 border-transparent hover:border-blue-500"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          document.getElementById(heading.id)?.scrollIntoView({ behavior: 'smooth' });
-                        }}
-                      >
-                        {heading.text}
-                      </a>
-                    ))}
-                  </nav>
-                </div>
-              )}
-
-              {/* Related Blogs Widget */}
-              {relatedBlogs.length > 0 && (
-                <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">You might also like</h3>
-                  <div className="space-y-6">
-                    {relatedBlogs.map((related) => {
-                      const relatedSlug = related.slug || related.Slug;
-                      return (
-                        <Link key={related._id} to={`/blog/${relatedSlug}`} className="block group">
-                          <div className="flex gap-4">
-                             {related.image_url && (
-                               <img 
-                                 src={getImageUrl(related.image_url)} 
-                                 alt={related.title}
-                                 className="w-20 h-20 object-cover rounded-lg bg-gray-100"
-                               />
-                             )}
-                             <div>
-                               <h4 className="text-sm font-bold text-gray-900 group-hover:text-blue-600 line-clamp-2 leading-snug">
-                                 {related.title || related.Title}
-                               </h4>
-                               <span className="text-xs text-gray-500 mt-2 block">
-                                  Read Article →
-                               </span>
-                             </div>
-                          </div>
-                        </Link>
-                      );
-                    })}
+                {/* Table of Contents */}
+                {tableOfContents.length > 0 && (
+                  <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Table of Contents</h3>
+                    <nav className="space-y-3">
+                      {tableOfContents.map((heading) => (
+                        <a
+                          key={heading.id}
+                          href={`#${heading.id}`}
+                          className="block text-gray-600 hover:text-blue-600 text-sm transition-colors pl-2 border-l-2 border-transparent hover:border-blue-500"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            document.getElementById(heading.id)?.scrollIntoView({ behavior: 'smooth' });
+                          }}
+                        >
+                          {heading.text}
+                        </a>
+                      ))}
+                    </nav>
                   </div>
-                </div>
-              )}
+                )}
+
+                {/* Related Blogs Widget */}
+                {relatedBlogs.length > 0 && (
+                  <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <h3 className="text-lg font-bold text-gray-900 mb-4">You might also like</h3>
+                    <div className="space-y-6">
+                      {relatedBlogs.map((related) => {
+                        const relatedSlug = related.slug || related.Slug;
+                        return (
+                          <Link key={related._id} to={`/blog/${relatedSlug}`} className="block group">
+                            <div className="flex gap-4">
+                              {related.image_url && (
+                                <img
+                                  src={getImageUrl(related.image_url)}
+                                  alt={related.title}
+                                  className="w-20 h-20 object-cover rounded-lg bg-gray-100"
+                                />
+                              )}
+                              <div>
+                                <h4 className="text-sm font-bold text-gray-900 group-hover:text-blue-600 line-clamp-2 leading-snug">
+                                  {related.title || related.Title}
+                                </h4>
+                                <span className="text-xs text-gray-500 mt-2 block">
+                                  Read Article →
+                                </span>
+                              </div>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             </aside>
 
@@ -354,22 +354,22 @@ const SingleBlog: React.FC = () => {
 };
 
 const BlogDetailSkeleton = () => (
-    /* Skeleton logic remains the same */
-    <div className="min-h-screen bg-gray-50 animate-pulse">
-        <div className="h-96 bg-gray-300 w-full mb-8"></div>
-        <div className="max-w-6xl mx-auto px-4">
-            <div className="h-8 bg-gray-300 w-3/4 mb-4 rounded"></div>
-            <div className="h-4 bg-gray-300 w-1/2 mb-12 rounded"></div>
-            <div className="grid lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 space-y-4">
-                    <div className="h-4 bg-gray-300 w-full rounded"></div>
-                    <div className="h-4 bg-gray-300 w-full rounded"></div>
-                    <div className="h-4 bg-gray-300 w-5/6 rounded"></div>
-                </div>
-                <div className="h-64 bg-gray-300 rounded"></div>
-            </div>
+  /* Skeleton logic remains the same */
+  <div className="min-h-screen bg-gray-50 animate-pulse">
+    <div className="h-96 bg-gray-300 w-full mb-8"></div>
+    <div className="max-w-6xl mx-auto px-4">
+      <div className="h-8 bg-gray-300 w-3/4 mb-4 rounded"></div>
+      <div className="h-4 bg-gray-300 w-1/2 mb-12 rounded"></div>
+      <div className="grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-4">
+          <div className="h-4 bg-gray-300 w-full rounded"></div>
+          <div className="h-4 bg-gray-300 w-full rounded"></div>
+          <div className="h-4 bg-gray-300 w-5/6 rounded"></div>
         </div>
+        <div className="h-64 bg-gray-300 rounded"></div>
+      </div>
     </div>
+  </div>
 );
 
 export default SingleBlog;

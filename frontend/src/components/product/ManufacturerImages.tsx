@@ -125,13 +125,13 @@ const ManufacturerImages: React.FC<ManufacturerImagesProps> = ({ productData }) 
                 key={index}
                 className="group w-full transition-shadow duration-300 mb-2 last:mb-0"
               >
-                {/* Full Width Image Container */}
+                {/* Full Width Natural Height Container (Max 400px) */}
                 <div className="relative w-full bg-white flex items-center justify-center overflow-hidden">
-                  {/* Full Width Image */}
+                  {/* Full Width Image - Natural Ratio with Cap */}
                   <img
                     src={image.resolvedUrl}
                     alt={image.altText || 'Manufacturer Image'}
-                    className="w-full h-auto max-h-[500px] object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+                    className="w-full h-auto max-h-[400px] object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                     onError={(e) => {
                       // Fallback Placeholder
                       e.currentTarget.src = `data:image/svg+xml;base64,${btoa(`

@@ -118,9 +118,9 @@ const ProductShowcaseSection: React.FC<ProductShowcaseSectionProps> = ({
       {/* --- Content Grid/Carousel --- */}
       <div className="relative">
         {type === 'grid' ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory lg:grid lg:grid-cols-4 lg:gap-6 lg:pb-0 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {products.slice(0, 8).map((product) => (
-              <div key={product._id}>
+              <div key={product._id} className="w-[220px] max-w-[220px] sm:w-[260px] sm:max-w-[260px] md:w-[280px] md:max-w-[280px] lg:w-auto lg:max-w-none snap-start shrink-0">
                 <ProductCard
                   product={product as any}
                   // @ts-ignore

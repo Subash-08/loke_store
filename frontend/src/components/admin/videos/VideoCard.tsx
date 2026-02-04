@@ -2,7 +2,7 @@
 import React, { useState } from 'react'; // Import useState
 import { Link } from 'react-router-dom';
 import { Video } from '../types/video';
-import { getImageUrl } from '../../utils/imageUtils'; 
+import { getImageUrl } from '../../utils/imageUtils';
 
 interface VideoCardProps {
   video: Video;
@@ -11,11 +11,11 @@ interface VideoCardProps {
   compact?: boolean;
 }
 
-const VideoCard: React.FC<VideoCardProps> = ({ 
-  video, 
-  onDelete, 
+const VideoCard: React.FC<VideoCardProps> = ({
+  video,
+  onDelete,
   showActions = true,
-  compact = false 
+  compact = false
 }) => {
   // 1. Initialize State for image errors
   const [imageError, setImageError] = useState(false);
@@ -23,7 +23,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
   const getResolutionLabel = () => {
     // 2. Safety check: Ensure resolution exists before destructuring
     const { width, height } = video.resolution || { width: 0, height: 0 };
-    
+
     if (width === 0 || height === 0) return 'Unknown';
     if (width >= 1920) return 'Full HD';
     if (width >= 1280) return 'HD';
@@ -47,9 +47,8 @@ const VideoCard: React.FC<VideoCardProps> = ({
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow hover:shadow-md transition-shadow ${
-      compact ? 'p-3' : 'p-4'
-    }`}>
+    <div className={`bg-white rounded-lg shadow hover:shadow-md transition-shadow ${compact ? 'p-3' : 'p-4'
+      }`}>
       {/* Thumbnail */}
       <div className="relative mb-3">
         <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden relative">
@@ -58,7 +57,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
             <img
               src={thumbnailUrl}
               alt={video.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain bg-black"
               // 4. Fix: Use state instead of manual DOM manipulation
               onError={() => setImageError(true)}
             />
@@ -66,25 +65,25 @@ const VideoCard: React.FC<VideoCardProps> = ({
             getVideoPlaceholder(video.title)
           )}
         </div>
-        
+
         {video.durationFormatted && (
           <div className="absolute bottom-2 right-2 bg-black/75 text-white text-xs px-2 py-1 rounded">
             {video.durationFormatted}
           </div>
         )}
-        
+
         {video.optimized && (
           <div className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
             Optimized
           </div>
         )}
-        
+
         {video.isUsed && (
           <div className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded">
             In Use
           </div>
         )}
-        
+
         {video.hasCustomThumbnail && (
           <div className="absolute top-2 left-10 bg-purple-500 text-white text-xs px-2 py-1 rounded">
             Custom
@@ -95,16 +94,15 @@ const VideoCard: React.FC<VideoCardProps> = ({
       {/* Video Info */}
       <div className={compact ? 'space-y-1' : 'space-y-2'}>
         <div className="flex items-start justify-between">
-          <h3 className={`font-medium text-gray-800 truncate flex-1 ${
-            compact ? 'text-sm' : 'text-base'
-          }`}>
+          <h3 className={`font-medium text-gray-800 truncate flex-1 ${compact ? 'text-sm' : 'text-base'
+            }`}>
             {video.title || video.originalName}
           </h3>
           <span className="text-xs font-medium px-2 py-0.5 bg-gray-100 text-gray-600 rounded ml-2">
             {video.format?.toUpperCase() || 'MP4'}
           </span>
         </div>
-        
+
         {!compact && (
           <>
             {video.description && (
@@ -112,7 +110,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
                 {video.description}
               </p>
             )}
-            
+
             <div className="grid grid-cols-2 gap-2 text-xs text-gray-500">
               <div className="flex items-center">
                 <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,7 +126,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
                 {getResolutionLabel()}
               </div>
             </div>
-            
+
             {video.tags && video.tags.length > 0 && (
               <div className="flex flex-wrap gap-1">
                 {video.tags.slice(0, 3).map((tag, index) => (
@@ -150,13 +148,12 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
       {/* Actions */}
       {showActions && (
-        <div className={`flex justify-between items-center ${
-          compact ? 'mt-2' : 'mt-4'
-        }`}>
+        <div className={`flex justify-between items-center ${compact ? 'mt-2' : 'mt-4'
+          }`}>
           <span className="text-xs text-gray-500">
             {video.createdAt ? new Date(video.createdAt).toLocaleDateString() : 'N/A'}
           </span>
-          
+
           <div className="flex space-x-2">
             <Link
               to={`/admin/videos/${video._id}`}
@@ -164,7 +161,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
             >
               {compact ? 'View' : 'Details'}
             </Link>
-            
+
             {onDelete && (
               <button
                 type="button"

@@ -35,14 +35,14 @@ const PreBuiltPCList: React.FC = () => {
   // --- SEO Configuration ---
   const companyName = "Loke Store";
   const city = "Salem";
-  
+
   // Dynamic Page Title based on page number
-  const pageTitle = currentPage > 1 
+  const pageTitle = currentPage > 1
     ? `Pre-built Gaming PCs in ${city} - Page ${currentPage} | ${companyName}`
     : `Best Pre-built Gaming PCs in ${city} | Ready to Ship | ${companyName}`;
-    
+
   const pageDescription = "Shop high-performance pre-built gaming PCs in Salem. Professionally assembled, tested, and ready for esports, streaming, and 4K gaming. 1-Year Warranty.";
-  const canonicalUrl = `https://itechcomputers.shop/prebuilt-pcs${currentPage > 1 ? `?page=${currentPage}` : ''}`;
+  const canonicalUrl = `https://lokestore.in/prebuilt-pcs${currentPage > 1 ? `?page=${currentPage}` : ''}`;
 
   // --- Structured Data (CollectionPage Schema) ---
   // This tells Google this page contains a list of products
@@ -57,7 +57,7 @@ const PreBuiltPCList: React.FC = () => {
       "itemListElement": preBuiltPCs.map((pc, index) => ({
         "@type": "ListItem",
         "position": index + 1,
-        "url": `https://itechcomputers.shop/prebuilt-pcs/${pc.slug || pc._id}`,
+        "url": `https://lokestore.in/prebuilt-pcs/${pc.slug || pc._id}`,
         "name": pc.name || "Gaming PC"
       }))
     }
@@ -108,14 +108,14 @@ const PreBuiltPCList: React.FC = () => {
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
         <link rel="canonical" href={canonicalUrl} />
-        
+
         {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:site_name" content={companyName} />
-        
+
         {/* Local Business Tags */}
         <meta property="business:contact_data:locality" content={city} />
         <meta property="business:contact_data:region" content="Tamil Nadu" />
@@ -130,12 +130,12 @@ const PreBuiltPCList: React.FC = () => {
       {/* ✅ SEO: Main Wrapper */}
       <main className="min-h-screen bg-gray-50/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-          
+
           {/* Header Section */}
           <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
             <div>
               <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
-                Pre-built Gaming PCs 
+                Pre-built Gaming PCs
                 {/* Hidden local context for bots */}
                 <span className="sr-only">in Salem, Tamil Nadu</span>
               </h1>
@@ -175,7 +175,7 @@ const PreBuiltPCList: React.FC = () => {
           </header>
 
           <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
-            
+
             {/* Filters Sidebar - Sticky on Desktop */}
             <aside className={`
               lg:w-72 flex-shrink-0 
@@ -186,7 +186,7 @@ const PreBuiltPCList: React.FC = () => {
                   <h2 className="text-lg font-bold text-gray-900">Filters</h2>
                   <button onClick={() => setShowFilters(false)} className="text-gray-500">Close</button>
                 </div>
-                
+
                 <PreBuiltPCFilters
                   filters={filters}
                   availableFilters={availableFilters}
@@ -198,7 +198,7 @@ const PreBuiltPCList: React.FC = () => {
 
             {/* Main Content Area */}
             <section className="flex-1 w-full" aria-label="Product List">
-              
+
               {/* Results Count Bar */}
               {!loading && (
                 <div className="mb-6 flex items-center justify-between">
@@ -248,24 +248,23 @@ const PreBuiltPCList: React.FC = () => {
                       >
                         Previous
                       </button>
-                      
+
                       <div className="flex items-center gap-1 mx-2">
                         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                           <button
                             key={page}
                             onClick={() => handlePageChange(page)}
                             aria-current={currentPage === page ? 'page' : undefined}
-                            className={`w-10 h-10 rounded-lg text-sm font-bold transition-all ${
-                              currentPage === page
+                            className={`w-10 h-10 rounded-lg text-sm font-bold transition-all ${currentPage === page
                                 ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30'
                                 : 'text-gray-600 hover:bg-gray-100'
-                            }`}
+                              }`}
                           >
                             {page}
                           </button>
                         ))}
                       </div>
-                      
+
                       <button
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}

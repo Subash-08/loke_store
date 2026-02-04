@@ -42,9 +42,9 @@ const VideoUpload: React.FC = () => {
     setVideoDragActive(false);
 
     const droppedFiles = Array.from(e.dataTransfer.files);
-    const videoFiles = droppedFiles.filter(file => 
-      file.type.startsWith('video/') || 
-      ['.mp4', '.mov', '.avi', '.webm', '.ogg', '.mkv'].some(ext => 
+    const videoFiles = droppedFiles.filter(file =>
+      file.type.startsWith('video/') ||
+      ['.mp4', '.mov', '.avi', '.webm', '.ogg', '.mkv'].some(ext =>
         file.name.toLowerCase().endsWith(ext)
       )
     );
@@ -169,13 +169,13 @@ const VideoUpload: React.FC = () => {
     formData.append('video', files[0]);
     formData.append('title', titles[0]);
     formData.append('description', descriptions[0]);
-    
+
     // Add tags
-    const tagsArray = tags[0] 
+    const tagsArray = tags[0]
       ? tags[0].split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
       : [];
     formData.append('tags', JSON.stringify(tagsArray));
-    
+
     // Add thumbnail if provided
     const thumbnailForIndex = thumbnails.find(t => t.index === 0);
     if (thumbnailForIndex) {
@@ -196,23 +196,23 @@ const VideoUpload: React.FC = () => {
 
   const uploadMultipleVideos = async () => {
     const formData = new FormData();
-    
+
     // Add videos
     files.forEach((file, index) => {
       formData.append('videos', file);
     });
-    
+
     // Add thumbnails
     thumbnails.forEach(thumbnail => {
       formData.append('thumbnails', thumbnail.file);
     });
-    
+
     // Add metadata
     formData.append('titles', JSON.stringify(titles));
     formData.append('descriptions', JSON.stringify(descriptions));
-    
+
     // Convert all tags strings to arrays
-    const tagsArrays = tags.map(tagStr => 
+    const tagsArrays = tags.map(tagStr =>
       tagStr ? tagStr.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : []
     );
     formData.append('tags', JSON.stringify(tagsArrays));
@@ -234,12 +234,12 @@ const VideoUpload: React.FC = () => {
     const newTitles = [...titles];
     const newDescriptions = [...descriptions];
     const newTags = [...tags];
-    
+
     newFiles.splice(index, 1);
     newTitles.splice(index, 1);
     newDescriptions.splice(index, 1);
     newTags.splice(index, 1);
-    
+
     // Remove associated thumbnail
     const newThumbnails = thumbnails.filter(t => t.index !== index);
     // Update indices for remaining thumbnails
@@ -249,7 +249,7 @@ const VideoUpload: React.FC = () => {
       }
       return t;
     });
-    
+
     setFiles(newFiles);
     setTitles(newTitles);
     setDescriptions(newDescriptions);
@@ -292,11 +292,10 @@ const VideoUpload: React.FC = () => {
                 setDescriptions(['']);
                 setTags(['']);
               }}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                uploadType === 'single'
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${uploadType === 'single'
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+                }`}
             >
               Single Upload
             </button>
@@ -310,11 +309,10 @@ const VideoUpload: React.FC = () => {
                 setDescriptions(['']);
                 setTags(['']);
               }}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                uploadType === 'multiple'
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${uploadType === 'multiple'
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+                }`}
             >
               Multiple Upload (Up to 5)
             </button>
@@ -329,11 +327,10 @@ const VideoUpload: React.FC = () => {
         {/* Video Drag & Drop Area */}
         <div className="mb-8">
           <div
-            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-              videoDragActive
+            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${videoDragActive
                 ? 'border-blue-500 bg-blue-50'
                 : 'border-gray-300 hover:border-blue-400'
-            }`}
+              }`}
             onDragEnter={handleVideoDrag}
             onDragLeave={handleVideoDrag}
             onDragOver={handleVideoDrag}
@@ -384,7 +381,7 @@ const VideoUpload: React.FC = () => {
             <div className="space-y-6">
               {files.map((file, index) => {
                 const thumbnail = thumbnails.find(t => t.index === index);
-                
+
                 return (
                   <div key={index} className="border border-gray-200 rounded-lg p-6 bg-gray-50">
                     <div className="flex justify-between items-start mb-4">
@@ -411,7 +408,7 @@ const VideoUpload: React.FC = () => {
                         </svg>
                       </button>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                       {/* Left Column - Thumbnail Upload */}
                       <div>
@@ -420,9 +417,8 @@ const VideoUpload: React.FC = () => {
                         </label>
                         <div className="space-y-4">
                           <div
-                            className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors ${
-                              thumbnail ? 'border-green-500' : 'border-gray-300 hover:border-blue-400'
-                            }`}
+                            className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors ${thumbnail ? 'border-green-500' : 'border-gray-300 hover:border-blue-400'
+                              }`}
                             onClick={() => triggerThumbnailInput(index)}
                           >
                             <input
@@ -434,13 +430,13 @@ const VideoUpload: React.FC = () => {
                               onChange={(e) => handleThumbnailSelect(index, e)}
                               className="hidden"
                             />
-                            
+
                             {thumbnail ? (
                               <div className="relative">
                                 <img
                                   src={thumbnail.preview}
                                   alt="Thumbnail preview"
-                                  className="w-full h-40 object-cover rounded-md"
+                                  className="w-full h-40 object-contain bg-gray-900 rounded-md"
                                 />
                                 <div className="absolute top-2 right-2">
                                   <button
@@ -476,7 +472,7 @@ const VideoUpload: React.FC = () => {
                           )}
                         </div>
                       </div>
-                      
+
                       {/* Right Column - Video Info */}
                       <div className="lg:col-span-2">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

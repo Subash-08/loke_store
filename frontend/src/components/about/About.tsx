@@ -34,7 +34,7 @@ const MainContent: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col w-full bg-white selection:bg-yellow-400 selection:text-black">
+    <div className="flex flex-col w-full bg-rose-50 selection:bg-yellow-400 selection:text-black">
 
       {/* --- HERO SECTION --- */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-sky-900">
@@ -218,9 +218,8 @@ const MainContent: React.FC = () => {
       </section>
 
       {/* --- STORE PRESENCE --- */}
-      <section id="store" className="py-12 max-w-7xl mx-auto px-6">
+      {/* <section id="store" className="py-12 max-w-7xl mx-auto px-6">
         <div className="relative group rounded-[2.5rem] overflow-hidden bg-purple-900 text-white min-h-[500px] flex items-center">
-          {/* Overlay Gradient for Image */}
           <div className="absolute inset-0 z-10 bg-gradient-to-r from-purple-900 via-purple-900/80 to-transparent" />
 
           <div className="absolute inset-0 z-0">
@@ -266,7 +265,7 @@ const MainContent: React.FC = () => {
             </a>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* --- CONTACT & CTA --- */}
       <section id="contact" className="py-24 md:py-32 max-w-5xl mx-auto px-6">

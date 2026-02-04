@@ -82,7 +82,7 @@ const CategoryBubble: React.FC<CategoryBubbleProps> = ({ category, style, index,
                                     <img
                                         src={imageUrl}
                                         alt={category.name}
-                                        className="w-12 h-12 md:w-14 md:h-14 object-contain transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 mix-blend-multiply"
+                                        className="w-18 h-18 md:w-22 md:h-22 object-contain transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 mix-blend-multiply"
                                     />
                                 ) : (
                                     <ImageIcon
@@ -230,7 +230,7 @@ const PromoBannersSection = ({ bg1, bg2, bg3 }: { bg1: string; bg2: string; bg3:
                 <div className="grid grid-cols-1 min-[1000px]:grid-cols-3 gap-8 mb-16">
 
                     {/* Card 1 - Wood Toys (Beige) */}
-                    <div className="bg-[#EAD8CE] rounded-xl p-10 h-[480px] relative overflow-hidden flex flex-col justify-end group transition-all hover:-translate-y-2 duration-300 shadow-sm">
+                    <div className="bg-[#EAD8CE] rounded-xl p-10 h-[380px] min-[1000px]:h-[480px] relative overflow-hidden flex flex-col justify-end group transition-all hover:-translate-y-2 duration-300 shadow-sm">
                         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
                             <img
                                 src={bg1}
@@ -250,7 +250,7 @@ const PromoBannersSection = ({ bg1, bg2, bg3 }: { bg1: string; bg2: string; bg3:
                     </div>
 
                     {/* Card 2 - Black Friday (Lavender) */}
-                    <div className="bg-[#DADAF5] rounded-xl p-10 h-[480px] relative overflow-hidden flex flex-col justify-end group transition-all hover:-translate-y-2 duration-300 shadow-sm">
+                    <div className="bg-[#DADAF5] rounded-xl p-10 h-[380px] min-[1000px]:h-[480px] relative overflow-hidden flex flex-col justify-end group transition-all hover:-translate-y-2 duration-300 shadow-sm">
                         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
                             <img
                                 src={bg2}
@@ -270,7 +270,7 @@ const PromoBannersSection = ({ bg1, bg2, bg3 }: { bg1: string; bg2: string; bg3:
                     </div>
 
                     {/* Card 3 - Best Thing (Green) */}
-                    <div className="bg-[#A7D7C5] rounded-xl p-10 h-[480px] relative overflow-hidden flex flex-col justify-end group transition-all hover:-translate-y-2 duration-300 shadow-sm">
+                    <div className="bg-[#A7D7C5] rounded-xl p-10 h-[380px] min-[1000px]:h-[480px] relative overflow-hidden flex flex-col justify-end group transition-all hover:-translate-y-2 duration-300 shadow-sm">
                         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
                             <img
                                 src={bg3}

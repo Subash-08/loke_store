@@ -93,7 +93,7 @@ const ProductList: React.FC = () => {
   const lastSearchQuery = useAppSelector(selectLastSearchQuery);
 
   // --- SEO LOGIC START ---
-  const siteUrl = "https://itechcomputers.shop";
+  const siteUrl = "https://lokestore.in";
   const canonicalPath = categoryName
     ? `/products/category/${categoryName}`
     : brandName
@@ -346,7 +346,7 @@ const ProductList: React.FC = () => {
   // --- Initial Loading State ---
   if (loading && products.length === 0) {
     return (
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 bg-white min-h-screen">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 bg-rose-50 min-h-screen">
         <HeaderShimmer />
         <div className="flex flex-col lg:flex-row gap-12">
           <div className="w-full lg:w-64 hidden lg:block">
@@ -385,7 +385,7 @@ const ProductList: React.FC = () => {
 
   // --- Main Content ---
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans selection:bg-gray-900 selection:text-white">
+    <div className="min-h-screen bg-rose-50 text-gray-900 font-sans selection:bg-gray-900 selection:text-white">
       {/* ✅ SEO: Metadata Injection */}
       <Helmet>
         <title>{getSEOTitle()}</title>

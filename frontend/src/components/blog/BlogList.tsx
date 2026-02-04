@@ -31,23 +31,23 @@ const BlogList: React.FC<BlogListProps> = ({
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
-  
+
   // Filters state
   const [searchQuery, setSearchQuery] = useState(''); // Controls the input field
   const [activeSearch, setActiveSearch] = useState(''); // Controls the actual API call
   const [selectedCategory, setSelectedCategory] = useState(initialCategory || '');
   const [selectedTag, setSelectedTag] = useState(initialTag || '');
   const [sortBy, setSortBy] = useState('-published_at');
-  
+
   // Filter options
   const [categories, setCategories] = useState<Array<{ _id: string; count: number }>>([]);
   const [tags, setTags] = useState<Array<{ _id: string; count: number }>>([]);
   const [recentPosts, setRecentPosts] = useState<Blog[]>([]);
 
   // --- SEO HELPER LOGIC ---
-  const siteUrl = "https://itechcomputers.shop";
+  const siteUrl = "https://lokestore.in";
   const currentUrl = `${siteUrl}${location.pathname}${location.search}`;
-  
+
   let pageTitle = "Tech Blog, PC Build Guides & Reviews | Loke Store";
   let pageDescription = "Explore the latest insights on custom PC building, hardware reviews, and technology trends. Expert advice from Loke Store Salem.";
 
@@ -92,7 +92,7 @@ const BlogList: React.FC<BlogListProps> = ({
         blogService.getCategories(),
         blogService.getTags()
       ]);
-      
+
       if (catResponse.success) setCategories(catResponse.data);
       if (tagResponse.success) setTags(tagResponse.data);
     } catch (err) {
@@ -118,11 +118,11 @@ const BlogList: React.FC<BlogListProps> = ({
   const loadBlogs = async (resetPage = false) => {
     try {
       if (resetPage) setPage(1);
-      
+
       const currentPage = resetPage ? 1 : page;
       setLoading(true);
       setError('');
-      
+
       const filters: any = {
         page: currentPage,
         limit,
@@ -134,7 +134,7 @@ const BlogList: React.FC<BlogListProps> = ({
         sort: sortBy
       };
       const response = await blogService.getPublishedBlogs(filters);
-      
+
       if (response.success) {
         if (currentPage === 1 || resetPage) {
           setBlogs(response.data);
@@ -166,8 +166,8 @@ const BlogList: React.FC<BlogListProps> = ({
     if (!infiniteScroll || loading || loadingMore) return;
 
     const handleScroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop >= 
-          document.documentElement.offsetHeight - 500) {
+      if (window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 500) {
         loadMore();
       }
     };
@@ -233,7 +233,7 @@ const BlogList: React.FC<BlogListProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-white py-12">
+    <div className="min-h-screen bg-rose-50 py-12">
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
@@ -254,14 +254,14 @@ const BlogList: React.FC<BlogListProps> = ({
           <div className="lg:w-3/4">
             <div className="mb-12">
               <h1 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-                {selectedCategory ? `${selectedCategory} Blogs` : 
-                 selectedTag ? `#${selectedTag}` : 
-                 'Latest Blog Posts'}
+                {selectedCategory ? `${selectedCategory} Blogs` :
+                  selectedTag ? `#${selectedTag}` :
+                    'Latest Blog Posts'}
               </h1>
               <p className="text-gray-600 text-lg">
-                {selectedCategory ? `Explore articles about ${selectedCategory}` : 
-                 selectedTag ? `Browse posts tagged with ${selectedTag}` : 
-                 'Discover insights, tutorials, and industry news'}
+                {selectedCategory ? `Explore articles about ${selectedCategory}` :
+                  selectedTag ? `Browse posts tagged with ${selectedTag}` :
+                    'Discover insights, tutorials, and industry news'}
               </p>
             </div>
 
@@ -269,7 +269,7 @@ const BlogList: React.FC<BlogListProps> = ({
               <div className="mb-8 p-4 bg-red-50 text-red-700 rounded-lg">
                 <p className="font-medium">Error Loading Blogs</p>
                 <p className="text-sm mt-1">{error}</p>
-                <button 
+                <button
                   onClick={() => loadBlogs(true)}
                   className="mt-3 text-red-800 hover:text-red-900 font-medium text-sm"
                 >
@@ -289,9 +289,9 @@ const BlogList: React.FC<BlogListProps> = ({
                   const blogCategory = blog.category?.[0] || blog.Category || '';
                   const blogExcerpt = getExcerpt(blog.meta_tags || blog['Meta-tags'] || '', blog.html || blog.Html || '');
                   const blogDate = formatDate(blog.published_at || blog.created_at);
-                  
+
                   return (
-                    <article 
+                    <article
                       key={blog._id}
                       className="group"
                     >
@@ -357,7 +357,7 @@ const BlogList: React.FC<BlogListProps> = ({
               <div className="text-center py-16">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">No blog posts found</h3>
                 <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                  {selectedCategory || selectedTag || activeSearch 
+                  {selectedCategory || selectedTag || activeSearch
                     ? 'Try adjusting your search or filters to find what you\'re looking for.'
                     : 'Check back soon for new articles and insights.'}
                 </p>
@@ -411,7 +411,7 @@ const BlogList: React.FC<BlogListProps> = ({
                     >
                       Previous
                     </button>
-                    
+
                     <div className="flex items-center space-x-1">
                       {Array.from({ length: Math.min(5, pages) }, (_, i) => {
                         let pageNum;
@@ -424,23 +424,22 @@ const BlogList: React.FC<BlogListProps> = ({
                         } else {
                           pageNum = page - 2 + i;
                         }
-                        
+
                         return (
                           <button
                             key={pageNum}
                             onClick={() => setPage(pageNum)}
-                            className={`w-8 h-8 rounded text-sm font-medium ${
-                              page === pageNum
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-700 hover:bg-gray-100'
-                            }`}
+                            className={`w-8 h-8 rounded text-sm font-medium ${page === pageNum
+                              ? 'bg-gray-900 text-white'
+                              : 'text-gray-700 hover:bg-gray-100'
+                              }`}
                           >
                             {pageNum}
                           </button>
                         );
                       })}
                     </div>
-                    
+
                     <button
                       onClick={() => setPage(Math.min(pages, page + 1))}
                       disabled={page === pages}
@@ -465,7 +464,7 @@ const BlogList: React.FC<BlogListProps> = ({
                       type="text"
                       value={searchQuery}
                       // Just updates local input state, doesn't trigger load
-                      onChange={(e) => setSearchQuery(e.target.value)} 
+                      onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search blog posts..."
                       className="flex-1 px-2 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400 text-base"
                     />
@@ -488,10 +487,10 @@ const BlogList: React.FC<BlogListProps> = ({
                   {recentPosts.map((post) => {
                     const postTitle = post.title || post.Title || 'Untitled Blog';
                     const postSlug = getCleanSlug(post);
-                    
+
                     return (
                       <li key={post._id}>
-                        <Link 
+                        <Link
                           to={`/blog/${postSlug}`}
                           className="text-gray-900 hover:text-gray-700 font-medium leading-tight block hover:no-underline"
                         >
@@ -514,9 +513,8 @@ const BlogList: React.FC<BlogListProps> = ({
                     <li>
                       <button
                         onClick={() => setSelectedCategory('')}
-                        className={`text-left w-full py-2 px-3 rounded text-sm ${
-                          !selectedCategory ? 'text-gray-900 font-medium' : 'text-gray-600 hover:text-gray-900'
-                        }`}
+                        className={`text-left w-full py-2 px-3 rounded text-sm ${!selectedCategory ? 'text-gray-900 font-medium' : 'text-gray-600 hover:text-gray-900'
+                          }`}
                       >
                         All Categories
                       </button>
@@ -525,9 +523,8 @@ const BlogList: React.FC<BlogListProps> = ({
                       <li key={cat._id}>
                         <button
                           onClick={() => setSelectedCategory(cat._id)}
-                          className={`text-left w-full py-2 px-3 rounded text-sm flex justify-between items-center ${
-                            selectedCategory === cat._id ? 'text-gray-900 font-medium' : 'text-gray-600 hover:text-gray-900'
-                          }`}
+                          className={`text-left w-full py-2 px-3 rounded text-sm flex justify-between items-center ${selectedCategory === cat._id ? 'text-gray-900 font-medium' : 'text-gray-600 hover:text-gray-900'
+                            }`}
                         >
                           <span>{cat._id}</span>
                           <span className="text-gray-400 text-xs">
@@ -549,9 +546,8 @@ const BlogList: React.FC<BlogListProps> = ({
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => setSelectedTag('')}
-                      className={`px-3 py-1.5 rounded text-sm ${
-                        !selectedTag ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
+                      className={`px-3 py-1.5 rounded text-sm ${!selectedTag ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
                     >
                       All
                     </button>
@@ -559,11 +555,10 @@ const BlogList: React.FC<BlogListProps> = ({
                       <button
                         key={tag._id}
                         onClick={() => setSelectedTag(tag._id)}
-                        className={`px-3 py-1.5 rounded text-sm ${
-                          selectedTag === tag._id 
-                            ? 'bg-gray-900 text-white' 
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
+                        className={`px-3 py-1.5 rounded text-sm ${selectedTag === tag._id
+                          ? 'bg-gray-900 text-white'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          }`}
                       >
                         {tag._id}
                       </button>

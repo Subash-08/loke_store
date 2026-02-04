@@ -9,7 +9,7 @@ export const getBaseURL = (): string => {
 
   return isLocal
     ? "http://localhost:5001"
-    : "https://api.itechcomputers.shop";
+    : "https://api.lokestore.in";
 };
 
 /**
