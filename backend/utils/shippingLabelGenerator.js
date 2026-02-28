@@ -105,8 +105,11 @@ class ShippingLabelGenerator {
         const logoLoaded = fsSync.existsSync(this.logoPath);
         if (logoLoaded) {
             try {
-                doc.image(this.logoPath, PAD, 4, { height: 44, fit: [130, 44] });
+                // Read into buffer first - much more reliable in production than passing path to pdfkit
+                const logoBuffer = fsSync.readFileSync(this.logoPath);
+                doc.image(logoBuffer, PAD, 4, { height: 44, fit: [130, 44] });
             } catch (e) {
+                console.error('❌ Failed to draw shipping label logo:', e.message);
                 // Fallback text
                 doc.font(this.fonts.bold).fontSize(14).fillColor(this.colors.accent)
                     .text('LOKE STORE', PAD, 16, { lineBreak: false });

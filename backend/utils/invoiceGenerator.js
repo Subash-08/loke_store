@@ -76,8 +76,13 @@ class InvoiceGenerator {
         // 1. LOGO LOGIC
         // Check if logo exists synchronously to avoid async issues in PDF generation
         if (fsSync.existsSync(this.logoPath)) {
-            doc.image(this.logoPath, 50, topY - 10, { width: 90, height: 55, fit: [90, 55] });
-            leftX = 150; // Move text to the right if logo exists
+            try {
+                const logoBuffer = fsSync.readFileSync(this.logoPath);
+                doc.image(logoBuffer, 50, topY - 10, { width: 90, height: 55, fit: [90, 55] });
+                leftX = 150; // Move text to the right if logo exists
+            } catch (e) {
+                console.error('❌ Failed to draw invoice logo:', e.message);
+            }
         }
 
         // 2. COMPANY INFO (Updated)
