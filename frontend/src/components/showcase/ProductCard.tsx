@@ -57,6 +57,7 @@ export interface Product {
   };
   variants?: Variant[];
   variantConfiguration?: any;
+  taxRate?: number;
 }
 
 // --- AddToCartButton Component ---
@@ -107,7 +108,7 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       const cartPayload = {
         productId,
         variantId: variant?.variantId,
-        variantData: variant,
+        variantData: variant as any,
         quantity,
         product: product || {
           _id: productId,
@@ -209,7 +210,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     : (stockQuantity || 0) > 0;
 
   // ✅ FIX: Updated Price Logic to include sellingPrice (from logs)
-  const getDisplayPrice = () => {
+  const getRawDisplayPrice = () => {
     if (hasVariants && baseVariant) {
       return baseVariant.offerPrice || baseVariant.price || 0;
     }
@@ -217,19 +218,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     return offerPrice || effectivePrice || sellingPrice || basePrice || 0;
   };
 
-  const getDisplayMrp = () => {
+  const getRawDisplayMrp = () => {
     if (hasVariants && baseVariant) {
       return baseVariant.mrp || baseVariant.price || 0;
     }
     return mrp || basePrice || effectivePrice || sellingPrice || 0;
   };
 
-  const displayPrice = getDisplayPrice();
-  const displayMrp = getDisplayMrp();
+  const rawDisplayPrice = getRawDisplayPrice();
+  const rawDisplayMrp = getRawDisplayMrp();
+
+  // 🆕 Calculate inclusive price
+  const taxMultiplier = 1 + ((product?.taxRate || 18) / 100);
+  const displayPrice = rawDisplayPrice > 0 ? rawDisplayPrice * taxMultiplier : 0;
+  const displayMrp = rawDisplayMrp > 0 ? rawDisplayMrp * taxMultiplier : 0;
 
   // Calculate discount
-  const discount = displayMrp > displayPrice && displayPrice > 0
-    ? Math.round(((displayMrp - displayPrice) / displayMrp) * 100)
+  const discount = rawDisplayMrp > rawDisplayPrice && rawDisplayPrice > 0
+    ? Math.round(((rawDisplayMrp - rawDisplayPrice) / rawDisplayMrp) * 100)
     : 0;
 
   // Image handling helper
@@ -371,10 +377,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               name: baseVariant.name,
               price: baseVariant.price,
               mrp: baseVariant.mrp,
-              offerPrice: baseVariant.offerPrice,
               stock: baseVariant.stockQuantity,
-              sku: baseVariant.sku,
-              slug: baseVariant.slug
+              sku: baseVariant.sku
             } : null}
             className="bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white hover:shadow-xl hover:text-red-500 transition-all duration-300"
             size="md"
@@ -482,7 +486,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               name: baseVariant.name,
               price: baseVariant.price,
               mrp: baseVariant.mrp,
-              offerPrice: baseVariant.offerPrice,
               stock: baseVariant.stockQuantity,
               attributes: baseVariant.identifyingAttributes || [],
               sku: baseVariant.sku,

@@ -7,6 +7,7 @@ const InvoiceGenerator = require('../utils/invoiceGenerator');
 const fs = require('fs').promises;
 const path = require('path');
 const Product = require('../models/productModel');
+const ShippingLabelGenerator = require('../utils/shippingLabelGenerator');
 // ==================== USER ORDER ROUTES ====================
 
 // @desc    Get user's orders
@@ -1351,6 +1352,33 @@ const getQuickStats = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
+// @desc    Download Shipping Label
+// @route   GET /api/admin/orders/:orderId/shipping-label
+// @access  Private/Admin
+const downloadShippingLabel = catchAsyncErrors(async (req, res, next) => {
+    const { orderId } = req.params;
+
+    const order = await Order.findById(orderId)
+        .populate('user', 'firstName lastName email phone');
+
+    if (!order) {
+        return next(new ErrorHandler('Order not found', 404));
+    }
+
+    try {
+        const user = order.user || {};
+        const labelData = await ShippingLabelGenerator.generateLabel(order, user);
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="${labelData.fileName}"`);
+
+        res.send(labelData.pdfBuffer);
+    } catch (error) {
+        console.error('Shipping label generation error:', error);
+        console.error(error.stack);
+        res.status(500).json({ success: false, message: error.message, stack: error.stack });
+    }
+});
 
 module.exports = {
     // User routes
@@ -1376,4 +1404,5 @@ module.exports = {
     downloadInvoice,
     getSalesChartData,
     getQuickStats,
+    downloadShippingLabel,
 };

@@ -7,6 +7,7 @@ const Coupon = require("../models/couponModel");
 const Cart = require("../models/cartModel");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncError");
+const { calculateItemLevelTaxBreakdown, normalizeTaxRate } = require("../utils/taxUtils");
 
 const generateOrderNumber = () => {
     const date = new Date();
@@ -122,7 +123,7 @@ const getCheckoutData = catchAsyncErrors(async (req, res, next) => {
             });
         }
 
-        const shipping = subtotal >= 500 ? 0 : 100;
+        const shipping = subtotal >= 1000 ? 0 : 100;
         const total = subtotal + shipping + totalTax;
         res.status(200).json({
             success: true,
@@ -287,15 +288,34 @@ const createOrder = catchAsyncErrors(async (req, res, next) => {
         }
 
         const orderItems = await Promise.all(cartItems.map(async (item) => {
-            // Get product details to determine MRP and base price
+            // Get product details to determine MRP, base price, and check stock
             let productDetails = null;
+            let availableStock = 0;
+
             try {
                 if (item.productType === 'product') {
                     productDetails = await Product.findById(item.product)
-                        .select('mrp basePrice variants');
+                        .select('name mrp basePrice variants stockQuantity');
+
+                    if (productDetails) {
+                        if (item.variant && item.variant.variantId && productDetails.variants) {
+                            const variant = productDetails.variants.id(item.variant.variantId);
+                            availableStock = variant ? variant.stock : 0;
+                        } else {
+                            availableStock = productDetails.stockQuantity || 0;
+                        }
+                    }
+                } else if (item.productType === 'prebuilt-pc') {
+                    // Pre-built PC stock logic if needed (assuming 1 or fetch from PreBuiltPC DB)
+                    // Currently no strict stock for prebuilt PCs, we assume they are built to order or handled elsewhere
+                    availableStock = 999;
                 }
             } catch (error) {
                 console.warn('⚠️ Could not fetch product details for:', item.product);
+            }
+
+            if (item.productType === 'product' && availableStock < item.quantity) {
+                throw new ErrorHandler(`Insufficient stock for ${item.name || 'product'}. Available: ${availableStock}, Requested: ${item.quantity}`, 400);
             }
 
             let originalPrice = item.originalPrice || item.price;
@@ -355,10 +375,10 @@ const createOrder = catchAsyncErrors(async (req, res, next) => {
                 shipping: pricing.shipping || 0,
                 tax: pricing.tax || 0,
                 discount: pricing.discount || 0,
-                total: pricing.total || 0,
+                total: pricing.amountDue !== undefined ? pricing.amountDue : (pricing.total - (pricing.discount || 0)),
                 currency: 'INR',
                 amountPaid: 0,
-                amountDue: pricing.total || 0,
+                amountDue: pricing.amountDue !== undefined ? pricing.amountDue : (pricing.total - (pricing.discount || 0)),
                 totalSavings: orderItems.reduce((savings, item) => {
                     return savings + ((item.originalPrice - item.discountedPrice) * item.quantity);
                 }, 0)
@@ -624,13 +644,11 @@ const getCheckoutDataInternal = async (userId) => {
             return { success: false, error: 'Cart is empty' };
         }
         const validatedItems = [];
-        let subtotal = 0;
-        let totalTax = 0;
 
         for (const item of cart.items) {
             let currentPrice = 0;
             let originalPrice = 0;
-            let taxRate = 18; // ✅ CHANGED: Default to 18 (percentage), not 0.18
+            let taxRate = 18; // Default percentage taxRate
             let name = 'Product';
             let image = '';
             let sku = 'UNKNOWN';
@@ -658,12 +676,8 @@ const getCheckoutDataInternal = async (userId) => {
                     console.warn('⚠️ Using default price for product');
                 }
 
-                // ✅ FIXED: Get tax rate and ensure it's a percentage
-                taxRate = item.product?.taxRate || 18;
-                // If taxRate is less than 1, it's already decimal - convert to percentage
-                if (taxRate < 1) {
-                    taxRate = taxRate * 100;
-                }
+                // Safely get percentage tax rate
+                taxRate = normalizeTaxRate(item.product?.taxRate || 18);
 
                 sku = item.product?.sku || 'UNKNOWN';
 
@@ -674,7 +688,7 @@ const getCheckoutDataInternal = async (userId) => {
                 image = item.preBuiltPC.images?.thumbnail?.url ||
                     item.preBuiltPC.images?.gallery?.[0]?.url || '';
                 sku = item.preBuiltPC.sku || 'PREBUILT-PC';
-                taxRate = 18; // Pre-built PCs use 18%
+                taxRate = 18; // Pre-built PCs use 18% Native Percentage
             } else {
                 console.warn('⚠️ Skipping invalid cart item');
                 continue;
@@ -686,12 +700,6 @@ const getCheckoutDataInternal = async (userId) => {
 
             const itemTotal = currentPrice * item.quantity;
 
-            // ✅ FIXED: Calculate tax correctly - taxRate is now in percentage
-            const itemTax = itemTotal * (taxRate / 100);
-
-            subtotal += itemTotal;
-            totalTax += itemTax;
-
             validatedItems.push({
                 cartItemId: item._id,
                 productType: item.productType,
@@ -701,12 +709,12 @@ const getCheckoutDataInternal = async (userId) => {
                 slug: item.product?.slug || item.preBuiltPC?.slug,
                 image: image,
                 quantity: item.quantity,
-                price: currentPrice,
-                originalPrice: originalPrice,
+                price: currentPrice, // basePrice
+                originalPrice: originalPrice, // MRP
                 discountedPrice: currentPrice,
-                total: itemTotal,
-                taxRate: taxRate, // Store as percentage
-                taxAmount: itemTax,
+                total: itemTotal, // Total exclusive price for this line item
+                taxRate: taxRate, // Store strictly as percentage
+                taxAmount: 0, // Not accurately calculated outside of breakdown
                 available: true,
                 sku: sku
             });
@@ -718,18 +726,23 @@ const getCheckoutDataInternal = async (userId) => {
             return { success: false, error: 'No valid items in cart' };
         }
 
-        const shipping = subtotal >= 1000 ? 0 : 100;
-        const total = subtotal + shipping + totalTax;
+        // Apply Central Tax Algorithm to derive Subtotal and preliminary Shipping
+        // Preliminary calculation has no discount
+        const preliminarySubtotal = validatedItems.reduce((sum, item) => sum + item.total, 0);
+        const preliminaryShipping = preliminarySubtotal >= 1000 ? 0 : 100;
+
+        const breakdown = calculateItemLevelTaxBreakdown(validatedItems, 0, preliminaryShipping);
+
         return {
             success: true,
             data: {
                 cartItems: validatedItems,
                 pricing: {
-                    subtotal: Math.round(subtotal * 100) / 100,
-                    shipping: shipping,
-                    tax: Math.round(totalTax * 100) / 100,
-                    discount: 0,
-                    total: Math.round(total * 100) / 100
+                    subtotal: breakdown.subtotal,
+                    shipping: breakdown.shipping,
+                    tax: breakdown.tax,
+                    discount: breakdown.discount,
+                    total: breakdown.total
                 }
             }
         };
@@ -742,7 +755,6 @@ const getCheckoutDataInternal = async (userId) => {
 const calculateCheckoutInternal = async (userId, couponCode) => {
     try {
         const checkoutResponse = await getCheckoutDataInternal(userId);
-
 
         if (!checkoutResponse.success) {
             console.error('❌ Checkout data failed:', checkoutResponse);
@@ -765,7 +777,6 @@ const calculateCheckoutInternal = async (userId, couponCode) => {
         // Apply coupon if provided
         if (couponCode) {
             try {
-
                 const couponCartItems = cartItems.map(item => ({
                     product: item.product?.toString?.(),
                     price: item.price,
@@ -791,18 +802,19 @@ const calculateCheckoutInternal = async (userId, couponCode) => {
             }
         }
 
-        // Calculate final pricing
-        const finalPricing = {
-            ...pricing,
-            discount: Math.round(discount * 100) / 100,
-            total: Math.round((pricing.subtotal + pricing.shipping + pricing.tax - discount) * 100) / 100
-        };
+        // Apply Central Pricing Algorithm taking actual Discount into perspective
+        // Ensure shipping resolves against the post-discount subtotal. Free shipping above 1000 INR
+        const taxableAmount = pricing.subtotal - discount;
+        const finalShipping = taxableAmount >= 1000 ? 0 : 100;
+
+        const breakdown = calculateItemLevelTaxBreakdown(cartItems, discount, finalShipping);
+
         return {
             success: true,
             data: {
                 cartItems,
-                pricing: finalPricing,
-                couponDetails // Changed from 'coupon' to 'couponDetails' to match your createOrder function
+                pricing: breakdown,
+                couponDetails
             }
         };
 
@@ -836,7 +848,7 @@ const getCheckoutDataFallback = async (userId) => {
             return sum + (itemPrice * item.quantity);
         }, 0);
 
-        const shipping = subtotal >= 500 ? 0 : 100; // Free shipping above ₹1000
+        const shipping = subtotal >= 1000 ? 0 : 100; // Free shipping above ₹1000
         const tax = subtotal * 0.18; // 18% GST
         const total = subtotal + shipping + tax;
 

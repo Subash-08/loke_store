@@ -14,25 +14,25 @@ const PricingInventorySection: React.FC<PricingInventorySectionProps> = ({
 }) => {
   // 🆕 Check if product has variants
   const hasVariants = formData.variantConfiguration?.hasVariants && formData.variants?.length > 0;
-  
+
   // 🆕 Disable pricing fields when variants exist
   const pricingDisabled = hasVariants;
 
-const handleInputChange = (field: string, value: any) => {
-  
-  // Make sure taxRate is parsed as a number
-  if (field === 'taxRate') {
-    const numValue = parseFloat(value);
-    updateFormData({ [field]: numValue });
-  } else {
-    updateFormData({ [field]: value });
-  }
-};
+  const handleInputChange = (field: string, value: any) => {
 
-const handleTaxRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const value = parseFloat(e.target.value) || 0;
-  updateFormData({ taxRate: value });
-};
+    // Make sure taxRate is parsed as a number
+    if (field === 'taxRate') {
+      const numValue = parseFloat(value);
+      updateFormData({ [field]: numValue });
+    } else {
+      updateFormData({ [field]: value });
+    }
+  };
+
+  const handleTaxRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value) || 0;
+    updateFormData({ taxRate: value });
+  };
 
   const calculateDiscountPercentage = (basePrice: number, mrp: number) => {
     if (mrp > 0 && basePrice > 0 && basePrice < mrp) {
@@ -41,38 +41,38 @@ const handleTaxRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     return 0;
   };
 
-  // 🆕 UPDATED: Handle base price change with MRP
-  const handleBasePriceChange = (value: number) => {
+  // 🆕 UPDATED: Handle inclusive price change with MRP
+  const handleInclusivePriceChange = (value: number) => {
     const discountPercentage = calculateDiscountPercentage(value, formData.mrp || formData.basePrice);
-    updateFormData({ 
-      basePrice: value,
-      discountPercentage 
+    updateFormData({
+      inclusivePrice: value,
+      discountPercentage
     });
   };
 
   // 🆕 UPDATED: Handle MRP change
   const handleMrpChange = (value: number) => {
-    const discountPercentage = calculateDiscountPercentage(formData.basePrice, value);
-    updateFormData({ 
+    const discountPercentage = calculateDiscountPercentage(formData.inclusivePrice || formData.basePrice, value);
+    updateFormData({
       mrp: value,
-      discountPercentage 
+      discountPercentage
     });
   };
 
   // 🆕 Keep offerPrice for backward compatibility
   const handleOfferPriceChange = (value: number) => {
-    updateFormData({ 
+    updateFormData({
       offerPrice: value
     });
   };
 
   const handleManualDiscountChange = (value: number) => {
     if (value >= 0 && value <= 100) {
-      const mrp = formData.mrp || formData.basePrice;
-      const basePrice = mrp * (1 - value / 100);
-      updateFormData({ 
+      const mrp = formData.mrp || formData.inclusivePrice || formData.basePrice;
+      const inclusivePrice = mrp * (1 - value / 100);
+      updateFormData({
         discountPercentage: value,
-        basePrice: Math.round(basePrice * 100) / 100
+        inclusivePrice: Math.round(inclusivePrice * 100) / 100
       });
     }
   };
@@ -95,44 +95,44 @@ const handleTaxRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     }
   }, [formData.name, isEditing]);
 
-const hasActiveVariants = formData.variantConfiguration.hasVariants && formData.variants.length > 0;
+  const hasActiveVariants = formData.variantConfiguration.hasVariants && formData.variants.length > 0;
   return (
     <div className="space-y-6">
       <h2 className="text-lg font-semibold text-gray-900">Pricing & Inventory</h2>
-      
 
-<div className={`relative ${hasActiveVariants ? 'opacity-50' : ''}`}>
-  {hasActiveVariants && (
-    <div className="absolute inset-0 bg-gray-100 bg-opacity-50 rounded-lg z-10 flex items-center justify-center">
-      <div className="text-xs text-gray-600 bg-white px-2 py-1 rounded border border-gray-300">
-        Pricing managed at variant level
+
+      <div className={`relative ${hasActiveVariants ? 'opacity-50' : ''}`}>
+        {hasActiveVariants && (
+          <div className="absolute inset-0 bg-gray-100 bg-opacity-50 rounded-lg z-10 flex items-center justify-center">
+            <div className="text-xs text-gray-600 bg-white px-2 py-1 rounded border border-gray-300">
+              Pricing managed at variant level
+            </div>
+          </div>
+        )}
+
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Selling Price (Inclusive of Tax) <span className="text-red-500">*</span>
+          {hasActiveVariants && (
+            <span className="ml-2 text-xs text-gray-500">(Disabled - variants exist)</span>
+          )}
+        </label>
+        <input
+          type="number"
+          value={formData.inclusivePrice || formData.basePrice}
+          onChange={(e) => handleInclusivePriceChange(parseFloat(e.target.value) || 0)}
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="0.00"
+          step="0.01"
+          min="0"
+          disabled={hasActiveVariants} // 🆕 Disable when variants exist
+        />
+        {hasActiveVariants && (
+          <p className="text-xs text-blue-600 mt-1">
+            Base price is disabled because this product has variants. Pricing is managed at the variant level.
+          </p>
+        )}
       </div>
-    </div>
-  )}
-  
-  <label className="block text-sm font-medium text-gray-700 mb-2">
-    Base Price <span className="text-red-500">*</span>
-    {hasActiveVariants && (
-      <span className="ml-2 text-xs text-gray-500">(Disabled - variants exist)</span>
-    )}
-  </label>
-  <input
-    type="number"
-    value={formData.basePrice}
-    onChange={(e) => updateFormData({ basePrice: parseFloat(e.target.value) || 0 })}
-    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-    placeholder="0.00"
-    step="0.01"
-    min="0"
-    disabled={hasActiveVariants} // 🆕 Disable when variants exist
-  />
-  {hasActiveVariants && (
-    <p className="text-xs text-blue-600 mt-1">
-      Base price is disabled because this product has variants. Pricing is managed at the variant level.
-    </p>
-  )}
-</div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* 🆕 MRP (Maximum Retail Price) */}
         <div>
@@ -143,12 +143,11 @@ const hasActiveVariants = formData.variantConfiguration.hasVariants && formData.
             type="number"
             step="0.01"
             min="0"
-            value={formData.mrp || formData.basePrice || ''}
+            value={formData.mrp || formData.inclusivePrice || formData.basePrice || ''}
             onChange={(e) => handleMrpChange(parseFloat(e.target.value) || 0)}
             disabled={pricingDisabled}
-            className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-              pricingDisabled ? 'bg-gray-100 cursor-not-allowed opacity-60' : ''
-            }`}
+            className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${pricingDisabled ? 'bg-gray-100 cursor-not-allowed opacity-60' : ''
+              }`}
             required
             placeholder="0.00"
           />
@@ -157,8 +156,8 @@ const hasActiveVariants = formData.variantConfiguration.hasVariants && formData.
           </p>
         </div>
 
-        {/* Base Price (Selling Price) */}
-        <div>
+        {/* Base Price (Selling Price) - Rendered as readonly block above but hiding duplicate */}
+        <div className="hidden">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Selling Price ₹ <span className="text-red-500">*</span>
           </label>
@@ -166,12 +165,11 @@ const hasActiveVariants = formData.variantConfiguration.hasVariants && formData.
             type="number"
             step="0.01"
             min="0"
-            value={formData.basePrice || ''}
-            onChange={(e) => handleBasePriceChange(parseFloat(e.target.value) || 0)}
+            value={formData.inclusivePrice || ''}
+            onChange={(e) => handleInclusivePriceChange(parseFloat(e.target.value) || 0)}
             disabled={pricingDisabled}
-            className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-              pricingDisabled ? 'bg-gray-100 cursor-not-allowed opacity-60' : ''
-            }`}
+            className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${pricingDisabled ? 'bg-gray-100 cursor-not-allowed opacity-60' : ''
+              }`}
             required
             placeholder="0.00"
           />
@@ -202,9 +200,8 @@ const hasActiveVariants = formData.variantConfiguration.hasVariants && formData.
               value={formData.discountPercentage || 0}
               onChange={(e) => handleManualDiscountChange(parseInt(e.target.value) || 0)}
               disabled={pricingDisabled}
-              className={`flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                pricingDisabled ? 'bg-gray-100 cursor-not-allowed opacity-60' : ''
-              }`}
+              className={`flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${pricingDisabled ? 'bg-gray-100 cursor-not-allowed opacity-60' : ''
+                }`}
             />
             {!isEditing && !pricingDisabled && (
               <button
@@ -217,34 +214,34 @@ const hasActiveVariants = formData.variantConfiguration.hasVariants && formData.
             )}
           </div>
           <p className="text-xs text-gray-500 mt-1">
-            {pricingDisabled 
-              ? 'Calculated from variant prices' 
-              : isEditing 
-                ? 'Manually set discount percentage' 
+            {pricingDisabled
+              ? 'Calculated from variant prices'
+              : isEditing
+                ? 'Manually set discount percentage'
                 : 'Calculated automatically from MRP and selling price'
             }
           </p>
         </div>
 
- {/* Tax Rate */}
-<div>
-  <label className="block text-sm font-medium text-gray-700 mb-2">
-    Tax Rate (%)
-  </label>
-  <input
-    type="number"
-    step="0.01"
-    min="0"
-    max="100"
-    value={formData.taxRate || ''}
-    onChange={handleTaxRateChange}
-    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-    placeholder="0.00"
-  />
-  <p className="text-xs text-gray-500 mt-1">
-    Current value: {formData.taxRate || 0}%
-  </p>
-</div>
+        {/* Tax Rate */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Tax Rate (%)
+          </label>
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            max="100"
+            value={formData.taxRate || ''}
+            onChange={handleTaxRateChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="0.00"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Current value: {formData.taxRate || 0}%
+          </p>
+        </div>
 
         {/* SKU */}
         <div>
@@ -335,7 +332,7 @@ const hasActiveVariants = formData.variantConfiguration.hasVariants && formData.
       </div>
 
       {/* 🆕 UPDATED: Pricing Summary with MRP */}
-      {(formData.mrp && formData.mrp > formData.basePrice) && (
+      {(formData.mrp && formData.mrp > (formData.inclusivePrice || formData.basePrice)) && (
         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
           <h4 className="text-sm font-medium text-green-900 mb-2">Pricing Summary</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
@@ -345,12 +342,12 @@ const hasActiveVariants = formData.variantConfiguration.hasVariants && formData.
             </div>
             <div>
               <span className="text-gray-600">Selling Price:</span>
-              <div className="font-medium text-green-600">₹{formData.basePrice.toFixed(2)}</div>
+              <div className="font-medium text-green-600">₹{(formData.inclusivePrice || formData.basePrice).toFixed(2)}</div>
             </div>
             <div>
               <span className="text-gray-600">You Save:</span>
               <div className="font-medium text-red-600">
-                ₹{(formData.mrp - formData.basePrice).toFixed(2)}
+                ₹{(formData.mrp - (formData.inclusivePrice || formData.basePrice)).toFixed(2)}
               </div>
             </div>
             <div>
@@ -375,7 +372,7 @@ const hasActiveVariants = formData.variantConfiguration.hasVariants && formData.
                 {isEditing ? 'Variant Stock Management' : 'Stock Management'}
               </span>
               <p className="text-sm text-yellow-700 mt-1">
-                {isEditing 
+                {isEditing
                   ? 'Stock quantity is managed at the variant level. Edit individual variants to update stock.'
                   : 'Stock quantity will be managed at the variant level. You can set stock for each variant individually.'
                 }
@@ -393,15 +390,14 @@ const hasActiveVariants = formData.variantConfiguration.hasVariants && formData.
               </p>
             </div>
             <div className="text-right">
-              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                (formData.stockQuantity || 0) > 20 
-                  ? 'bg-green-100 text-green-800' 
-                  : (formData.stockQuantity || 0) > 5 
-                  ? 'bg-yellow-100 text-yellow-800' 
-                  : 'bg-red-100 text-red-800'
-              }`}>
-                { (formData.stockQuantity || 0) > 20 ? 'In Stock' : 
-                  (formData.stockQuantity || 0) > 5 ? 'Low Stock' : 'Out of Stock' }
+              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${(formData.stockQuantity || 0) > 20
+                  ? 'bg-green-100 text-green-800'
+                  : (formData.stockQuantity || 0) > 5
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : 'bg-red-100 text-red-800'
+                }`}>
+                {(formData.stockQuantity || 0) > 20 ? 'In Stock' :
+                  (formData.stockQuantity || 0) > 5 ? 'Low Stock' : 'Out of Stock'}
               </span>
             </div>
           </div>

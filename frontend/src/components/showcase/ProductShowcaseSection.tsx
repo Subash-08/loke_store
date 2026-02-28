@@ -120,7 +120,7 @@ const ProductShowcaseSection: React.FC<ProductShowcaseSectionProps> = ({
         {type === 'grid' ? (
           <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory lg:grid lg:grid-cols-4 lg:gap-6 lg:pb-0 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {products.slice(0, 8).map((product) => (
-              <div key={product._id} className="w-[220px] max-w-[220px] sm:w-[260px] sm:max-w-[260px] md:w-[280px] md:max-w-[280px] lg:w-auto lg:max-w-none snap-start shrink-0">
+              <div key={product._id} className="w-[220px] max-w-[220px] sm:w-[260px] sm:max-w-[260px] md:w-[280px] md:max-w-[280px] max-w-[320px] lg:w-auto lg:max-w-none snap-start shrink-0">
                 <ProductCard
                   product={product as any}
                   // @ts-ignore
@@ -139,7 +139,7 @@ const ProductShowcaseSection: React.FC<ProductShowcaseSectionProps> = ({
               {products.map((product) => (
                 <div
                   key={product._id}
-                  className="min-w-[240px] md:min-w-[260px] lg:min-w-[280px] snap-start"
+                  className="max-w-[320px] min-w-[240px] md:min-w-[260px] lg:min-w-[280px]  snap-start"
                 >
                   <ProductCard
                     product={product as any}

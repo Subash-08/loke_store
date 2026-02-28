@@ -266,6 +266,11 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
             return next(new ErrorHandler("Product not found", 404));
         }
 
+        // 🆕 STRICT VALIDATION: Reject inclusivePrice
+        if (req.body.inclusivePrice !== undefined) {
+            return next(new ErrorHandler("inclusivePrice is not permitted in API. Convert to exclusive basePrice.", 400));
+        }
+
         // 🆕 IMPROVED Helper function to parse JSON fields
         const parseJsonField = (field, fieldName = 'field') => {
 

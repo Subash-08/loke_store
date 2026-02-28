@@ -51,12 +51,14 @@ export const selectCartTotal = createSelector(
     return items.reduce((total, item) => {
       const quantity = Number(item.quantity) || 0;
       const price = Number(item.price) || 0;
-      return total + (quantity * price);
+      const taxRate = Number((item as any).taxRate || item.product?.taxRate || 18);
+      const inclusivePrice = price > 0 ? Math.round(price * (1 + taxRate / 100)) : 0;
+      return total + (quantity * inclusivePrice);
     }, 0);
   }
 );
 
-export const selectCartItemById = (productId: string, variantId?: string) => 
+export const selectCartItemById = (productId: string, variantId?: string) =>
   createSelector(
     [selectCartItems],
     (items) => {
@@ -69,7 +71,7 @@ export const selectCartItemById = (productId: string, variantId?: string) =>
     }
   );
 
-export const selectIsItemInCart = (productId: string, variantId?: string) => 
+export const selectIsItemInCart = (productId: string, variantId?: string) =>
   createSelector(
     [selectCartItems],
     (items) => {
@@ -99,7 +101,7 @@ export const selectProductItems = createSelector(
   }
 );
 
-export const selectPreBuiltPCItemById = (pcId: string) => 
+export const selectPreBuiltPCItemById = (pcId: string) =>
   createSelector(
     [selectCartItems],
     (items) => {
@@ -111,7 +113,7 @@ export const selectPreBuiltPCItemById = (pcId: string) =>
     }
   );
 
-export const selectIsPreBuiltPCInCart = (pcId: string) => 
+export const selectIsPreBuiltPCInCart = (pcId: string) =>
   createSelector(
     [selectCartItems],
     (items) => {
@@ -140,7 +142,7 @@ export const selectEnhancedCartSummary = createSelector(
   (items, total, count, isGuest) => {
     const productItems = items.filter(item => !item.productType || item.productType === 'product' || item.product);
     const preBuiltPCItems = items.filter(item => item.productType === 'prebuilt-pc' || item.preBuiltPC || item.pcId);
-    
+
     return {
       items: Array.isArray(items) ? items : [],
       productItems,

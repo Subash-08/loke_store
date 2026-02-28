@@ -600,6 +600,11 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
         return num;
     };
 
+    // 🆕 STRICT VALIDATION: Reject inclusivePrice
+    if (req.body.inclusivePrice !== undefined) {
+        return next(new ErrorHandler("inclusivePrice is not permitted in API. Convert to exclusive basePrice.", 400));
+    }
+
     // -----------------------------
     // 2) Parse collections
     // -----------------------------

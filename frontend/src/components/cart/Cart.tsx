@@ -315,13 +315,21 @@ const Cart: React.FC = () => {
                     {productItems.length > 0 && (
                       <div className="flex justify-between text-gray-500">
                         <span>• Products ({productItems.reduce((sum, item) => sum + item.quantity, 0)})</span>
-                        <span>₹{productItems.reduce((sum, item) => sum + (item.quantity * item.price), 0).toLocaleString()}</span>
+                        <span>₹{productItems.reduce((sum, item) => {
+                          const taxRate = Number((item as any).taxRate || item.product?.taxRate || 18);
+                          const inclusivePrice = item.price > 0 ? item.price * (1 + taxRate / 100) : 0;
+                          return sum + (item.quantity * inclusivePrice);
+                        }, 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                       </div>
                     )}
                     {preBuiltPCItems.length > 0 && (
                       <div className="flex justify-between text-gray-500">
                         <span>• PCs ({preBuiltPCItems.reduce((sum, item) => sum + item.quantity, 0)})</span>
-                        <span>₹{preBuiltPCItems.reduce((sum, item) => sum + (item.quantity * item.price), 0).toLocaleString()}</span>
+                        <span>₹{preBuiltPCItems.reduce((sum, item) => {
+                          const taxRate = Number((item as any).taxRate || (item as any).preBuiltPC?.taxRate || 18);
+                          const inclusivePrice = item.price > 0 ? item.price * (1 + taxRate / 100) : 0;
+                          return sum + (item.quantity * inclusivePrice);
+                        }, 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                       </div>
                     )}
                   </div>
@@ -349,8 +357,8 @@ const Cart: React.FC = () => {
                   onClick={handleCheckout}
                   disabled={cartItems.some(item => (!item.product && !item.preBuiltPC) || item.price === 0)}
                   className={`w-full py-3.5 px-4 rounded-xl font-bold text-lg shadow-sm transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 ${cartItems.some(item => (!item.product && !item.preBuiltPC) || item.price === 0)
-                      ? 'bg-gray-200 cursor-not-allowed text-gray-400 shadow-none'
-                      : 'bg-blue-600 hover:bg-blue-700 hover:shadow-md text-white'
+                    ? 'bg-gray-200 cursor-not-allowed text-gray-400 shadow-none'
+                    : 'bg-blue-600 hover:bg-blue-700 hover:shadow-md text-white'
                     }`}
                 >
                   {cartItems.some(item => (!item.product && !item.preBuiltPC) || item.price === 0)

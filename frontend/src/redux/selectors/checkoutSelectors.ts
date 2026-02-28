@@ -111,7 +111,7 @@ export const selectSubtotal = createSelector(
   [selectCurrentPricing, selectCheckoutCartItems],
   (pricing, cartItems) => {
     const backendSubtotal = pricing?.subtotal || 0;
-    const calculatedSubtotal = cartItems.reduce((sum, item) => 
+    const calculatedSubtotal = cartItems.reduce((sum, item) =>
       sum + ((item.price || 0) * (item.quantity || 1)), 0
     );
 
@@ -130,7 +130,7 @@ export const selectSubtotal = createSelector(
       });
     }
 
-    return backendSubtotal > 0 ? backendSubtotal : calculatedSubtotal;
+    return Math.round(backendSubtotal > 0 ? backendSubtotal : calculatedSubtotal);
   }
 );
 
@@ -139,8 +139,8 @@ export const selectShippingCost = createSelector(
   (pricing, subtotal) => {
     const backendShipping = pricing?.shipping || 0;
     const calculatedShipping = subtotal >= 1000 ? 0 : 100;
-    
-    return backendShipping >= 0 ? backendShipping : calculatedShipping;
+
+    return Math.round(backendShipping >= 0 ? backendShipping : calculatedShipping);
   }
 );
 
@@ -148,13 +148,13 @@ export const selectTaxAmount = createSelector(
   [selectCurrentPricing, selectSubtotal],
   (pricing, subtotal) => {
     const backendTax = pricing?.tax || 0;
-    return backendTax >= 0 ? backendTax : 0;
+    return Math.round(backendTax >= 0 ? backendTax : 0);
   }
 );
 
 export const selectDiscountAmount = createSelector(
   [selectCurrentPricing],
-  (pricing) => pricing?.discount || 0
+  (pricing) => Math.round(pricing?.discount || 0)
 );
 
 export const selectGrandTotal = createSelector(
@@ -162,7 +162,7 @@ export const selectGrandTotal = createSelector(
   (pricing, subtotal, shipping, tax, discount) => {
     const backendTotal = pricing?.total || 0;
     const calculatedTotal = Math.max(0, subtotal + shipping + tax - discount);
-    
+
     // Debug total calculation
     if (subtotal > 0 && Math.abs(backendTotal - calculatedTotal) > 1) {
       console.warn('⚠️ Total calculation mismatch:', {
@@ -172,21 +172,27 @@ export const selectGrandTotal = createSelector(
         components: { subtotal, shipping, tax, discount }
       });
     }
-    
-    return backendTotal > 0 ? backendTotal : calculatedTotal;
+
+    return Math.round(backendTotal > 0 ? backendTotal : calculatedTotal);
   }
 );
 
 // Enhanced pricing verification selector
 export const selectPricingVerification = createSelector(
-  [selectSubtotal, selectShippingCost, selectTaxAmount, selectDiscountAmount, selectGrandTotal],
-  (subtotal, shipping, tax, discount, total) => {
-    const expectedTax = Math.round(subtotal * 0.18);
+  [selectSubtotal, selectShippingCost, selectTaxAmount, selectDiscountAmount, selectGrandTotal, selectCheckoutCartItems],
+  (subtotal, shipping, tax, discount, total, cartItems) => {
+    const expectedTax = Math.round(
+      cartItems.reduce((acc, item) => {
+        const itemTotal = (item.price || 0) * (item.quantity || 1);
+        const itemTaxRate = (item.taxRate || 18) / 100;
+        return acc + Math.round(itemTotal * itemTaxRate * 100) / 100;
+      }, 0)
+    );
     const expectedTotal = subtotal + shipping + tax - discount;
-    
+
     const taxCorrect = Math.abs(tax - expectedTax) <= 1;
     const totalCorrect = Math.abs(total - expectedTotal) <= 1;
-    
+
     return {
       subtotal,
       shipping,
@@ -210,7 +216,7 @@ export const selectProductTypeItems = createSelector(
   (items) => {
     const products = items.filter(item => item.productType === 'product');
     const preBuiltPCs = items.filter(item => item.productType === 'prebuilt-pc');
-    
+
     return {
       products,
       preBuiltPCs,
@@ -320,6 +326,14 @@ export const selectCheckoutDebugInfo = createSelector(
     selectProductTypeItems
   ],
   (items, subtotal, shipping, tax, discount, total, pricingVerification, productTypes) => {
+    const expectedTax = Math.round(
+      items.reduce((acc, item) => {
+        const itemTotal = (item.price || 0) * (item.quantity || 1);
+        const itemTaxRate = (item.taxRate || 18) / 100;
+        return acc + Math.round(itemTotal * itemTaxRate * 100) / 100;
+      }, 0)
+    );
+
     return {
       cartItems: {
         count: items.length,
@@ -343,9 +357,9 @@ export const selectCheckoutDebugInfo = createSelector(
       },
       productBreakdown: productTypes,
       calculations: {
-        expectedTax: Math.round(subtotal * 0.18),
+        expectedTax: expectedTax,
         expectedTotal: subtotal + shipping + tax - discount,
-        taxAccuracy: Math.abs(tax - Math.round(subtotal * 0.18)) <= 1 ? '✅' : '❌',
+        taxAccuracy: Math.abs(tax - expectedTax) <= 1 ? '✅' : '❌',
         totalAccuracy: Math.abs(total - (subtotal + shipping + tax - discount)) <= 1 ? '✅' : '❌'
       }
     };
@@ -369,12 +383,12 @@ export const selectCheckoutStatus = createSelector(
     hasShippingAddress: !!shippingAddress,
     hasPaymentMethod: !!paymentMethod,
     hasValidTotal: total > 0,
-    isReady: !loading && 
-             !error && 
-             items.length > 0 && 
-             !!shippingAddress && 
-             !!paymentMethod && 
-             total > 0
+    isReady: !loading &&
+      !error &&
+      items.length > 0 &&
+      !!shippingAddress &&
+      !!paymentMethod &&
+      total > 0
   })
 );
 
@@ -390,19 +404,19 @@ export default {
   selectGSTInfo,
   selectPaymentMethod,
   selectOrderCreationData,
-  
+
   // Derived data
   selectCurrentPricing,
   selectCheckoutCartItems,
   selectCheckoutAddresses,
   selectDefaultAddressId,
   selectTotalCheckoutItems,
-  
+
   // Addresses
   selectDefaultAddress,
   selectCurrentShippingAddress,
   selectCurrentBillingAddress,
-  
+
   // Pricing
   selectSubtotal,
   selectShippingCost,
@@ -410,18 +424,18 @@ export default {
   selectDiscountAmount,
   selectGrandTotal,
   selectPricingVerification,
-  
+
   // Product breakdown
   selectProductTypeItems,
   selectPriceComparison,
-  
+
   // Validation
   selectIsCheckoutValid,
   selectCheckoutSummary,
-  
+
   // Order creation
   selectOrderCreationPayload, // Use this for creating orders
-  
+
   // Debug
   selectCheckoutDebugInfo,
   selectCheckoutStatus

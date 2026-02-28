@@ -24,6 +24,7 @@ const {
     getEnhancedOrderAnalytics,
     getSalesChartData,
     getQuickStats,
+    downloadShippingLabel,
 } = require("../controllers/orderController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/authenticate");
@@ -59,6 +60,11 @@ router.post("/admin/orders/:orderId/invoice/generate",
 router.delete("/admin/orders/:orderId/invoice/admin",
     authorizeRoles('admin'),
     deleteAdminInvoice
+);
+
+router.get("/admin/orders/:orderId/shipping-label",
+    authorizeRoles('admin'),
+    downloadShippingLabel
 );
 
 router.get("/admin/orders/:orderId/invoices",

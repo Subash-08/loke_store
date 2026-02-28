@@ -51,14 +51,14 @@ const Login: React.FC = () => {
 
     const handleGoogleSignIn = async (response: any) => {
         setGoogleLoading(true);
-        
+
         try {
             if (!response?.credential) {
                 throw new Error('No credential received from Google');
             }
 
             const result = await dispatch(googleLogin(response.credential));
-            
+
             if (result?.success) {
                 setFormData({ email: '', password: '' });
                 toast.success('Successfully signed in with Google!');
@@ -80,7 +80,7 @@ const Login: React.FC = () => {
 
             try {
                 window.google.accounts.id.initialize({
-                    client_id: '761683416195-r8a0sdsmt6ucai7dmrik4r5so903u29p.apps.googleusercontent.com',
+                    client_id: '130051749217-495rpbss6p9lr40m29c6ltaik56d961d.apps.googleusercontent.com',
                     callback: handleGoogleSignIn,
                     auto_select: false,
                     cancel_on_tap_outside: true
@@ -88,8 +88,8 @@ const Login: React.FC = () => {
 
                 window.google.accounts.id.renderButton(
                     googleButtonRef.current,
-                    { 
-                        theme: 'outline', 
+                    {
+                        theme: 'outline',
                         size: 'large',
                         text: 'signin_with',
                         type: 'standard'
@@ -117,7 +117,7 @@ const Login: React.FC = () => {
 
     const handlePopupGoogleLogin = () => {
         setGoogleLoading(true);
-        
+
         const width = 500;
         const height = 600;
         const left = (window.screen.width - width) / 2;
@@ -131,7 +131,7 @@ const Login: React.FC = () => {
             `&state=google_login` +
             `&prompt=select_account`;
 
-        const authWindow = window.open(authUrl, 'Google Login', 
+        const authWindow = window.open(authUrl, 'Google Login',
             `width=${width},height=${height},left=${left},top=${top},scrollbars=yes`);
 
         if (!authWindow) {
@@ -145,10 +145,10 @@ const Login: React.FC = () => {
                 if (authWindow.closed) {
                     clearInterval(checkPopup);
                     setGoogleLoading(false);
-                    
+
                     const hashParams = new URLSearchParams(window.location.hash.substring(1));
                     const accessToken = hashParams.get('access_token');
-                    
+
                     if (accessToken) {
                         handleGoogleAccessToken(accessToken);
                         window.history.replaceState({}, document.title, window.location.pathname);
@@ -173,7 +173,7 @@ const Login: React.FC = () => {
 
             const userInfo = await userInfoResponse.json();
             const result = await dispatch(googleLogin(accessToken));
-            
+
             if (result.success) {
                 toast.success('Google login successful!');
             } else {
@@ -189,7 +189,7 @@ const Login: React.FC = () => {
             ...formData,
             [e.target.name]: e.target.value
         });
-        
+
         if (error) {
             dispatch(clearError());
         }
@@ -197,14 +197,14 @@ const Login: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (!formData.email || !formData.password) {
             toast.error('Please fill in all fields');
             return;
         }
 
         const result = await dispatch(login(formData.email, formData.password));
-        
+
         if (result.success) {
             setFormData({ email: '', password: '' });
         }
@@ -231,11 +231,11 @@ const Login: React.FC = () => {
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                     {/* Google Sign-In Section */}
                     <div className="mb-6">
-                        <div 
-                            ref={googleButtonRef} 
+                        <div
+                            ref={googleButtonRef}
                             className="w-full flex justify-center"
                         />
-                        
+
                         {/* Alternative popup button */}
                         {/* <button
                             onClick={handlePopupGoogleLogin}

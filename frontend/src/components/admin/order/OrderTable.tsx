@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 import { Order } from '../types/order';
 import StatusBadge from './StatusBadge';
 import PaymentStatusBadge from './PaymentStatusBadge';
+// @ts-ignore
+import api from '../../config/axiosConfig';
+import { toast } from 'react-toastify';
 
 interface OrderTableProps {
   orders: Order[];
@@ -32,7 +35,7 @@ const OrderTable: React.FC<OrderTableProps> = ({
     }).format(amount);
   };
 
-    const handleNextPage = () => {
+  const handleNextPage = () => {
     const nextPage = Number(pagination.currentPage) + 1;
     onPageChange(nextPage);
   };
@@ -42,12 +45,46 @@ const OrderTable: React.FC<OrderTableProps> = ({
     onPageChange(prevPage);
   };
 
-  const formatDate = (date: string) => {
+  const formatDate = (date: string | Date) => {
     return new Date(date).toLocaleDateString('en-IN', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
     });
+  };
+
+  const handleDownloadLabel = async (orderId: string, orderNumber: string) => {
+    try {
+      const response = await api.get(`/admin/orders/${orderId}/shipping-label`, {
+        responseType: 'blob'
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `LABEL-${orderNumber}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Shipping label downloaded successfully.");
+    } catch (error: any) {
+      console.error("Failed to download label:", error);
+
+      if (error.response && error.response.data instanceof Blob) {
+        try {
+          const text = await error.response.data.text();
+          const jsonError = JSON.parse(text);
+          console.error("Backend Error Details:", jsonError);
+          toast.error(`Error: ${jsonError.message || "Backend error"}`);
+        } catch (e) {
+          toast.error("Failed to parse backend error label");
+        }
+      } else {
+        toast.error("Failed to download shipping label");
+      }
+    }
   };
 
   // ✅ FIX: Show loading state
@@ -68,7 +105,7 @@ const OrderTable: React.FC<OrderTableProps> = ({
       <div className="bg-white rounded-lg shadow-sm border p-8 text-center">
         <p className="text-gray-500 text-lg mb-2">No orders found</p>
         <p className="text-gray-400 text-sm">
-          {pagination.total > 0 
+          {pagination.total > 0
             ? "No orders match your current filters. Try adjusting your search criteria."
             : "No orders have been placed yet."
           }
@@ -149,9 +186,17 @@ const OrderTable: React.FC<OrderTableProps> = ({
                   {order.status === 'confirmed' && (
                     <button
                       onClick={() => onStatusUpdate(order._id, 'shipped')}
-                      className="text-green-600 hover:text-green-900"
+                      className="text-green-600 hover:text-green-900 mr-3"
                     >
                       Ship
+                    </button>
+                  )}
+                  {['confirmed', 'shipped'].includes(order.status) && (
+                    <button
+                      onClick={() => handleDownloadLabel(order._id, order.orderNumber)}
+                      className="text-purple-600 hover:text-purple-900"
+                    >
+                      Label
                     </button>
                   )}
                 </td>
@@ -161,7 +206,7 @@ const OrderTable: React.FC<OrderTableProps> = ({
         </table>
       </div>
 
- {pagination.totalPages > 1 && (
+      {pagination.totalPages > 1 && (
         <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0">
             <div className="text-sm text-gray-700">
@@ -170,7 +215,7 @@ const OrderTable: React.FC<OrderTableProps> = ({
                 <span> (Page {pagination.currentPage} of {pagination.totalPages})</span>
               )}
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <button
                 onClick={handlePrevPage}
@@ -179,7 +224,7 @@ const OrderTable: React.FC<OrderTableProps> = ({
               >
                 Previous
               </button>
-              
+
               {/* Page numbers */}
               <div className="flex space-x-1">
                 {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
@@ -188,18 +233,17 @@ const OrderTable: React.FC<OrderTableProps> = ({
                     <button
                       key={pageNum}
                       onClick={() => onPageChange(pageNum)}
-                      className={`px-3 py-1 border text-sm font-medium rounded-md transition-colors ${
-                        pagination.currentPage === pageNum
-                          ? 'bg-blue-600 text-white border-blue-600'
-                          : 'border-gray-300 text-gray-700 hover:bg-gray-50'
-                      }`}
+                      className={`px-3 py-1 border text-sm font-medium rounded-md transition-colors ${pagination.currentPage === pageNum
+                        ? 'bg-blue-600 text-white border-blue-600'
+                        : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                        }`}
                     >
                       {pageNum}
                     </button>
                   );
                 })}
               </div>
-              
+
               <button
                 onClick={handleNextPage}
                 disabled={pagination.currentPage === pagination.totalPages}

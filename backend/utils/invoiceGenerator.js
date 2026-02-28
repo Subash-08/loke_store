@@ -158,13 +158,14 @@ class InvoiceGenerator {
         doc.rect(startX, y, 495, 25).fillColor('#f4f4f4').fill();
         doc.font(this.fonts.bold).fontSize(9).fillColor(this.colors.dark);
 
-        const col = { desc: 60, qty: 340, price: 380, gst: 450, total: 500 };
+        const col = { desc: 50, qty: 300, price: 340, gstRate: 400, gstAmt: 440, total: 490 };
 
         doc.text('DESCRIPTION', col.desc, y + 8);
         doc.text('QTY', col.qty, y + 8, { width: 30, align: 'center' });
-        doc.text('UNIT PRICE', col.price, y + 8, { width: 60, align: 'right' });
-        doc.text('GST', col.gst, y + 8, { width: 30, align: 'center' });
-        doc.text('TOTAL', col.total, y + 8, { width: 40, align: 'right' });
+        doc.text('UNIT PRICE', col.price, y + 8, { width: 50, align: 'right' });
+        doc.text('GST %', col.gstRate, y + 8, { width: 30, align: 'center' });
+        doc.text('GST AMT', col.gstAmt, y + 8, { width: 40, align: 'right' });
+        doc.text('TOTAL', col.total, y + 8, { width: 50, align: 'right' });
 
         y += 30;
         doc.font(this.fonts.regular).fontSize(9).fillColor(this.colors.dark);
@@ -192,12 +193,15 @@ class InvoiceGenerator {
             }
 
             // Draw Row
-            doc.text(itemName, col.desc, y, { width: 260, lineGap: 2 });
+            doc.text(itemName, col.desc, y, { width: 240, lineGap: 2 });
             doc.text(qty.toString(), col.qty, y, { width: 30, align: 'center' });
             // Using 'Rs.' instead of symbol
-            doc.text(`${price.toLocaleString('en-IN')}`, col.price, y, { width: 60, align: 'right' });
-            doc.text(`${gstRate}%`, col.gst, y, { width: 30, align: 'center' });
-            doc.text(`${lineTotal.toLocaleString('en-IN')}`, col.total, y, { width: 40, align: 'right' });
+            doc.text(`${price.toLocaleString('en-IN')}`, col.price, y, { width: 50, align: 'right' });
+            doc.text(`${gstRate}%`, col.gstRate, y, { width: 30, align: 'center' });
+            // Add individual Tax Amount
+            const itemTaxAmt = price * qty * (gstRate / 100);
+            doc.text(`${itemTaxAmt.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, col.gstAmt, y, { width: 40, align: 'right' });
+            doc.text(`${lineTotal.toLocaleString('en-IN')}`, col.total, y, { width: 50, align: 'right' });
 
             // Bottom border
             doc.moveTo(startX, y + 20).lineTo(545, y + 20).lineWidth(0.5).strokeColor('#eeeeee').stroke();

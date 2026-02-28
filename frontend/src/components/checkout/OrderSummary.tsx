@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { CheckoutCoupon } from '../../redux/types/checkout';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
+import {
   ShoppingBag,
   Truck,
   Receipt,
@@ -52,11 +52,12 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   };
 
   const freeShippingThreshold = 1000;
-  const amountForFreeShipping = freeShippingThreshold - subtotal;
-  const qualifiesForFreeShipping = subtotal >= freeShippingThreshold;
+  const inclusiveTotal = subtotal + tax;
+  const amountForFreeShipping = Math.max(0, freeShippingThreshold - inclusiveTotal);
+  const qualifiesForFreeShipping = inclusiveTotal >= freeShippingThreshold;
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
@@ -91,10 +92,10 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                 <span>Tax:</span> <span className="text-right">{tax}</span>
                 <span>Total:</span> <span className="text-right text-emerald-400">{total}</span>
                 <span className="col-span-2 pt-1 mt-1 border-t border-slate-800 flex justify-between">
-                    <span>Calc Check:</span>
-                    <span className={Math.abs(total - (subtotal + shipping + tax - discount)) <= 1 ? "text-emerald-400" : "text-rose-400"}>
-                        {Math.abs(total - (subtotal + shipping + tax - discount)) <= 1 ? 'PASS' : 'FAIL'}
-                    </span>
+                  <span>Calc Check:</span>
+                  <span className={Math.abs(total - (subtotal + shipping + tax - discount)) <= 1 ? "text-emerald-400" : "text-rose-400"}>
+                    {Math.abs(total - (subtotal + shipping + tax - discount)) <= 1 ? 'PASS' : 'FAIL'}
+                  </span>
                 </span>
               </div>
             </motion.div>
@@ -159,12 +160,12 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
           <div>
             <span className="text-sm font-medium text-slate-400">Total to Pay</span>
             <div className="flex items-center gap-1 text-xs text-slate-400 mt-0.5">
-                <ShieldCheck className="w-3 h-3" /> Secure Payment
+              <ShieldCheck className="w-3 h-3" /> Secure Payment
             </div>
           </div>
           <div className="text-right">
-             <span className="text-3xl font-bold text-slate-900 tracking-tight">{formatCurrency(total)}</span>
-             <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide mt-1">Inclusive of all taxes</p>
+            <span className="text-3xl font-bold text-slate-900 tracking-tight">{formatCurrency(total)}</span>
+            <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide mt-1">Inclusive of all taxes</p>
           </div>
         </div>
 
@@ -176,28 +177,28 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
             className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-100 relative overflow-hidden"
           >
             <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-2">
-                    <div className="p-1 bg-white rounded-full shadow-sm">
-                        <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                    </div>
-                    <span className="text-xs font-bold text-amber-800 uppercase tracking-wide">Unlock Free Shipping</span>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="p-1 bg-white rounded-full shadow-sm">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                 </div>
-                
-                <div className="h-2 w-full bg-white/60 rounded-full overflow-hidden mb-2">
-                    <motion.div 
-                        className="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${(subtotal / freeShippingThreshold) * 100}%` }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                    />
-                </div>
-                
-                <p className="text-xs font-medium text-amber-700 flex justify-between">
-                    <span>Add <span className="font-bold">{formatCurrency(amountForFreeShipping)}</span> more</span>
-                    <span className="opacity-75">{Math.round((subtotal / freeShippingThreshold) * 100)}%</span>
-                </p>
+                <span className="text-xs font-bold text-amber-800 uppercase tracking-wide">Unlock Free Shipping</span>
+              </div>
+
+              <div className="h-2 w-full bg-white/60 rounded-full overflow-hidden mb-2">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${((subtotal + tax) / freeShippingThreshold) * 100}%` }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                />
+              </div>
+
+              <p className="text-xs font-medium text-amber-700 flex justify-between">
+                <span>Add <span className="font-bold">{formatCurrency(amountForFreeShipping)}</span> more</span>
+                <span className="opacity-75">{Math.round((inclusiveTotal / freeShippingThreshold) * 100)}%</span>
+              </p>
             </div>
-            
+
             {/* Background Decoration */}
             <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-orange-200 to-transparent opacity-20 rounded-bl-full"></div>
           </motion.div>
@@ -205,42 +206,42 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
 
         {/* Coupon Applied Section (Moved inside card for cohesion) */}
         <AnimatePresence>
-            {coupon ? (
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    className="flex items-center justify-between p-3 bg-emerald-50/50 border border-emerald-100 rounded-xl group"
+          {coupon ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="flex items-center justify-between p-3 bg-emerald-50/50 border border-emerald-100 rounded-xl group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-1.5 bg-white rounded-lg shadow-sm text-emerald-600 border border-emerald-50">
+                  <Check className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-emerald-800 uppercase tracking-wide">{coupon.code}</p>
+                  <p className="text-[10px] font-medium text-emerald-600">Coupon Applied</p>
+                </div>
+              </div>
+              {onRemoveCoupon && (
+                <button
+                  onClick={onRemoveCoupon}
+                  className="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-white rounded-lg transition-colors"
                 >
-                    <div className="flex items-center gap-3">
-                        <div className="p-1.5 bg-white rounded-lg shadow-sm text-emerald-600 border border-emerald-50">
-                            <Check className="w-4 h-4" />
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-emerald-800 uppercase tracking-wide">{coupon.code}</p>
-                            <p className="text-[10px] font-medium text-emerald-600">Coupon Applied</p>
-                        </div>
-                    </div>
-                    {onRemoveCoupon && (
-                        <button 
-                            onClick={onRemoveCoupon}
-                            className="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-white rounded-lg transition-colors"
-                        >
-                            <X className="w-4 h-4" />
-                        </button>
-                    )}
-                </motion.div>
-            ) : (
-                onApplyCoupon && (
-                    <button
-                        onClick={() => onApplyCoupon('')}
-                        className="w-full py-3 flex items-center justify-center gap-2 text-sm font-semibold text-slate-600 bg-slate-50 border border-slate-200 rounded-xl hover:bg-white hover:border-slate-300 hover:shadow-sm hover:text-slate-900 transition-all duration-200 border-dashed"
-                    >
-                        <Tag className="w-4 h-4" />
-                        Have a Promo Code?
-                    </button>
-                )
-            )}
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </motion.div>
+          ) : (
+            onApplyCoupon && (
+              <button
+                onClick={() => onApplyCoupon('')}
+                className="w-full py-3 flex items-center justify-center gap-2 text-sm font-semibold text-slate-600 bg-slate-50 border border-slate-200 rounded-xl hover:bg-white hover:border-slate-300 hover:shadow-sm hover:text-slate-900 transition-all duration-200 border-dashed"
+              >
+                <Tag className="w-4 h-4" />
+                Have a Promo Code?
+              </button>
+            )
+          )}
         </AnimatePresence>
 
       </div>
