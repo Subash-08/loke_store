@@ -51,7 +51,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
     }).format(amount);
   };
 
-  const freeShippingThreshold = 1000;
+  const freeShippingThreshold = 500;
   const inclusiveTotal = subtotal + tax;
   const amountForFreeShipping = Math.max(0, freeShippingThreshold - inclusiveTotal);
   const qualifiesForFreeShipping = inclusiveTotal >= freeShippingThreshold;

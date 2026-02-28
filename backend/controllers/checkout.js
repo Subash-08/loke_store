@@ -805,9 +805,9 @@ const calculateCheckoutInternal = async (userId, couponCode) => {
         }
 
         // Apply Central Pricing Algorithm taking actual Discount into perspective
-        // Ensure shipping resolves against the post-discount subtotal. Free shipping above 1000 INR
+        // Ensure shipping resolves against the post-discount subtotal. Free shipping >= ₹500
         const taxableAmount = pricing.subtotal - discount;
-        const finalShipping = taxableAmount >= 1000 ? 0 : 100;
+        const finalShipping = taxableAmount >= 500 ? 0 : 40;
 
         const breakdown = calculateItemLevelTaxBreakdown(cartItems, discount, finalShipping);
 
@@ -850,7 +850,7 @@ const getCheckoutDataFallback = async (userId) => {
             return sum + (itemPrice * item.quantity);
         }, 0);
 
-        const shipping = subtotal >= 1000 ? 0 : 100; // Free shipping above ₹1000
+        const shipping = subtotal >= 500 ? 0 : 40; // Free shipping >= ₹500, else ₹40
         const tax = subtotal * 0.18; // 18% GST
         const total = subtotal + shipping + tax;
 
