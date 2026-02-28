@@ -302,7 +302,8 @@ const CartItem: React.FC<CartItemProps> = ({
   const category = getCategory();
 
   // 🆕 Calculate inclusive price
-  const taxRate = product.taxRate || 18;
+  // Fallback chain: item.taxRate → product.taxRate → 0 (no extra tax if unknown)
+  const taxRate = item.taxRate ?? product.taxRate ?? 0;
   const displayPrice = itemPrice > 0 ? Math.round(itemPrice * (1 + (taxRate / 100))) : 0;
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {

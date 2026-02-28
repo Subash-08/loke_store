@@ -49,6 +49,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
 
   const currentPriceInfo = getCurrentPriceInfo();
 
+
   // Calculate savings
   const calculateSavings = () => {
     const mrp = currentPriceInfo.mrp;

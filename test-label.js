@@ -22,7 +22,6 @@ async function test() {
         const user = { firstName: 'SUBASH', lastName: 'M' };
 
         const result = await ShippingLabelGenerator.generateLabel(order, user);
-        console.log('SUCCESS - file saved to:', result.filePath, '| size:', result.pdfBuffer.length, 'bytes');
     } catch (e) {
         console.error('ERROR:', e.message);
         console.error(e.stack);

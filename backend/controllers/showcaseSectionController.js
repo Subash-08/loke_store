@@ -40,7 +40,7 @@ exports.getActiveShowcaseSections = catchAsyncErrors(async (req, res, next) => {
         .populate({
             path: 'products',
             match: { isActive: true, status: 'Published' },
-            select: 'name slug images basePrice mrp discountPercentage stockQuantity averageRating totalReviews brand categories variants',
+            select: 'name slug images basePrice mrp offerPrice discountPercentage stockQuantity averageRating totalReviews brand categories variants taxRate variantConfiguration',
             populate: [
                 { path: 'brand', select: 'name slug' },
                 { path: 'categories', select: 'name slug' }

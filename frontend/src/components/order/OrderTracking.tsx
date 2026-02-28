@@ -12,7 +12,7 @@ const OrderTracking: React.FC = () => {
 
   const fetchOrderTracking = async () => {
     if (!orderNumber) return;
-    
+
     try {
       setLoading(true);
       setError('');
@@ -48,11 +48,11 @@ const OrderTracking: React.FC = () => {
 
   const getStepCompletion = (stepStatus: string) => {
     if (!order) return false;
-    
+
     const statusOrder = ['pending', 'confirmed', 'processing', 'shipped', 'delivered'];
     const currentIndex = statusOrder.indexOf(order.status);
     const stepIndex = statusOrder.indexOf(stepStatus);
-    
+
     return stepIndex <= currentIndex;
   };
 
@@ -124,7 +124,7 @@ const OrderTracking: React.FC = () => {
           <div className="text-center">
             <p className="text-sm text-gray-500">Estimated Delivery</p>
             <p className="text-lg font-semibold text-gray-900">
-              {order.estimatedDelivery 
+              {order.estimatedDelivery
                 ? new Date(order.estimatedDelivery).toLocaleDateString()
                 : 'Calculating...'
               }
@@ -146,13 +146,12 @@ const OrderTracking: React.FC = () => {
               <div key={step.status} className="flex items-start space-x-4">
                 {/* Step Indicator */}
                 <div className="flex flex-col items-center">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    step.completed 
-                      ? 'bg-green-600 text-white' 
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step.completed
+                      ? 'bg-green-600 text-white'
                       : step.current
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-300 text-gray-600'
-                  }`}>
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-300 text-gray-600'
+                    }`}>
                     {step.completed ? (
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -162,9 +161,8 @@ const OrderTracking: React.FC = () => {
                     )}
                   </div>
                   {index < statusSteps.length - 1 && (
-                    <div className={`w-0.5 h-12 ${
-                      step.completed ? 'bg-green-600' : 'bg-gray-300'
-                    }`}></div>
+                    <div className={`w-0.5 h-12 ${step.completed ? 'bg-green-600' : 'bg-gray-300'
+                      }`}></div>
                   )}
                 </div>
 
@@ -173,7 +171,7 @@ const OrderTracking: React.FC = () => {
                   <div className={`${step.current ? 'text-blue-600' : step.completed ? 'text-green-600' : 'text-gray-500'}`}>
                     <p className="font-medium">{step.label}</p>
                     <p className="text-sm mt-1">{step.description}</p>
-                    
+
                     {/* Show additional info for current/active steps */}
                     {step.current && step.status === 'shipped' && order.shippingMethod?.trackingNumber && (
                       <div className="mt-2 p-2 bg-blue-50 rounded-md">
@@ -187,7 +185,7 @@ const OrderTracking: React.FC = () => {
                         )}
                       </div>
                     )}
-                    
+
                     {step.current && step.status === 'delivered' && order.deliveredAt && (
                       <div className="mt-2 p-2 bg-green-50 rounded-md">
                         <p className="text-sm text-green-700">

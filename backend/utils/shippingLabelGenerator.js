@@ -105,7 +105,7 @@ class ShippingLabelGenerator {
         const logoLoaded = fsSync.existsSync(this.logoPath);
         if (logoLoaded) {
             try {
-                doc.image(this.logoPath, PAD, 6, { height: 36, fit: [95, 36] });
+                doc.image(this.logoPath, PAD, 4, { height: 44, fit: [130, 44] });
             } catch (e) {
                 // Fallback text
                 doc.font(this.fonts.bold).fontSize(14).fillColor(this.colors.accent)
@@ -176,7 +176,7 @@ class ShippingLabelGenerator {
             .text('Loke Store', rightX, fy, { width: colW, lineBreak: false });
         fy += 11;
 
-        const fromLines = ['Salem, TN 636004', 'Ph: 9876543210'];
+        const fromLines = ['Salem, TN 636004', 'Ph: 8825403712'];
         doc.font(this.fonts.regular).fontSize(6.5).fillColor(this.colors.mid);
         fromLines.forEach(line => {
             doc.text(line, rightX, fy, { width: colW, lineBreak: false });

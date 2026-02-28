@@ -398,8 +398,9 @@ class AdvancedFilterBuilder {
             {
                 $project: {
                     name: 1, slug: 1, brand: 1, categories: 1, condition: 1, label: 1,
-                    basePrice: 1, mrp: 1, stockQuantity: 1,
+                    basePrice: 1, mrp: 1, offerPrice: 1, stockQuantity: 1,
                     effectivePrice: 1,
+                    taxRate: 1,
                     images: 1, manufacturerImages: 1,
                     variantConfiguration: 1, variants: 1,
                     description: 1, definition: 1, specifications: 1, features: 1,

@@ -228,15 +228,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const rawDisplayPrice = getRawDisplayPrice();
   const rawDisplayMrp = getRawDisplayMrp();
 
-  // 🆕 Calculate inclusive price
+  // 🆕 Calculate inclusive price — always show tax-inclusive: taxRate || 18 default GST
   const taxMultiplier = 1 + ((product?.taxRate || 18) / 100);
-  const displayPrice = rawDisplayPrice > 0 ? rawDisplayPrice * taxMultiplier : 0;
-  const displayMrp = rawDisplayMrp > 0 ? rawDisplayMrp * taxMultiplier : 0;
+  const displayPrice = rawDisplayPrice > 0 ? Math.round(rawDisplayPrice * taxMultiplier) : 0;
+  const displayMrp = rawDisplayMrp > 0 ? Math.round(rawDisplayMrp * taxMultiplier) : 0;
 
   // Calculate discount
   const discount = rawDisplayMrp > rawDisplayPrice && rawDisplayPrice > 0
     ? Math.round(((rawDisplayMrp - rawDisplayPrice) / rawDisplayMrp) * 100)
     : 0;
+
 
   // Image handling helper
   const getImageUrl = (imageObj: any) => {

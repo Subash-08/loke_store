@@ -342,18 +342,18 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
               }
             }}
             className={`group relative overflow-hidden border rounded-xl p-5 cursor-pointer transition-all duration-300 ${selectedMethod === method.id
-                ? 'border-indigo-500 bg-indigo-50/10 ring-1 ring-indigo-500 shadow-md'
-                : hasFailed
-                  ? 'border-rose-200 bg-rose-50/30'
-                  : 'border-slate-600 bg-white hover:border-slate-300 hover:shadow-lg hover:shadow-slate-200/50'
+              ? 'border-indigo-500 bg-indigo-50/10 ring-1 ring-indigo-500 shadow-md'
+              : hasFailed
+                ? 'border-rose-200 bg-rose-50/30'
+                : 'border-slate-600 bg-white hover:border-slate-300 hover:shadow-lg hover:shadow-slate-200/50'
               } ${processing ? 'opacity-50 pointer-events-none' : ''} ${paymentAttempts >= maxAttempts ? 'opacity-50 pointer-events-none' : ''
               }`}
           >
             <div className="flex items-start gap-4 relative z-10">
               {/* Custom Radio */}
               <div className={`mt-1 w-5 h-5 rounded-full border flex items-center justify-center transition-colors duration-200 shrink-0 ${selectedMethod === method.id
-                  ? 'border-indigo-600 bg-indigo-600'
-                  : 'border-slate-500 bg-white group-hover:border-slate-400'
+                ? 'border-indigo-600 bg-indigo-600'
+                : 'border-slate-500 bg-white group-hover:border-slate-400'
                 }`}>
                 {selectedMethod === method.id && <div className="w-2 h-2 rounded-full bg-white" />}
               </div>

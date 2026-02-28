@@ -123,7 +123,8 @@ const getCheckoutData = catchAsyncErrors(async (req, res, next) => {
             });
         }
 
-        const shipping = subtotal >= 1000 ? 0 : 100;
+        // Shipping: Free for orders >= ₹500, else ₹40
+        const shipping = subtotal >= 500 ? 0 : 40;
         const total = subtotal + shipping + totalTax;
         res.status(200).json({
             success: true,
@@ -729,7 +730,8 @@ const getCheckoutDataInternal = async (userId) => {
         // Apply Central Tax Algorithm to derive Subtotal and preliminary Shipping
         // Preliminary calculation has no discount
         const preliminarySubtotal = validatedItems.reduce((sum, item) => sum + item.total, 0);
-        const preliminaryShipping = preliminarySubtotal >= 1000 ? 0 : 100;
+        // Shipping: Free for orders >= ₹500, else ₹40
+        const preliminaryShipping = preliminarySubtotal >= 500 ? 0 : 40;
 
         const breakdown = calculateItemLevelTaxBreakdown(validatedItems, 0, preliminaryShipping);
 

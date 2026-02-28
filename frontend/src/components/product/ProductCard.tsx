@@ -191,21 +191,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   // Price logic
   const getRawDisplayPrice = () => {
     if (hasVariants && baseVariant) return baseVariant.offerPrice || baseVariant.price || 0;
-    return offerPrice || effectivePrice || 0;
+    // offerPrice → effectivePrice → basePrice (API primary field)
+    return offerPrice || effectivePrice || (product as any).basePrice || 0;
   };
 
   const getRawDisplayMrp = () => {
     if (hasVariants && baseVariant) return baseVariant.mrp || baseVariant.price || 0;
-    return mrp || effectivePrice || 0;
+    return mrp || (product as any).basePrice || effectivePrice || 0;
   };
 
   const rawDisplayPrice = getRawDisplayPrice();
   const rawDisplayMrp = getRawDisplayMrp();
 
-  // 🆕 Calculate inclusive price
+  // 🆕 Calculate inclusive price — always show tax-inclusive: taxRate || 18 default GST
   const taxMultiplier = 1 + ((product?.taxRate || 18) / 100);
-  const displayPrice = rawDisplayPrice > 0 ? rawDisplayPrice * taxMultiplier : 0;
-  const displayMrp = rawDisplayMrp > 0 ? rawDisplayMrp * taxMultiplier : 0;
+  const displayPrice = rawDisplayPrice > 0 ? Math.round(rawDisplayPrice * taxMultiplier) : 0;
+  const displayMrp = rawDisplayMrp > 0 ? Math.round(rawDisplayMrp * taxMultiplier) : 0;
 
   const discount = rawDisplayMrp > rawDisplayPrice && rawDisplayPrice > 0
     ? Math.round(((rawDisplayMrp - rawDisplayPrice) / rawDisplayMrp) * 100)

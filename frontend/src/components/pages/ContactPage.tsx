@@ -25,7 +25,7 @@ const ContactPage = () => {
   // --- Company Information ---
   const companyDetails = {
     name: "Loke Store",
-    phone: "6382928973",
+    phone: "8825403712",
     displayPhone: "8825403712",
     email: "lokestore24@gmail.com",
     address: "RBT Mall, Meyyanur Bypass Rd, opp. to iplanet, Meyyanur, Salem, Tamil Nadu 636004",

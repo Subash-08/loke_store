@@ -13,8 +13,7 @@ const Wishlist = require('../models/wishlistModel')
 
 const verifyGoogleToken = async (accessToken) => {
     const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-    console.log("Incoming token:", accessToken.slice(0, 40));
-    console.log("Using client ID:", process.env.GOOGLE_CLIENT_ID);
+
 
     try {
         const ticket = await client.verifyIdToken({

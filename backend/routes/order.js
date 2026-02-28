@@ -45,6 +45,12 @@ router.post("/orders/:orderId/payment-success", handlePaymentSuccess);
 router.get("/orders/:orderId/invoices", getOrderInvoices); // Get all invoices
 router.get("/orders/:orderId/invoice/:invoiceType", downloadInvoice);
 
+// Admin - Download invoice (same controller, handles admin role internally)
+router.get("/admin/orders/:orderId/invoice/:invoiceType",
+    authorizeRoles('admin'),
+    downloadInvoice
+);
+
 // ==================== ADMIN ROUTES ====================
 router.post("/admin/orders/:orderId/invoice/upload",
     authorizeRoles('admin'),
