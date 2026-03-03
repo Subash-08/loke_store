@@ -4,7 +4,7 @@ import { navbarSettingService } from '../admin/services/navbarSettingService';
 import { LogoSectionProps } from '../../../types';
 import logo from '../../assets/logo.png';
 
-const LogoSection: React.FC<LogoSectionProps> = ({ 
+const LogoSection: React.FC<LogoSectionProps> = ({
   variant = 'desktop',
   className = '',
   showTagline = true,
@@ -20,7 +20,7 @@ const LogoSection: React.FC<LogoSectionProps> = ({
   const fetchNavbarSettings = async (): Promise<void> => {
     try {
       const response = await navbarSettingService.getNavbarSettings();
-      
+
       if (response.success && response.settings) {
         setNavbarSettings(response.settings);
       } else {
@@ -67,11 +67,11 @@ const LogoSection: React.FC<LogoSectionProps> = ({
 
   // Get logo size based on variant
   const getLogoSize = () => {
-    if (variant === 'mobile-menu') return 'w-8 h-8';
-    if (variant === 'mobile') return 'w-8 h-8';
+    if (variant === 'mobile-menu') return 'w-12 h-12';
+    if (variant === 'mobile') return 'w-16 h-16';
     if (logoSize === 'sm') return 'w-8 h-8';
     if (logoSize === 'lg') return 'w-16 h-16';
-    return 'w-12 h-12'; // md
+    return 'w-16 h-16'; // md
   };
 
   // Get text size based on variant
@@ -117,45 +117,47 @@ const LogoSection: React.FC<LogoSectionProps> = ({
   const secondaryColor = navbarSettings?.secondaryColor || '#544D89';
 
   return (
-    <Link 
-      to="/" 
+    <Link
+      to="/"
       className={`flex items-center ${getGapSize()} group ${className}`}
       aria-label={`Go to ${siteName} homepage`}
     >
       {/* Logo Image */}
-      <img 
-        src={logoUrl} 
+      <img
+        src={logoUrl}
         alt={navbarSettings?.logo?.altText || siteName}
         className={`${getLogoSize()} object-contain transition-transform group-hover:scale-105`}
         onError={handleImageError}
       />
 
       {/* Text Content */}
-      <div 
+      <div
         className="flex flex-col leading-tight"
         style={getFontStyle()}
       >
-        {/* Site Name */}
-        <span 
-          className={`${getTextSize()} font-extrabold uppercase tracking-tight transition-colors group-hover:opacity-90`}
-          style={{ color: primaryColor }}
-        >
-          {siteName}
-        </span>
-        
+        {/* Site Name - hidden on mobile variants */}
+        {variant !== 'mobile' && variant !== 'mobile-menu' && (
+          <span
+            className={`${getTextSize()} font-extrabold uppercase tracking-tight transition-colors group-hover:opacity-90`}
+            style={{ color: primaryColor }}
+          >
+            {siteName}
+          </span>
+        )}
+
         {/* Tagline - only shown if enabled and variant supports it */}
         {showTagline && variant !== 'mobile' && (
-          <span 
+          <span
             className="text-[10px] tracking-widest uppercase font-medium"
             style={{ color: secondaryColor }}
           >
             {tagline}
           </span>
         )}
-        
+
         {/* Mobile variant shows tagline differently */}
         {showTagline && variant === 'mobile' && (
-          <span 
+          <span
             className="text-xs tracking-wide font-medium opacity-80"
             style={{ color: secondaryColor }}
           >

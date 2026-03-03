@@ -317,9 +317,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
       if (!formData.categories.length)
         errors.push('At least one category is required');
 
-      // basePrice only required when NOT a variant product
+      // inclusivePrice (selling price) only required when NOT a variant product
       if (!formData.variantConfiguration.hasVariants) {
-        if (!formData.basePrice || formData.basePrice <= 0) {
+        const sellingPrice = formData.inclusivePrice || formData.basePrice || 0;
+        if (!sellingPrice || sellingPrice <= 0) {
           errors.push('Valid base price is required for non-variant products');
         }
       }

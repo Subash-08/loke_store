@@ -14,7 +14,7 @@ const ProductDimensions: React.FC<ProductDimensionsProps> = ({ dimensions, weigh
   if (!dimensions && !weight) return null;
 
   // Check if we have valid dimensions
-  const hasValidDimensions = dimensions && 
+  const hasValidDimensions = dimensions &&
     (dimensions.length > 0 || dimensions.width > 0 || dimensions.height > 0);
 
   // Check if we have valid weight
@@ -23,7 +23,7 @@ const ProductDimensions: React.FC<ProductDimensionsProps> = ({ dimensions, weigh
   // Calculate package dimensions for shipping
   const calculatePackageDimensions = () => {
     if (!hasValidDimensions) return null;
-    
+
     const buffer = 2; // 2cm buffer for packaging
     return {
       length: (dimensions?.length || 0) + buffer,
@@ -36,7 +36,7 @@ const ProductDimensions: React.FC<ProductDimensionsProps> = ({ dimensions, weigh
   const packageDimensions = calculatePackageDimensions();
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -146,7 +146,7 @@ const ProductDimensions: React.FC<ProductDimensionsProps> = ({ dimensions, weigh
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-gray-600">Shipping Weight</span>
                       <span className="font-medium text-gray-900">
-                        {(weight?.value || 0) * 1.1} {weight?.unit} <span className="text-xs text-gray-500">(estimated)</span>
+                        {((weight?.value || 0) * 1.1).toFixed(2)} {weight?.unit} <span className="text-xs text-gray-500">(estimated)</span>
                       </span>
                     </div>
                   </div>
@@ -156,7 +156,7 @@ const ProductDimensions: React.FC<ProductDimensionsProps> = ({ dimensions, weigh
           )}
 
           {/* Volume Calculation */}
-          {hasValidDimensions && (
+          {/* {hasValidDimensions && (
             <div className="mb-6">
               <h4 className="font-medium text-gray-900 mb-3">Volume Information</h4>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -182,7 +182,7 @@ const ProductDimensions: React.FC<ProductDimensionsProps> = ({ dimensions, weigh
                 </div>
               </div>
             </div>
-          )}
+          )} */}
 
           {/* Shipping Information */}
           <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
@@ -200,15 +200,15 @@ const ProductDimensions: React.FC<ProductDimensionsProps> = ({ dimensions, weigh
                   <li>• Additional protective packaging added for safe transit</li>
                   <li>• Shipping cost calculated based on package weight and dimensions</li>
                 </ul>
-       <Link 
-  to="/shipping-policy"
-  className="mt-3 text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors duration-200 inline-flex items-center"
->
-  View shipping details
-  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-  </svg>
-</Link>
+                <Link
+                  to="/shipping-policy"
+                  className="mt-3 text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors duration-200 inline-flex items-center"
+                >
+                  View shipping details
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
 
               </div>
             </div>

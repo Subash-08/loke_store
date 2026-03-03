@@ -231,7 +231,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   // 🆕 Calculate inclusive price — always show tax-inclusive: taxRate || 18 default GST
   const taxMultiplier = 1 + ((product?.taxRate || 18) / 100);
   const displayPrice = rawDisplayPrice > 0 ? Math.round(rawDisplayPrice * taxMultiplier) : 0;
-  const displayMrp = rawDisplayMrp > 0 ? Math.round(rawDisplayMrp * taxMultiplier) : 0;
+  const displayMrp = rawDisplayMrp > 0 ? Math.round(rawDisplayMrp) : 0;
 
   // Calculate discount
   const discount = rawDisplayMrp > rawDisplayPrice && rawDisplayPrice > 0

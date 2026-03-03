@@ -32,6 +32,7 @@ import { baseURL } from './config/config';
 import SearchBar from './home/SearchBar';
 import api from '../components/config/axiosConfig';
 import { AlertTriangle, ArrowRight, ChevronDown, ChevronRight, LogOut } from 'lucide-react';
+import TopBar from './TopBar';
 
 // Types for fetched data
 interface Category {
@@ -791,6 +792,9 @@ const Navbar: React.FC = () => {
 
   return (
     <div className="font-sans">
+      {/* Promotional Top Bar */}
+      <TopBar />
+
       {/* Desktop View (lg and above) */}
       <header className="hidden lg:block pt-4 pb-0 relative shadow-md z-40 bg-white">
         <div className="container mx-auto px-4">

@@ -52,9 +52,9 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { name: "Facebook", icon: Facebook, href: "https://facebook.com", color: "hover:bg-blue-600" },
-    { name: "Instagram", icon: Instagram, href: "https://instagram.com", color: "hover:bg-pink-500" },
-    { name: "YouTube", icon: Youtube, href: "https://youtube.com", color: "hover:bg-red-600" },
+    { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/profile.php?id=61561993746736", color: "hover:bg-blue-600" },
+    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/loke_store.in/", color: "hover:bg-pink-500" },
+    { name: "YouTube", icon: Youtube, href: "https://www.youtube.com/watch?v=QZDi8_l4VUo&list=PLiFeKVbi91adzca2UAnE9Ax0ShVGKnpE7", color: "hover:bg-red-600" },
   ];
 
   return (

@@ -30,8 +30,8 @@ const App: React.FC = () => {
   const emailAddress = "lokestore24@gmail.com";
 
   // SEO Strings
-  const pageTitle = "Loke Store | Best Custom PC Builder & Computer Shop in Salem";
-  const pageDescription = "Visit Loke Store at RBT Mall, Salem for the best custom gaming PCs, laptops, and accessories. Call 8825403712 for deals on top tech brands.";
+  const pageTitle = "Loke Store | Best toys shop in Salem";
+  const pageDescription = "Visit Loke Store at Salem for the best toys, kids toys, RC cars, remote control cars, and all types of toys. Call 8825403712 for deals on top tech brands.";
 
   // Placeholder for your Open Graph image
   const ogImage = `${siteUrl}og-home-banner.png`;
@@ -126,7 +126,7 @@ const App: React.FC = () => {
       </Helmet>
 
       {/* Main Content */}
-      <section id="home-hero" className="rounded-b-[3rem] overflow-hidden shadow-sm relative z-10">
+      <section id="home-hero" className="overflow-hidden shadow-sm relative z-10">
         <HeroSection />
       </section>
       <main className="space-y-12 pb-20">

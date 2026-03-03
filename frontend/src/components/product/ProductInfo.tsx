@@ -23,7 +23,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
     if (selectedVariant) {
       const taxMultiplier = 1 + ((productData.taxRate || 18) / 100);
       return {
-        mrp: Math.round((selectedVariant.mrp || selectedVariant.price) * taxMultiplier),
+        mrp: Math.round((selectedVariant.mrp || selectedVariant.price)),
         offerPrice: Math.round((selectedVariant.offerPrice || selectedVariant.price) * taxMultiplier),
         price: Math.round(selectedVariant.price * taxMultiplier),
         stockQuantity: selectedVariant.stockQuantity,
@@ -39,7 +39,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
     const taxMultiplier = 1 + ((productData.taxRate || 18) / 100);
 
     return {
-      mrp: Math.round(activeMrp * taxMultiplier),
+      mrp: Math.round(activeMrp),
       offerPrice: Math.round(activePrice * taxMultiplier),
       price: Math.round(activePrice * taxMultiplier),
       stockQuantity: productData.stockQuantity || 0,

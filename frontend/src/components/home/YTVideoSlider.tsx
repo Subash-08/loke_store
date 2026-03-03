@@ -134,7 +134,7 @@ const YTVideoSection = () => {
                   onClick={() => setSelectedVideo(video.videoId)}
                   className={`group bg-white ${ToyTheme.shapes.card} p-3 md:p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer h-full flex flex-col border-2 border-transparent hover:border-purple-200`}
                 >
-                  <div className={`relative aspect-[4/3] md:aspect-video ${ToyTheme.shapes.card} overflow-hidden bg-purple-100 shadow-inner flex-shrink-0`}>
+                  <div className={`relative aspect-video ${ToyTheme.shapes.card} overflow-hidden bg-purple-100 shadow-inner flex-shrink-0`}>
                     <img
                       src={video.thumbnailUrl}
                       alt={video.title}
@@ -142,8 +142,8 @@ const YTVideoSection = () => {
                     />
 
                     <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/20 transition-colors">
-                      <div className="w-16 h-12 md:w-20 md:h-14 bg-red-500 rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300 ring-4 ring-white/30">
-                        <Play className="w-6 h-6 md:w-8 md:h-8 text-white fill-current ml-1" />
+                      <div className="w-12 h-9 sm:w-16 sm:h-12 md:w-20 md:h-14 bg-red-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300 ring-2 sm:ring-4 ring-white/30">
+                        <Play className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white fill-current ml-0.5" />
                       </div>
                     </div>
                   </div>
@@ -180,7 +180,7 @@ const YTVideoSection = () => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="relative w-full max-w-7xl aspect-video bg-black rounded-xl md:rounded-3xl overflow-hidden shadow-2xl border border-slate-800"
+              className="relative w-full max-w-7xl aspect-video rounded-xl md:rounded-2xl overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <iframe

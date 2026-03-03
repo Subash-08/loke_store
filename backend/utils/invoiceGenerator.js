@@ -78,16 +78,13 @@ class InvoiceGenerator {
         if (fsSync.existsSync(this.logoPath)) {
             try {
                 const logoBuffer = fsSync.readFileSync(this.logoPath);
-                doc.image(logoBuffer, 50, topY - 10, { width: 90, height: 55, fit: [90, 55] });
+                doc.image(logoBuffer, 50, topY - 10, { fit: [90, 55], align: 'center', valign: 'center' });
                 leftX = 150; // Move text to the right if logo exists
             } catch (e) {
                 console.error('❌ Failed to draw invoice logo:', e.message);
             }
         }
 
-        // 2. COMPANY INFO (Updated)
-        doc.font(this.fonts.bold).fontSize(20).fillColor(this.colors.primary)
-            .text('Loke Store', leftX, topY);
 
         doc.font(this.fonts.regular).fontSize(9).fillColor(this.colors.light) // Slightly smaller font for address
             .moveDown(0.3)

@@ -20,7 +20,7 @@ const SearchBar: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  
+
   // Get search state from Redux
   const searchResults = useAppSelector(selectSearchResults);
   const searchLoading = useAppSelector(selectSearchLoading);
@@ -55,14 +55,14 @@ const SearchBar: React.FC = () => {
     if (searchTerm.trim()) {
       // Update Redux state
       dispatch(updateSearchQuery(searchTerm.trim()));
-      
+
       // Navigate to products page with search
       // --- CHANGE 1: Updated path from /product to /products ---
       navigate({
-        pathname: '/products', 
+        pathname: '/products',
         search: `?${createSearchParams({ search: searchTerm.trim() })}`
       });
-      
+
       setShowSuggestions(false);
       inputRef.current?.blur();
     }
@@ -103,7 +103,7 @@ const SearchBar: React.FC = () => {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Search for components, PCs, and more..."
+          placeholder="Search for fun toys, games, and more! 🧸"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onFocus={() => {
@@ -115,31 +115,24 @@ const SearchBar: React.FC = () => {
           onBlur={() => {
             setTimeout(() => setIsFocused(false), 200);
           }}
-          // --- CHANGE 3: CSS Updated ---
-          // Removed pl-12 (left padding), added pl-4
-          // Increased pr-10 to pr-24 (right padding) to accommodate both buttons
-          className="pl-4 pr-24 py-2.5 w-full border border-gray-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all text-sm"
+          className="pl-6 pr-28 py-3 w-full border-2 border-pink-200 rounded-full bg-yellow-50 focus:outline-none focus:ring-4 focus:ring-pink-200 focus:border-pink-400 focus:scale-[1.02] shadow-md hover:shadow-lg transition-all duration-300 text-purple-700 placeholder:text-pink-300 text-base font-medium"
           aria-label="Search products"
         />
-        
-        {/* --- CHANGE 4: Clear Button Position Update --- */}
-        {/* Moved to right-14 to sit next to the search button */}
+
         {searchTerm && (
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-14 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1"
+            className="absolute right-16 top-1/2 -translate-y-1/2 bg-pink-200 text-white hover:bg-pink-400 hover:scale-110 transition-all duration-300 p-1.5 rounded-full shadow-sm z-10"
             aria-label="Clear search"
           >
             <XIcon className="w-4 h-4" />
           </button>
         )}
 
-        {/* --- CHANGE 5: Search Icon moved to Right & Made Clickable --- */}
-        {/* Changed from div/icon to button[type=submit]. Positioned absolute right. */}
         <button
           type="submit"
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600 transition-colors p-1"
+          className="absolute right-3 top-1/2 -translate-y-1/2 bg-sky-400 text-white rounded-full p-2 hover:scale-110 hover:bg-sky-500 shadow-md transition-all duration-300 z-10 flex items-center justify-center"
           aria-label="Search"
         >
           <SearchIcon className="w-5 h-5" />
@@ -149,53 +142,53 @@ const SearchBar: React.FC = () => {
 
       {/* Search Suggestions Dropdown */}
       {showSuggestions && isFocused && searchTerm.trim().length > 2 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-3 bg-white border-2 border-pink-100 rounded-2xl shadow-xl z-50 max-h-96 overflow-y-auto">
           {searchLoading ? (
-            <div className="p-4 text-center text-gray-500">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="mt-2 text-sm">Searching...</p>
+            <div className="p-6 text-center text-pink-500">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-4 border-pink-400 mx-auto"></div>
+              <p className="mt-3 text-sm font-medium animate-pulse">Searching for fun...</p>
             </div>
           ) : searchResults.length > 0 ? (
             <>
-              <div className="p-2">
+              <div className="p-3 space-y-1">
                 {searchResults.slice(0, 5).map((product) => (
                   <button
                     key={product._id}
                     onClick={() => handleSuggestionClick(product)}
-                    className="w-full text-left p-3 hover:bg-gray-50 rounded-md transition-colors flex items-center space-x-3"
+                    className="w-full text-left p-3 hover:bg-pink-50 hover:scale-[1.01] rounded-xl transition-all duration-300 mx-auto group flex items-center space-x-4 border border-transparent hover:border-pink-100"
                   >
                     <img
                       src={getImageUrl(product.images?.thumbnail || product.images?.[0])}
                       alt={product.name}
-                      className="w-10 h-10 object-contain rounded border bg-white"
+                      className="w-12 h-12 object-contain rounded-lg shadow-sm border border-pink-100 bg-white group-hover:shadow-md transition-all"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://placehold.co/40x40?text=No+Img";
+                        (e.target as HTMLImageElement).src = "https://placehold.co/48x48?text=Toy";
                       }}
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
+                      <p className="text-sm font-bold text-gray-700 truncate group-hover:text-purple-600 transition-colors">
                         {product.name}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm font-semibold text-pink-500">
                         ₹{product.offerPrice || product.basePrice}
                       </p>
                     </div>
                   </button>
                 ))}
               </div>
-              
-              <div className="border-t border-gray-200 p-2">
+
+              <div className="p-3 pt-1 border-t-2 border-pink-50 border-dashed">
                 <button
                   onClick={handleViewAllResults}
-                  className="w-full text-center py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors"
+                  className="w-full text-center py-3 text-sm font-bold text-white bg-gradient-to-r from-pink-400 via-yellow-400 to-sky-400 hover:scale-[1.02] rounded-full shadow-md transition-all duration-300"
                 >
-                  View all {searchResults.length} results for "{searchTerm}"
+                  View all {searchResults.length} results for "{searchTerm}" ✨
                 </button>
               </div>
             </>
           ) : (
-            <div className="p-4 text-center text-gray-500 text-sm">
-              No products found for "{searchTerm}"
+            <div className="p-6 text-center text-gray-500 text-sm font-medium">
+              Aw, snap! No toys found for "{searchTerm}" 🎈
             </div>
           )}
         </div>
