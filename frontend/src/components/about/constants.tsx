@@ -18,7 +18,7 @@ export const BRAND = {
   name: 'Loke Store',
   phone: '8825403712',
   email: 'lokestore24@gmail.com',
-  address: `Loke Store, RBT Mall, Meyyanur Bypass Rd, Opp. to iPlanet, Meyyanur, Salem, Tamil Nadu – 636004`
+  address: `Loke Store, Salem, Tamil Nadu – 636004`
 };
 
 export const OFFERINGS = [

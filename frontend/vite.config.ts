@@ -14,6 +14,17 @@ export default defineConfig(({ mode }) => {
     define: {
       'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+    },
+    build: {
+      target: 'es2015'
+    },
+    esbuild: {
+      target: 'es2015'
+    },
+    optimizeDeps: {
+      esbuildOptions: {
+        target: 'es2015'
+      }
     }
   };
 });

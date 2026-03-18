@@ -28,14 +28,14 @@ const ContactPage = () => {
     phone: "8825403712",
     displayPhone: "8825403712",
     email: "lokestore24@gmail.com",
-    address: "RBT Mall, Meyyanur Bypass Rd, opp. to iplanet, Meyyanur, Salem, Tamil Nadu 636004",
+    address: "Salem, Tamil Nadu 636004",
     // Link for the button action
     mapLink: "https://www.google.com/maps/place/RBT+Mall/@11.6663,78.1465,17z"
   };
 
   // --- SEO Constants ---
-  const pageTitle = "Contact Loke Store | Best PC Shop in Salem, Tamil Nadu";
-  const pageDescription = "Contact Loke Store in RBT Mall, Salem. Call 8825403712 for custom PC builds, laptop service, and tech support. Open Mon-Sat.";
+  const pageTitle = "Contact Loke Store | Best Toy Shop in Salem, Tamil Nadu";
+  const pageDescription = "Contact Loke Store, Salem. Call 8825403712 for toy inquiries. Open Mon-Sat.";
   const siteUrl = "https://lokestore.in/contact";
 
   // --- Validation Logic ---
@@ -107,7 +107,7 @@ const ContactPage = () => {
       id: 3,
       type: "address",
       title: "Visit Showroom",
-      value: "RBT Mall, Meyyanur, Salem",
+      value: "Salem",
       icon: MapPin,
       action: companyDetails.mapLink,
       subtitle: "Get Directions",
@@ -122,23 +122,23 @@ const ContactPage = () => {
     { id: 4, title: "Tech Support", icon: Headphones, desc: "Troubleshooting help", link: "/support" }
   ];
 
-  const faqs = [
-    {
-      id: 1,
-      question: "Do you test the PC before delivery?",
-      answer: "Yes. Every PC undergoes full assembly testing, thermal checks, and basic stress tests to ensure stable performance before dispatch from our Salem store."
-    },
-    {
-      id: 2,
-      question: "Do you provide on-site service for desktops and laptops?",
-      answer: "Yes, we provide on-site support for business clients and home users within a 10km radius of our Meyyanur showroom in Salem."
-    },
-    {
-      id: 3,
-      question: "Can I pick up my online order from the store?",
-      answer: "Absolutely! Select 'Store Pickup' at checkout. We'll notify you when your order is ready at our RBT Mall location."
-    }
-  ];
+const faqs = [
+  {
+    id: 1,
+    question: "Are the toys safe for children?",
+    answer: "Yes. All our toys meet safety standards and are made with child-friendly, non-toxic materials. We also clearly label recommended age groups for every product."
+  },
+  {
+    id: 2,
+    question: "Do you offer gift wrapping for toys?",
+    answer: "Yes, we provide gift wrapping for special occasions like birthdays and holidays. You can request gift wrapping during checkout."
+  },
+  {
+    id: 3,
+    question: "Can I pick up my online order from the store?",
+    answer: "Absolutely! Select 'Store Pickup' at checkout and we’ll notify you when your toys are ready for collection from our store."
+  }
+];
 
   // --- JSON-LD Structured Data ---
   const schemas = [
@@ -157,7 +157,7 @@ const ContactPage = () => {
         "email": companyDetails.email,
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "RBT Mall, Meyyanur Bypass Rd, opp. to iplanet",
+          "streetAddress": "Salem",
           "addressLocality": "Salem",
           "addressRegion": "Tamil Nadu",
           "postalCode": "636004",
@@ -215,7 +215,7 @@ const ContactPage = () => {
         <meta property="og:site_name" content="Loke Store" />
 
         {/* Local Business Tags */}
-        <meta property="business:contact_data:street_address" content="RBT Mall, Meyyanur Bypass Rd" />
+        <meta property="business:contact_data:street_address" content="Salem" />
         <meta property="business:contact_data:locality" content="Salem" />
         <meta property="business:contact_data:postal_code" content="636004" />
         <meta property="business:contact_data:country_name" content="India" />
@@ -237,8 +237,8 @@ const ContactPage = () => {
             Get in Touch with <span className="text-blue-600">Loke Store</span>
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Need a custom PC build, laptop repair, or enterprise solutions?
-            Our team at RBT Mall, Salem is ready to assist you.
+            Need a hand with your toy selection or have questions about our services?
+            Our team at Salem is ready to assist you.
           </p>
         </div>
       </div>

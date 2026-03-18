@@ -225,8 +225,7 @@ const PrivacyPolicy = () => {
                 <div>
                   <p className="text-sm text-gray-600">Address</p>
                   <p className="font-medium">
-                    Loke Store, RBT Mall, Meyyanur Bypass Rd, opp. to iplanet,
-                    Meyyanur, Salem, Tamil Nadu 636004
+                    Loke Store, Salem, Tamil Nadu 636004
                   </p>
                 </div>
               </div>

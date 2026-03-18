@@ -38,7 +38,7 @@ const PCBuilder: React.FC = () => {
         "name": companyName,
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "RBT Mall, Meyyanur Bypass Rd",
+          "streetAddress": "Salem",
           "addressLocality": city,
           "addressRegion": "Tamil Nadu",
           "postalCode": "636004",
@@ -306,8 +306,8 @@ const PCBuilder: React.FC = () => {
                   aria-selected={activeTab === tab.id}
                   aria-controls={`panel-${tab.id}`}
                   className={`py-3 px-1 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                     }`}
                 >
                   {tab.label}
@@ -363,8 +363,8 @@ const PCBuilder: React.FC = () => {
                     onClick={() => setQuoteModalOpen(true)}
                     disabled={getSelectedCount() === 0}
                     className={`w-full py-3 px-4 rounded-lg font-bold transition-all shadow-sm flex items-center justify-center gap-2 ${getSelectedCount() === 0
-                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                        : 'bg-gray-900 text-white hover:bg-gray-800 hover:shadow'
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'bg-gray-900 text-white hover:bg-gray-800 hover:shadow'
                       }`}
                     aria-label="Get Quote for selected items"
                   >

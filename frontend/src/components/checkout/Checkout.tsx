@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { checkoutActions } from '../../redux/actions/checkoutActions';
 import { clearCheckoutData } from '../../redux/slices/checkoutSlice';
@@ -502,6 +503,10 @@ const Checkout: React.FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Checkout | LokeStore</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <AnimatePresence>
         {(processingOrder) && <PaymentLoader />}
         {showSuccessAnimation && <SuccessAnimation />}

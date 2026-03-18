@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { isPrerender } from "../../utils/isPrerender";
 import { Link } from 'react-router-dom';
 import api from '../config/axiosConfig';
 import { baseURL } from '../config/config';
@@ -93,7 +94,9 @@ const HomePage: React.FC = () => {
     return `${prefix}${value.startsWith("/") ? value : "/" + value}`;
   };
 
+
   const fetchHomepageData = async () => {
+
     try {
       setLoading(true);
 
@@ -140,7 +143,7 @@ const HomePage: React.FC = () => {
       setLoading(false);
     }
   };
-
+  if (isPrerender) return;
   useEffect(() => { fetchHomepageData(); }, []);
 
   // ---- Loading ---- //

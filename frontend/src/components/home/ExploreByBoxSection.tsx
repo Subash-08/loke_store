@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { isPrerender } from "../../utils/isPrerender";
 import { Link } from 'react-router-dom';
 import {
     Sparkles,
@@ -11,6 +12,7 @@ import { baseURL } from '../config/config';
 import bg1 from '../../assets/cat-bg1.png';
 import bg2 from '../../assets/cat-bg2.png';
 import bg3 from '../../assets/cat-bg3.png';
+
 // Define the shape of a Category from the DB
 interface Category {
     _id: string;
@@ -128,8 +130,10 @@ const ExploreByBoxSection: React.FC = () => {
         return `${prefix}${value.startsWith("/") ? value : "/" + value}`;
     };
 
+    if (isPrerender) return;
     useEffect(() => {
         const fetchCategories = async () => {
+
             try {
                 const response = await categoryAPI.getPublicShowcaseCategories();
                 let fetchedCategories: Category[] = response.categories || response.data || [];

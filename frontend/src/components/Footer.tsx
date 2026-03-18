@@ -17,14 +17,9 @@ const Footer = () => {
 
   // Brands 
   const popularBrands = [
-    { label: "Lego", href: "/brands/lego" },
-    { label: "Barbie", href: "/brands/barbie" },
-    { label: "Hot Wheels", href: "/brands/hot-wheels" },
-    { label: "Fisher-Price", href: "/brands/fisher-price" },
-    { label: "Nerf", href: "/brands/nerf" },
-    { label: "Hasbro", href: "/brands/hasbro" },
-    { label: "Funko", href: "/brands/funko" },
-    { label: "Disney", href: "/brands/disney" },
+    { label: "Choppu Saman", href: "/brand/choppu-saman" },
+    { label: "Kids", href: "/brands/kids" },
+    { label: "Loke", href: "/brands/loke" },
   ];
 
   // Customer Service

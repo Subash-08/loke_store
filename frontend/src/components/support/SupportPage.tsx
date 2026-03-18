@@ -215,8 +215,6 @@ const SupportPage: React.FC = () => {
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-900">Service Center</p>
                     <p className="mt-1 text-gray-600 text-sm leading-relaxed">
-                      RBT Mall, Meyyanur Bypass Rd,<br />
-                      Opp. to iPlanet,<br />
                       Salem, Tamil Nadu 636004
                     </p>
                   </div>

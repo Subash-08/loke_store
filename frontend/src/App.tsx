@@ -1,4 +1,11 @@
 import React, { useEffect, lazy, Suspense, useState, memo } from "react";
+
+// React Snap DOM state fix for prerendering
+if (typeof window !== "undefined") {
+  window.snapSaveState = () => {
+    document.body.classList.add("snap-rendered");
+  };
+}
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./components/Navbar";
@@ -7,6 +14,7 @@ import LoadingSpinner from "./components/admin/common/LoadingSpinner";
 import { useAppSelector } from "./redux/hooks";
 import { selectIsAuthenticated, selectAuthLoading, selectUser } from "./redux/selectors";
 import { HelmetProvider } from "react-helmet-async";
+import GlobalSEO from "./components/seo/GlobalSEO";
 
 // ✅ EAGER LOAD (Only entry points)
 // Keep Home eager so LCP (Hero Image/Text) renders immediately without a spinner.
@@ -182,6 +190,12 @@ const ProtectedRoute = ({
   return <>{children}</>;
 };
 
+if (typeof window !== "undefined") {
+  (window as any).snapSaveState = () => {
+    document.body.classList.add("snap-rendered");
+  };
+}
+
 const App: React.FC = () => {
   const [mounted, setMounted] = useState(false);
 
@@ -191,6 +205,7 @@ const App: React.FC = () => {
 
   return (
     <HelmetProvider>
+      <GlobalSEO />
       <BrowserRouter>
         <ScrollToTop />
         <RootLayout>

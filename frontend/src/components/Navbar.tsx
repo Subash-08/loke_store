@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { isPrerender } from "../utils/isPrerender";
 import { Link, useNavigate } from 'react-router-dom';
 import { NavItem } from '../../types';
 import ChevronDownIcon from './icons/ChevronDownIcon';
@@ -16,6 +17,7 @@ import LogoSection from './home/LogoSection'; // Adjust path as needed
 // Redux imports
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { logout } from '../redux/actions/authActions';
+
 // Memoized selectors
 import {
   selectIsAuthenticated,
@@ -144,6 +146,19 @@ const AuthenticatedUserSection: React.FC<{ closeMobileMenu: () => void }> = ({ c
             title="My Profile"
           >
             <UserIcon className="w-5 h-5" />
+          </Link>
+
+          {/* My Orders Button */}
+          <Link
+            to="/account/orders"
+            className="flex items-center justify-center w-9 h-9 bg-white text-gray-600 border border-gray-200 rounded-lg hover:bg-[#544D89] hover:text-white transition-colors shadow-sm"
+            onClick={closeMobileMenu}
+            aria-label="My Orders"
+            title="My Orders"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
           </Link>
 
           {/* Admin Dashboard - Only for admins */}
@@ -699,7 +714,9 @@ const Navbar: React.FC = () => {
   }, [cartTotal]);
 
   // Fetch categories, brands, and age ranges data
+
   const fetchNavData = async () => {
+
     try {
       setLoading(true);
       setError('');
@@ -724,7 +741,7 @@ const Navbar: React.FC = () => {
       setLoading(false);
     }
   };
-
+  if (isPrerender) return;
   useEffect(() => {
     fetchNavData();
   }, []);

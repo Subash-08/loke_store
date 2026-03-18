@@ -185,8 +185,7 @@ const WarrantyPolicy = () => {
                     <p className="text-gray-700">📧 Email: <strong>lokestore24@gmail.com</strong></p>
                   </div>
                   <p className="text-gray-700 mt-3">
-                    <strong>Address:</strong> Loke Store, RBT Mall, Meyyanur Bypass Rd, opp. to iplanet,
-                    Meyyanur, Salem, Tamil Nadu 636004
+                    <strong>Address:</strong> Loke Store, Salem, Tamil Nadu 636004
                   </p>
                 </div>
               </div>

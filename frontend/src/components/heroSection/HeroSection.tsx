@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { heroSectionService, HeroSection as HeroSectionType } from '../admin/services/heroSectionService';
 import { baseURL } from '../config/config';
+import { isPrerender } from '../../utils/isPrerender';
 
 const image_baseURL = import.meta.env.VITE_API_URL || baseURL;
 
@@ -233,8 +234,29 @@ const HeroSection: React.FC = () => {
   const [heroSections, setHeroSections] = useState<HeroSectionType[]>([]);
   const [currentSlideIndices, setCurrentSlideIndices] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
+  if (isPrerender) {
+    return (
+      <section id="home-hero" className="py-20 text-center">
+        <h1 className="text-4xl font-bold">
+          Wooden Toys & Montessori Toys in Salem
+        </h1>
 
+        <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          Discover high-quality wooden toys, Montessori learning toys,
+          puzzles, and educational toys for kids at Loke Store. Safe,
+          eco-friendly, and designed for early childhood development.
+        </p>
+
+        <div className="mt-6">
+          <a href="/products" className="text-blue-600 underline">
+            Explore Toys Collection
+          </a>
+        </div>
+      </section>
+    );
+  }
   useEffect(() => {
+
     const loadActiveHeroSections = async () => {
       try {
         setLoading(true);

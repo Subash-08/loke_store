@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Sidebar from './Sidebar';
 import { SidebarItem } from './types/admin';
 import { Icons } from './Icon';
@@ -71,7 +72,7 @@ import FeaturedBrandList from './featured-brands/FeaturedBrandList';
 import FeaturedBrandForm from './featured-brands/FeaturedBrandForm';
 import PreBuildShowcaseList from './PreBuildShowcase/PreBuildShowcaseList';
 import PreBuildShowcaseForm from './PreBuildShowcase/PreBuildShowcaseForm';
-import VideoForm from './ytvideos/YTVideoForm';
+// import VideoForm from './ytvideos/YTVideoForm';
 import YTVideoList from './ytvideos/YTVideoList';
 import YTVideoForm from './ytvideos/YTVideoForm';
 import HomeBrandManager from './home/HomeBrandManager';
@@ -110,9 +111,9 @@ const UserDropdown: React.FC = () => {
   // Use profile data if available, otherwise fall back to auth data
   const displayUser = profile || user;
   const displayInitials = profileInitials || userInitials || 'A';
-  const displayName = profileName || user?.firstName || 'Admin';
-  const displayEmail = user?.email || 'Administrator';
-  const displayAvatar = profileAvatar || user?.avatar;
+  const displayName = profileName || (user as any)?.firstName || 'Admin';
+  const displayEmail = (user as any)?.email || 'Administrator';
+  const displayAvatar = profileAvatar || (user as any)?.avatar;
   const avatarUrl = getAvatarUrl(displayAvatar);
 
   // Close dropdown when clicking outside
@@ -500,159 +501,165 @@ const AdminLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Fixed Sidebar */}
-      <Sidebar
-        items={sidebarItems}
-        activePath={getActivePath()}
-        onItemClick={handleItemClick}
-        isCollapsed={isSidebarCollapsed}
-      />
+    <>
+      <Helmet>
+        <title>Admin Dashboard | LokeStore</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <div className="min-h-screen bg-gray-50">
+        {/* Fixed Sidebar */}
+        <Sidebar
+          items={sidebarItems}
+          activePath={getActivePath()}
+          onItemClick={handleItemClick}
+          isCollapsed={isSidebarCollapsed}
+        />
 
-      {/* Main Content Area */}
-      <div className={`
+        {/* Main Content Area */}
+        <div className={`
         min-h-screen transition-all duration-300
         ${isSidebarCollapsed ? 'ml-20' : 'ml-64'}
       `}>
-        {/* Fixed Top Header */}
-        <header className="fixed top-0 right-0 left-0 bg-white shadow-sm border-b border-gray-200 z-40 transition-all duration-300"
-          style={{
-            marginLeft: isSidebarCollapsed ? '5rem' : '16rem'
-          }}
-        >
-          <div className="flex items-center justify-between px-6 py-4">
-            <div className="flex items-center">
-              <button
-                onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-                className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-              >
-                <Icons.ChevronRight className={`
+          {/* Fixed Top Header */}
+          <header className="fixed top-0 right-0 left-0 bg-white shadow-sm border-b border-gray-200 z-40 transition-all duration-300"
+            style={{
+              marginLeft: isSidebarCollapsed ? '5rem' : '16rem'
+            }}
+          >
+            <div className="flex items-center justify-between px-6 py-4">
+              <div className="flex items-center">
+                <button
+                  onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+                >
+                  <Icons.ChevronRight className={`
                   w-5 h-5 text-gray-600 transition-transform duration-300
                   ${isSidebarCollapsed ? 'rotate-180' : ''}
                 `} />
-              </button>
-              <h1 className="ml-4 text-xl font-semibold text-gray-900">
-                {getPageTitle()}
-              </h1>
+                </button>
+                <h1 className="ml-4 text-xl font-semibold text-gray-900">
+                  {getPageTitle()}
+                </h1>
+              </div>
+
+              <div className="flex items-center space-x-4">
+                {/* Notifications */}
+                <button className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+                  <div className="w-2 h-2 bg-red-500 rounded-full absolute top-2 right-2"></div>
+                  <Icons.Bell className="w-5 h-5" />
+                </button>
+
+                {/* User Profile Dropdown */}
+                <UserDropdown />
+              </div>
             </div>
+          </header>
 
-            <div className="flex items-center space-x-4">
-              {/* Notifications */}
-              <button className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200">
-                <div className="w-2 h-2 bg-red-500 rounded-full absolute top-2 right-2"></div>
-                <Icons.Bell className="w-5 h-5" />
-              </button>
+          {/* Main Content */}
+          <main className="pt-20 pb-8 px-6">
+            <div className="max-w-7xl mx-auto">
+              {/* Render the appropriate component based on route */}
+              <Routes>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/categories" element={<CategoryList />} />
+                <Route path="/categories/new" element={<CategoryForm />} />
+                <Route path="/categories/edit/:id" element={<CategoryForm />} />
 
-              {/* User Profile Dropdown */}
-              <UserDropdown />
+                {/* Age Range Routes */}
+                <Route path="/age-ranges" element={<AgeRangeList />} />
+                <Route path="/age-ranges/new" element={<AgeRangeForm />} />
+                <Route path="/age-ranges/edit/:id" element={<AgeRangeForm />} />
+                <Route path="/age-ranges/:id/products" element={<AgeRangeProducts />} />
+
+                <Route path="/products" element={<Products />} />
+                {/* Brand Routes */}
+                <Route path="/brands" element={<BrandList />} />
+                <Route path="/brands/new" element={<BrandForm />} />
+                <Route path="/brands/edit/:slug" element={<BrandForm />} />
+                {/* User Management Routes */}
+                <Route path="/users" element={<UserList />} />
+                <Route path="/users/:id" element={<UserDetailPage />} />
+                <Route path="/reviews" element={<ReviewList />} />
+                {/* Hero Section Routes */}
+                <Route path="/hero-sections" element={<HeroSectionList />} />
+                <Route path="/hero-sections/new" element={<HeroSectionForm />} />
+                <Route path="/hero-sections/edit/:id" element={<HeroSectionForm />} />
+                <Route path="/hero-sections/:id/slides" element={<SlideManagement />} />
+                <Route path="/hero-sections/:id/slides/new" element={<SlideForm />} />
+                <Route path="/hero-sections/:id/slides/edit/:slideId" element={<SlideForm />} />
+
+                {/* Add showcase section routes */}
+                <Route path="/showcase-sections" element={<ShowcaseSectionManagement />} />
+                <Route path="/showcase-sections/new" element={<ShowcaseSectionForm onSubmit={() => { }} onCancel={() => { }} />} />
+                <Route path="/showcase-sections/edit/:id" element={<ShowcaseSectionForm onSubmit={() => { }} onCancel={() => { }} />} />
+
+
+                <Route path="/prebuilt-pcs" element={<PreBuiltPCList />} />
+                <Route path="/prebuilt-pcs/new" element={<PreBuiltPCForm />} />
+                <Route path="/prebuilt-pcs/edit/:id" element={<PreBuiltPCForm />} />
+                <Route path="/prebuilt-pcs/benchmarks/:id" element={<PreBuiltPCBenchmarks />} />
+
+                {/* 🆕 Coupon Routes */}
+                <Route path="/coupons" element={<CouponList />} />
+                <Route path="/coupons/new" element={<CouponForm />} />
+                <Route path="/coupons/edit/:id" element={<CouponForm />} />
+
+
+                <Route path="/orders" element={<OrderList />} />
+                <Route path="/orders/analytics" element={<OrderAnalytics />} />
+                <Route path="/orders/:orderId" element={<OrderDetails />} />
+
+                {/* Blog Routes - UPDATED WITH /admin PREFIX */}
+                <Route path="/blogs" element={<BlogList />} />
+                <Route path="/blogs/new" element={<BlogEditor />} />
+                <Route path="/blogs/edit/:id" element={<BlogEditor isEdit />} />
+                <Route path="/blogs/statistics" element={<BlogStatisticsComponent />} />
+
+                {/* PC Builder Routes */}
+                <Route path="/pc-builder/requirements" element={<PCRequirementsList />} />
+                <Route path="/pc-builder/requirements/:id" element={<PCRequirementDetail />} />
+                <Route path="/pc-builder/quotes" element={<PCQuotesList />} />
+                <Route path="/pc-builder/quotes/:id" element={<PCQuoteDetail />} />
+
+                {/* Video Routes */}
+                <Route path="/videos" element={<VideoList />} />
+                <Route path="/videos/upload" element={<VideoUpload />} />
+                <Route path="/videos/:id" element={<VideoDetail />} />
+
+                {/* Section Routes */}
+                <Route path="/sections" element={<SectionList />} />
+                <Route path="/sections/create" element={<SectionForm />} />
+                <Route path="/sections/:id" element={<SectionDetail />} />
+                <Route path="/sections/:id/edit" element={<SectionForm />} />
+                {/* Admin Invoice Routes */}
+                <Route path="/invoices" element={<InvoiceList />} />
+                <Route path="/invoices/new" element={<InvoiceGenerator />} />
+                <Route path="/invoices/:id" element={<InvoiceDetails />} />
+
+                <Route path="/navbar-settings" element={<NavbarSettings />} />
+
+                <Route path="/pc-invoice" element={<InvoiceCalculator />} />
+                <Route path="/featured-brands" element={<FeaturedBrandList />} />
+                <Route path="/featured-brands/new" element={<FeaturedBrandForm />} />
+                <Route path="/featured-brands/edit/:id" element={<FeaturedBrandForm />} />
+                <Route path="/pre-build-showcase" element={<PreBuildShowcaseList />} />
+                <Route path="/pre-build-showcase/new" element={<PreBuildShowcaseForm />} />
+                <Route path="/pre-build-showcase/edit/:id" element={<PreBuildShowcaseForm />} />
+
+                <Route path="/yt-videos" element={<YTVideoList />} />
+                <Route path="/yt-videos/new" element={<YTVideoForm />} />
+                <Route path="/yt-videos/edit/:id" element={<YTVideoForm />} />
+
+                <Route path="/home-featured-brands" element={<HomeBrandManager />} />
+                <Route path="/home-featured-categories" element={<HomeCategoryManager />} />
+
+
+              </Routes>
             </div>
-          </div>
-        </header>
-
-        {/* Main Content */}
-        <main className="pt-20 pb-8 px-6">
-          <div className="max-w-7xl mx-auto">
-            {/* Render the appropriate component based on route */}
-            <Routes>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/categories" element={<CategoryList />} />
-              <Route path="/categories/new" element={<CategoryForm />} />
-              <Route path="/categories/edit/:id" element={<CategoryForm />} />
-
-              {/* Age Range Routes */}
-              <Route path="/age-ranges" element={<AgeRangeList />} />
-              <Route path="/age-ranges/new" element={<AgeRangeForm />} />
-              <Route path="/age-ranges/edit/:id" element={<AgeRangeForm />} />
-              <Route path="/age-ranges/:id/products" element={<AgeRangeProducts />} />
-
-              <Route path="/products" element={<Products />} />
-              {/* Brand Routes */}
-              <Route path="/brands" element={<BrandList />} />
-              <Route path="/brands/new" element={<BrandForm />} />
-              <Route path="/brands/edit/:slug" element={<BrandForm />} />
-              {/* User Management Routes */}
-              <Route path="/users" element={<UserList />} />
-              <Route path="/users/:id" element={<UserDetailPage />} />
-              <Route path="/reviews" element={<ReviewList />} />
-              {/* Hero Section Routes */}
-              <Route path="/hero-sections" element={<HeroSectionList />} />
-              <Route path="/hero-sections/new" element={<HeroSectionForm />} />
-              <Route path="/hero-sections/edit/:id" element={<HeroSectionForm />} />
-              <Route path="/hero-sections/:id/slides" element={<SlideManagement />} />
-              <Route path="/hero-sections/:id/slides/new" element={<SlideForm />} />
-              <Route path="/hero-sections/:id/slides/edit/:slideId" element={<SlideForm />} />
-
-              {/* Add showcase section routes */}
-              <Route path="/showcase-sections" element={<ShowcaseSectionManagement />} />
-              <Route path="/showcase-sections/new" element={<ShowcaseSectionForm />} />
-              <Route path="/showcase-sections/edit/:id" element={<ShowcaseSectionForm />} />
-
-
-              <Route path="/prebuilt-pcs" element={<PreBuiltPCList />} />
-              <Route path="/prebuilt-pcs/new" element={<PreBuiltPCForm />} />
-              <Route path="/prebuilt-pcs/edit/:id" element={<PreBuiltPCForm />} />
-              <Route path="/prebuilt-pcs/benchmarks/:id" element={<PreBuiltPCBenchmarks />} />
-
-              {/* 🆕 Coupon Routes */}
-              <Route path="/coupons" element={<CouponList />} />
-              <Route path="/coupons/new" element={<CouponForm />} />
-              <Route path="/coupons/edit/:id" element={<CouponForm />} />
-
-
-              <Route path="/orders" element={<OrderList />} />
-              <Route path="/orders/analytics" element={<OrderAnalytics />} />
-              <Route path="/orders/:orderId" element={<OrderDetails />} />
-
-              {/* Blog Routes - UPDATED WITH /admin PREFIX */}
-              <Route path="/blogs" element={<BlogList />} />
-              <Route path="/blogs/new" element={<BlogEditor />} />
-              <Route path="/blogs/edit/:id" element={<BlogEditor isEdit />} />
-              <Route path="/blogs/statistics" element={<BlogStatisticsComponent />} />
-
-              {/* PC Builder Routes */}
-              <Route path="/pc-builder/requirements" element={<PCRequirementsList />} />
-              <Route path="/pc-builder/requirements/:id" element={<PCRequirementDetail />} />
-              <Route path="/pc-builder/quotes" element={<PCQuotesList />} />
-              <Route path="/pc-builder/quotes/:id" element={<PCQuoteDetail />} />
-
-              {/* Video Routes */}
-              <Route path="/videos" element={<VideoList />} />
-              <Route path="/videos/upload" element={<VideoUpload />} />
-              <Route path="/videos/:id" element={<VideoDetail />} />
-
-              {/* Section Routes */}
-              <Route path="/sections" element={<SectionList />} />
-              <Route path="/sections/create" element={<SectionForm />} />
-              <Route path="/sections/:id" element={<SectionDetail />} />
-              <Route path="/sections/:id/edit" element={<SectionForm />} />
-              {/* Admin Invoice Routes */}
-              <Route path="/invoices" element={<InvoiceList />} />
-              <Route path="/invoices/new" element={<InvoiceGenerator />} />
-              <Route path="/invoices/:id" element={<InvoiceDetails />} />
-
-              <Route path="/navbar-settings" element={<NavbarSettings />} />
-
-              <Route path="/pc-invoice" element={<InvoiceCalculator />} />
-              <Route path="/featured-brands" element={<FeaturedBrandList />} />
-              <Route path="/featured-brands/new" element={<FeaturedBrandForm />} />
-              <Route path="/featured-brands/edit/:id" element={<FeaturedBrandForm />} />
-              <Route path="/pre-build-showcase" element={<PreBuildShowcaseList />} />
-              <Route path="/pre-build-showcase/new" element={<PreBuildShowcaseForm />} />
-              <Route path="/pre-build-showcase/edit/:id" element={<PreBuildShowcaseForm />} />
-
-              <Route path="/yt-videos" element={<YTVideoList />} />
-              <Route path="/yt-videos/new" element={<YTVideoForm />} />
-              <Route path="/yt-videos/edit/:id" element={<YTVideoForm />} />
-
-              <Route path="/home-featured-brands" element={<HomeBrandManager />} />
-              <Route path="/home-featured-categories" element={<HomeCategoryManager />} />
-
-
-            </Routes>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

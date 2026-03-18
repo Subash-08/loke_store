@@ -14,7 +14,7 @@ const ShippingDeliveryPolicy = () => {
         {/* Introduction */}
         <div className="mb-10">
           <p className="text-gray-700 leading-relaxed">
-            At Loke Store, we are committed to ensuring your orders are delivered promptly, 
+            At Loke Store, we are committed to ensuring your orders are delivered promptly,
             safely, and efficiently.
           </p>
         </div>
@@ -29,13 +29,13 @@ const ShippingDeliveryPolicy = () => {
                 <li className="flex items-center">
                   <div className="w-2 h-2 bg-green-600 rounded-full mr-3"></div>
                   <span className="text-gray-700">
-                    <strong>Free delivery</strong> is available on all orders with a total value of ₹1,000 or above.
+                    <strong>Free delivery</strong> is available on all orders with a total value of ₹500 or above.
                   </span>
                 </li>
                 <li className="flex items-center">
                   <div className="w-2 h-2 bg-green-600 rounded-full mr-3"></div>
                   <span className="text-gray-700">
-                    A flat delivery fee of <strong>₹50</strong> will apply to orders below ₹1,000.
+                    A flat delivery fee of <strong>₹50</strong> will apply to orders below ₹500.
                   </span>
                 </li>
               </ul>
@@ -75,11 +75,11 @@ const ShippingDeliveryPolicy = () => {
                 <h2 className="text-2xl font-semibold text-gray-900">Order Processing & Dispatch</h2>
                 <div className="mt-4 space-y-3">
                   <p className="text-gray-700">
-                    • All orders are typically processed and dispatched within <strong>1–2 working days</strong> 
+                    • All orders are typically processed and dispatched within <strong>1–2 working days</strong>
                     following order confirmation and payment.
                   </p>
                   <p className="text-gray-700">
-                    • Once shipped, you will receive a <strong>tracking ID and link via WhatsApp</strong>, 
+                    • Once shipped, you will receive a <strong>tracking ID and link via WhatsApp</strong>,
                     allowing you to monitor your shipment in real-time.
                   </p>
                 </div>
@@ -99,7 +99,7 @@ const ShippingDeliveryPolicy = () => {
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">Other South Indian locations</h3>
                   <p className="text-gray-700">
-                    Delivery may take <strong>3–6 working days</strong>, depending on the destination 
+                    Delivery may take <strong>3–6 working days</strong>, depending on the destination
                     PIN code and courier service availability.
                   </p>
                 </div>
@@ -125,7 +125,7 @@ const ShippingDeliveryPolicy = () => {
                   <li>Unexpected delivery delays</li>
                 </ul>
                 <p className="text-gray-700 mt-3">
-                  Please notify our support team <strong>within 24 hours of delivery</strong>. 
+                  Please notify our support team <strong>within 24 hours of delivery</strong>.
                   Timely reporting helps us take immediate action with the courier and initiate appropriate resolution.
                 </p>
               </div>
@@ -138,7 +138,7 @@ const ShippingDeliveryPolicy = () => {
             <p className="text-gray-700 mb-6">
               For any questions or issues related to your shipment, you may contact our support team:
             </p>
-            
+
             <div className="space-y-4">
               <div className="bg-white p-4 rounded-lg">
                 <p className="font-semibold text-gray-900">Contact Information</p>
@@ -147,19 +147,18 @@ const ShippingDeliveryPolicy = () => {
                   <p className="text-gray-700">📧 Email: <strong>lokestore24@gmail.com</strong></p>
                 </div>
                 <p className="text-gray-700 mt-3">
-                  <strong>Address:</strong> Loke Store, RBT Mall, Meyyanur Bypass Rd, opp. to iplanet, 
-                  Meyyanur, Salem, Tamil Nadu 636004
+                  <strong>Address:</strong> Loke Store, Salem, Tamil Nadu 636004
                 </p>
               </div>
-              
+
               <p className="text-gray-700">
-                Our customer service representatives are available during business hours to assist you 
+                Our customer service representatives are available during business hours to assist you
                 with delivery tracking, issue resolution, or order status updates.
               </p>
-              
+
               <div className="pt-4 border-t border-blue-100">
                 <p className="text-gray-700 italic">
-                  Thank you for choosing Loke Store. We appreciate your trust and are committed 
+                  Thank you for choosing Loke Store. We appreciate your trust and are committed
                   to delivering excellence at every step.
                 </p>
               </div>

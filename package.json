@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@types/react-beautiful-dnd": "^13.1.8",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "react-snap": "^1.23.0"
   }
 }

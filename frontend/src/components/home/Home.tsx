@@ -23,9 +23,9 @@ import CategoryBannerSection from './CategoryBannerSection';
 import FetchAgeRangeHome from './FetchAgeRangeHome';
 import ExploreByBoxSection from './ExploreByBoxSection';
 const App: React.FC = () => {
-  // Business Details Constants
+  // Business Details Constants 
   const companyName = "Loke Store";
-  const siteUrl = "https://lokestore.in/";
+  const siteUrl = "https://www.lokestore.in/";
   const phoneNumber = "8825403712";
   const emailAddress = "lokestore24@gmail.com";
 
@@ -39,7 +39,7 @@ const App: React.FC = () => {
   // Structured Data (LocalBusiness/ComputerStore Schema)
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "ComputerStore",
+    "@type": "ToyStore",
     "name": companyName,
     "image": [ogImage],
     "description": pageDescription,
@@ -49,8 +49,8 @@ const App: React.FC = () => {
     "priceRange": "₹₹",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "RBT Mall, Meyyanur Bypass Rd, opp. to iplanet",
-      "addressLocality": "Meyyanur, Salem",
+      "streetAddress": "Salem",
+      "addressLocality": "Salem",
       "addressRegion": "Tamil Nadu",
       "postalCode": "636004",
       "addressCountry": "IN"
@@ -90,8 +90,8 @@ const App: React.FC = () => {
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
         <link rel="canonical" href={siteUrl} />
-        <meta name="keywords" content="Loke Store Salem, Custom PC Build Salem, Computer Shop RBT Mall, Gaming PC Tamil Nadu, Computer Accessories Salem" />
-
+        <meta name="keywords" content="Loke Store Salem, Toy store Salem, kids toys, RC cars, remote control cars, and all types of toys" />
+        <meta name="robots" content="index, follow" />
         {/* Open Graph (Facebook/WhatsApp/LinkedIn) */}
         <meta property="og:type" content="business.business" />
         <meta property="og:url" content={siteUrl} />
@@ -101,7 +101,7 @@ const App: React.FC = () => {
         <meta property="og:site_name" content={companyName} />
 
         {/* Contact Specific OG Tags */}
-        <meta property="business:contact_data:street_address" content="RBT Mall, Meyyanur Bypass Rd" />
+        <meta property="business:contact_data:street_address" content="Salem" />
         <meta property="business:contact_data:locality" content="Salem" />
         <meta property="business:contact_data:region" content="Tamil Nadu" />
         <meta property="business:contact_data:postal_code" content="636004" />
