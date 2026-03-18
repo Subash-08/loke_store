@@ -50,6 +50,7 @@ const allowedOrigins = [
     'https://www.api.lokestore.in',
     'https://coruscating-basbousa-f1949f.netlify.app',
     "http://localhost:45678"
+
 ];
 
 app.use(cors({
