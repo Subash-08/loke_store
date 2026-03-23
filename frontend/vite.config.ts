@@ -16,15 +16,18 @@ export default defineConfig(({ mode }) => {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
     },
     build: {
-      target: 'es2015'
+      target: 'es2015',
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom'],
+            utils: ['axios', 'lodash'],
+          }
+        }
+      }
     },
     esbuild: {
-      target: 'es2015'
+      target: 'es2020'
     },
-    optimizeDeps: {
-      esbuildOptions: {
-        target: 'es2015'
-      }
-    }
   };
 });

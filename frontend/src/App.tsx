@@ -1,11 +1,6 @@
 import React, { useEffect, lazy, Suspense, useState, memo } from "react";
 
-// React Snap DOM state fix for prerendering
-if (typeof window !== "undefined") {
-  window.snapSaveState = () => {
-    document.body.classList.add("snap-rendered");
-  };
-}
+
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./components/Navbar";

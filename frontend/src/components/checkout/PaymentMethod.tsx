@@ -143,7 +143,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
       }
 
       const options = {
-        key: "rzp_test_SA4BZP0j1NP6DN",
+        key: "rzp_live_SUkHU51X9h1gsR",
         amount: result.data.amount || Math.round(amount * 100),
         currency: result.data.currency || 'INR',
         name: 'Loke Store Store',
@@ -151,6 +151,15 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
         order_id: razorpayOrderId,
         handler: async function (response: RazorpayResponse) {
           await handlePaymentSuccess(response);
+        },
+        method: {
+          card: true,
+          netbanking: true,
+          upi: true,
+          wallet: true,
+
+          emi: false,
+          paylater: false
         },
         prefill: {
           name: userData?.name || 'Customer',

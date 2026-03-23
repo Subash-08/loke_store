@@ -130,7 +130,7 @@ const ExploreByBoxSection: React.FC = () => {
         return `${prefix}${value.startsWith("/") ? value : "/" + value}`;
     };
 
-    if (isPrerender) return;
+    // if (isPrerender) return;
     useEffect(() => {
         const fetchCategories = async () => {
 

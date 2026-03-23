@@ -5,6 +5,9 @@ import { ToyTheme } from '../../theme/designTokens';
 
 // Placeholder imports 
 import creativeToysImg from '../../assets/10021.png';
+import creativeToysImg1 from '../../assets/cat1.png';
+import creativeToysImg2 from '../../assets/cat2.png';
+import creativeToysImg3 from '../../assets/cat3.png';
 import puzzlesImg from '../../assets/10022.png';
 import pushPullImg from '../../assets/10023.png';
 
@@ -21,29 +24,29 @@ interface BannerItem {
 const banners: BannerItem[] = [
     {
         id: 'creative',
-        title: 'CREATIVE TOYS',
-        subtitle: 'Inspire Young Imaginations',
-        image: creativeToysImg,
+        title: '',
+        subtitle: '',
+        image: creativeToysImg1,
         bgColor: '#E9F5E5', // Matches the light green in reference
-        link: '/category/creative-toys',
+        link: '/products/category/kitchen-toys',
         textColor: 'text-slate-800',
     },
     {
         id: 'puzzles',
-        title: 'PUZZLES',
-        subtitle: 'Think, Solve, Play!',
-        image: puzzlesImg,
+        title: '',
+        subtitle: '',
+        image: creativeToysImg2,
         bgColor: '#FAEBE6', // Matches the peach/pink in reference
-        link: '/category/puzzles',
+        link: '/products/category/monterssori-toys',
         textColor: 'text-slate-800',
     },
     {
         id: 'push-pull',
-        title: 'PUSH & PULL TOYS',
-        subtitle: 'Move, Explore, Grow!',
-        image: pushPullImg,
+        title: '',
+        subtitle: '',
+        image: creativeToysImg3,
         bgColor: '#EAF2FB', // Matches the light blue in reference
-        link: '/category/push-pull',
+        link: 'products/category/wooden-walkes',
         textColor: 'text-slate-800',
     }
 ];
@@ -127,7 +130,7 @@ const CategoryBannerSection: React.FC = () => {
                                         </p>
 
                                         {/* Button - Reduced size */}
-                                        <button
+                                        {/* <button
                                             className="bg-white text-slate-900 font-semibold uppercase tracking-wider rounded-full 
                                                 px-3 py-1.5 md:px-3.5 md:py-2 lg:px-4 lg:py-2
                                                 text-xs md:text-xs lg:text-sm
@@ -141,7 +144,7 @@ const CategoryBannerSection: React.FC = () => {
                                             }}
                                         >
                                             SHOP NOW
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </div>
                             </div>
@@ -167,7 +170,7 @@ const CategoryBannerSection: React.FC = () => {
                 /* Mobile (below 640px) */
                 @media (max-width: 639px) {
                     .zoom_hov {
-                        --banner-aspect-ratio: 1.4 / 1;
+                        --banner-aspect-ratio: 1.8 / 1;
                     }
                     .grid-cols-1 {
                         gap: 16px;

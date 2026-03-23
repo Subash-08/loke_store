@@ -741,7 +741,7 @@ const Navbar: React.FC = () => {
       setLoading(false);
     }
   };
-  if (isPrerender) return;
+  // if (isPrerender) return;
   useEffect(() => {
     fetchNavData();
   }, []);

@@ -78,8 +78,8 @@ const YTVideoSection = () => {
           slidesToShow: 1,
           slidesToScroll: 1,
           centerMode: false,
-          centerPadding: '0px',
-          arrows: false
+          centerPadding: "0px",
+          arrows: false,
         }
       }
     ],
@@ -91,15 +91,26 @@ const YTVideoSection = () => {
   return (
     <section className={`py-4 md:py-8 ${ToyTheme.colors.background.page} overflow-hidden border-t border-purple-100`}>
 
-      {/* Equal Height Hack for Slick Carousel */}
       <style>{`
         .slick-track { display: flex !important; gap: 0px; }
         .slick-slide { height: inherit !important; display: flex !important; justify-content: center; }
         .slick-slide > div { height: 100%; width: 100%; }
-        /* Fix dots position on mobile */
         .slick-dots { bottom: -40px !important; }
         .slick-dots li button:before { font-size: 12px !important; color: #d8b4fe !important; opacity: 1; }
         .slick-dots li.slick-active button:before { color: #9333ea !important; }
+
+        /* ── Mobile card fix ── */
+        @media (max-width: 639px) {
+          /* Force each slide to use the full track width */
+          .yt-slider .slick-list { overflow: visible; }
+          .yt-slider .slick-slide { width: 100% !important; min-width: 0; }
+          /* Card inner container: full width, sensible min-height */
+          .yt-card { width: 100% !important; min-height: 220px; }
+          /* Thumbnail fills the card width properly */
+          .yt-thumb { width: 100%; position: relative; padding-top: 56.25%; /* 16:9 */ }
+          .yt-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+          .yt-thumb .yt-play-overlay { position: absolute; inset: 0; }
+        }
       `}</style>
 
       <div className={ToyTheme.layout.container}>
@@ -125,23 +136,32 @@ const YTVideoSection = () => {
           </motion.p>
         </div>
 
-        {/* Removed extra padding on mobile wrapper to maximize width */}
+        {/*
+          Mobile: no horizontal padding so cards span the full container width.
+          md+: restore the px-12 + negative mx for arrow space.
+        */}
         <div className="px-0 md:px-12 mb-12">
-          <Slider {...settings} className="sm:-mx-5">
+          <Slider {...settings} className="yt-slider sm:-mx-5">
             {videos.map((video) => (
-              <div key={video._id} className="px-1 sm:px-5 pb-4 pt-2 h-full">
+              <div key={video._id} className="px-2 sm:px-5 pb-4 pt-2 h-full">
                 <div
                   onClick={() => setSelectedVideo(video.videoId)}
-                  className={`group bg-white ${ToyTheme.shapes.card} p-3 md:p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer h-full flex flex-col border-2 border-transparent hover:border-purple-200`}
+                  className={`yt-card group bg-white ${ToyTheme.shapes.card} p-3 md:p-5 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer h-full flex flex-col border-2 border-transparent hover:border-purple-200`}
                 >
-                  <div className={`relative aspect-video ${ToyTheme.shapes.card} overflow-hidden bg-purple-100 shadow-inner flex-shrink-0`}>
+                  {/*
+                    On mobile use the CSS-driven padding-top trick (.yt-thumb) so the
+                    thumbnail always renders at a proper 16:9 size regardless of the
+                    slide width reported by Slick.  On sm+ the old aspect-video class
+                    handles it correctly.
+                  */}
+                  <div className={`yt-thumb sm:relative sm:aspect-video ${ToyTheme.shapes.card} overflow-hidden bg-purple-100 shadow-inner flex-shrink-0`}>
                     <img
                       src={video.thumbnailUrl}
                       alt={video.title}
                       className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
 
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/20 transition-colors">
+                    <div className="yt-play-overlay absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/20 transition-colors">
                       <div className="w-12 h-9 sm:w-16 sm:h-12 md:w-20 md:h-14 bg-red-500 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300 ring-2 sm:ring-4 ring-white/30">
                         <Play className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white fill-current ml-0.5" />
                       </div>

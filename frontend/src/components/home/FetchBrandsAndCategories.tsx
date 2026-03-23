@@ -143,7 +143,6 @@ const HomePage: React.FC = () => {
       setLoading(false);
     }
   };
-  if (isPrerender) return;
   useEffect(() => { fetchHomepageData(); }, []);
 
   // ---- Loading ---- //
